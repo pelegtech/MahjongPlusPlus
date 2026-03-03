@@ -19,6 +19,8 @@ public:
 	virtual ~Meld()  = default;
 	virtual Tile operator[](int index) const = 0;
 	TileMarker getTileMarker() const;
+	static constexpr int KAN_SIZE = 4;
+	static constexpr int TRIPLET_SIZE = 3;
 };
 
 class Triplet : public Meld {

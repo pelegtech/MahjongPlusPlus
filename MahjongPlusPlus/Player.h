@@ -1,3 +1,6 @@
+#pragma once
+
+
 enum class Wind {
 	EAST,
 	SOUTH,
