@@ -20,7 +20,7 @@ int main() {
     for (auto tile : wall) {
         std::cout << tile;
     }
-
+    //-------------
 
     while (!WindowShouldClose()) {
         BeginDrawing();

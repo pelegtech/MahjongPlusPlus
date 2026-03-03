@@ -98,9 +98,23 @@ int Tile::getId() const {
 	return id;
 }
 
+//other methods
+bool Tile::isEqual(const Tile& tile1, const Tile& tile2) {
+	return (tile1.getSuit() == tile2.getSuit() && tile1.getValue() == tile2.getValue());
+}
 
-//tile printing
+
+
+//operators:
+bool Tile::operator<(const Tile& other) const {
+	return this->id < other.id;
+}
+
+
+
+//printing:
 std::ostream& operator<<(std::ostream& os, const Tile& tile) {
-	os << "id= " << tile.getId() << " name: " << tile.getName() << std::endl;
+	os << "id= " << tile.getId() << " name: " << tile.getName() << " ";
 	return os;
 }
+

@@ -50,29 +50,28 @@ public:
 	//c'tors:
 
 	Tile() = default;
-
 	Tile(int id);
 
 	//create tile from parameters:
 
 	static Tile tileFromSpecs(Suit suit, int vlaue, int copy);
-
 	static Tile honorTileFromSpecs(HonorType, int copy);
 
 	//getters:
 
 	std::string getHonorName() const;
-
 	std::string getName() const;
-
 	Suit getSuit() const;
-
 	int getValue() const;
-
 	bool isAkadora() const;
-
 	int getId() const;
 
+	//other methods:
+	static bool isEqual(const Tile& tile1, const Tile& tile2);
+	
+
+	//oprators:
+	bool operator<(const Tile& other) const;
 
 	//print
 	friend std::ostream& operator<<(std::ostream& os, const Tile& tile);
