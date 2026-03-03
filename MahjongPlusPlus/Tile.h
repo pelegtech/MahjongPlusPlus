@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <stdexcept>
-
+#include <iostream>
 
 enum class Suit {
 	MAN,
@@ -23,9 +23,7 @@ enum class HonorType {
 
 class Tile {
 private:
-	Suit suit;
-	int value;
-	bool akadora;
+
 	int id;
 	
 	//private constants:
@@ -33,23 +31,33 @@ private:
 	static constexpr int TILES_IN_SUIT = 9;
 	static constexpr int COPIES = 4;
 	static constexpr int SUIT_NUM = 4;
+	static constexpr int HONORS_NUM = 7;
 
 	//dictates identity of the akadora tile
-	static constexpr int AKADORA_COPY = 0;
-	static constexpr int AKADORA_VALUE = 5;
+	static constexpr int AKA_MAN = 16;
+	static constexpr int AKA_PIN = 52;
+	static constexpr int AKA_SOU = 88;
 
 	static constexpr int DRAGONS_NUM = 3;
 	static constexpr int WINDS_NUM = 4;
 
 public:
 	//public constants:
+
 	static constexpr int TOTAL_TILES_NUM = 136;
 
 
-	//c'tors
+	//c'tors:
+
 	Tile() = default;
-	Tile(Suit suit, int vlaue, int copy);
-	Tile(HonorType, int copy);
+
+	Tile(int id);
+
+	//create tile from parameters:
+
+	static Tile tileFromSpecs(Suit suit, int vlaue, int copy);
+
+	static Tile honorTileFromSpecs(HonorType, int copy);
 
 	//getters:
 
@@ -66,19 +74,27 @@ public:
 	int getId() const;
 
 
+	//print
+	friend std::ostream& operator<<(std::ostream& os, const Tile& tile);
 
-
-	//exceptions
-	class wrongValue : public std::exception {
-	public:
+	//exceptions:
+	class invalidTileID : public std::exception {
 		const char* what() const noexcept override {
-			return "passed a tile value that is not between 1 to 9";
+			return "passed a tile id higher than 135 or lower than 0";
 		}
 	};
-	class wrongValueHonor : public std::exception {
-	public:
+
+	class invalidTileValue : public std::exception {
 		const char* what() const noexcept override {
-			return "passed an honor tile value that is not between 1 to 7";
+			return "passed a tile value higher than 9 or lower than 1";
 		}
 	};
+
+	class invalidTileValueHonor : public std::exception {
+		const char* what() const noexcept override {
+			return "passed an honor value higher than 7";
+		}
+	};
+
+	
 };

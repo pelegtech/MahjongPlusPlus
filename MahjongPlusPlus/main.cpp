@@ -13,23 +13,12 @@ int main() {
     //wall for tests
     std::vector<Tile> wall;
     wall.reserve(136);
-
-    for (int s = 0; s < 3; s++) {
-        Suit currentSuit = static_cast<Suit>(s);
-        for (int v = 1; v <= 10; v++) {
-            for (int c = 0; c < 4; c++) {
-                wall.emplace_back(currentSuit, v, c);
-            }
-        }
-    }
-    for (int v = 1; v <= 7; v++) {
-        for (int c = 0; c < 4; c++) {
-            wall.emplace_back(static_cast<HonorType>(v), c);
-        }
+    for (int i = 0; i < 136; i++) {
+        wall.emplace_back(i);
     }
      
     for (auto tile : wall) {
-        std::cout << "id= " << tile.getId() << " name: " << tile.getName() << std::endl; 
+        std::cout << tile;
     }
 
 

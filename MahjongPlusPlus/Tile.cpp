@@ -1,26 +1,34 @@
 #include "Tile.h"
 #include <stdexcept>
 
-Tile::Tile(Suit suit, int value, int copy) : suit(suit), value(value), akadora(false) {
-	if (value > 9 || value < 1) {
-		throw wrongValue();
+Tile::Tile(int id) : id(id){
+	if (id < 0 || id > 135) {
+		throw invalidTileID();
 	}
-	if (suit == Suit::HONOR && value > 7) {
-		throw wrongValueHonor();
-	}
-	if (suit != Suit::HONOR && copy == AKADORA_COPY && value == AKADORA_VALUE) {
-		akadora = true;
-	}
-	id = ((static_cast<int>(suit) * TILES_IN_SUIT * COPIES) + ((value - 1) * COPIES) + copy);
 }
 
-Tile::Tile(HonorType type, int copy) : Tile(Suit::HONOR, static_cast<int>(type), copy) {}
+Tile Tile::tileFromSpecs(Suit suit, int value, int copy){
+	if (value > 9 || value < 1) {
+		throw invalidTileValue();
+	}
+	if (suit == Suit::HONOR && value > HONORS_NUM) {
+		throw invalidTileValueHonor();
+	}
+	int id = ((static_cast<int>(suit) * TILES_IN_SUIT * COPIES) + ((value - 1) * COPIES) + copy);
+	Tile res = Tile(id);
+	return res;
+}
+
+Tile Tile::honorTileFromSpecs(HonorType type, int copy) {
+	Tile res = tileFromSpecs(Suit::HONOR, static_cast<int>(type), copy);
+	return res;
+}
 
 std::string Tile::getHonorName() const {
-	if (suit != Suit::HONOR) {
+	if (getSuit() != Suit::HONOR) {
 		throw std::invalid_argument("Input tile is not an honor tile");
 	}
-	switch (this->value) {
+	switch (this->getValue()) {
 	case static_cast<int>(HonorType::WHITE_DRAGON):
 		return  "White";
 	case static_cast<int>(HonorType::GREEN_DRAGON):
@@ -42,22 +50,22 @@ std::string Tile::getHonorName() const {
 std::string Tile::getName() const {
 	std::string suitName;
 	std::string valueName;
-	switch (this->suit) {
+	switch (this->getSuit()) {
 	case Suit::MAN:
 		suitName = "man";
-		valueName = std::to_string(value);
+		valueName = std::to_string(getValue());
 		break;
 	case Suit::PIN:
 		suitName = "pin";
-		valueName = std::to_string(value);
+		valueName = std::to_string(getValue());
 		break;
 	case Suit::SOU:
 		suitName = "sou";
-		valueName = std::to_string(value);
+		valueName = std::to_string(getValue());
 		break;
 	case Suit::HONOR:
 		valueName = getHonorName();
-		if (value <= DRAGONS_NUM) {
+		if (getValue() <= DRAGONS_NUM) {
 			suitName = "dragon";
 		}
 		else {
@@ -66,7 +74,7 @@ std::string Tile::getName() const {
 		break;
 	}
 	std::string result = valueName + " " + suitName;
-	if (akadora == true) {
+	if (isAkadora() == true) {
 		return "Red " + result;
 	}
 	else {
@@ -75,15 +83,15 @@ std::string Tile::getName() const {
 }
 
 Suit Tile::getSuit() const {
-	return suit;
+	return static_cast<Suit>(id / 36);
 }
 
 int Tile::getValue() const {
-	return value;
+	return ((id % (TILES_IN_SUIT * COPIES)) / COPIES) + 1;
 }
 
 bool Tile::isAkadora() const {
-	return akadora;
+	return (id == AKA_MAN || id == AKA_PIN || id == AKA_SOU);
 }
 
 int Tile::getId() const {
@@ -91,3 +99,8 @@ int Tile::getId() const {
 }
 
 
+//tile printing
+std::ostream& operator<<(std::ostream& os, const Tile& tile) {
+	os << "id= " << tile.getId() << " name: " << tile.getName() << std::endl;
+	return os;
+}
