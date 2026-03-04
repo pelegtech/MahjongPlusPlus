@@ -2,27 +2,38 @@
 #include "Tile.h"
 #include <vector>
 #include <iostream>
- 
+#include "Wall.h"
+#include "Hand.h"
+#include "Player.h"
+#include "Meld.h"
+#include "Debug.h"
+#include "Triplet.h"
+#include "Kan.h"
 
 
 int main() {
-    InitWindow(800, 450, "Riichi Mahjong Engine - Test");
-    SetTargetFPS(60);
+    /*InitWindow(800, 450, "Riichi Mahjong Engine - Test");
+    SetTargetFPS(60);*/
+
+    Hand test_hand = Debug::handFromCodes
+    ("3p", "1p", "1p", "2p", "3p", "3p", "4p", "5p", "6p", "7p", "8p", "9p", "9p", "9p");
+    std::cout << test_hand;
+    std::vector<std::unique_ptr<Meld>> melds;
+    melds.push_back(Debug::pon("1p"));
+    melds.push_back(Debug::ankan("1s"));
+    melds.push_back(Debug::shouminkan("2m"));
+    melds.push_back(Debug::daiminkan("4p"));
+    std::vector<Tile> tiles;
+    tiles.push_back(Debug::tileFromCode("5p",0));
+    tiles.push_back(Debug::tileFromCode("5p",1));
+    Hand test_hand2 = Hand(std::move(tiles),std::move(melds));
+    std::cout << test_hand2;
 
 
-    //wall for tests
-    std::vector<Tile> wall;
-    wall.reserve(136);
-    for (int i = 0; i < 136; i++) {
-        wall.emplace_back(i);
-    }
-     
-    for (auto tile : wall) {
-        std::cout << tile;
-    }
-    //-------------
 
-    while (!WindowShouldClose()) {
+
+
+   /* while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
@@ -32,6 +43,6 @@ int main() {
         EndDrawing();
     }
 
-    CloseWindow();
+    CloseWindow();*/
     return 0;
 }

@@ -39,8 +39,10 @@ public:
 
 	//create tile from parameters:
 
+	
 	static Tile tileFromSpecs(Suit suit, int vlaue, int copy);
 	static Tile honorTileFromSpecs(HonorType, int copy);
+	
 
 	//getters:
 
@@ -50,6 +52,7 @@ public:
 	int getValue() const;
 	bool isAkadora() const;
 	int getId() const;
+	
 
 	//other methods:
 	static bool isEqual(const Tile& tile1, const Tile& tile2);
@@ -83,5 +86,14 @@ public:
 		}
 	};
 
+
+
+
+
+
+
+
+
+	//debug functions: -----------------------------------------------
 	
 };

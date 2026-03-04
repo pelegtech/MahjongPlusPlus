@@ -23,7 +23,9 @@ public:
 
 	
 	Wall();
-	//initializes wall and dead wall
+	//initializes wall and dead wall with random tiles
+
+	//hopefully all of the methods below are O(1) time complexity
 
 	int tilesLeft() const;
 	//calculates tiles left based off of head and tail

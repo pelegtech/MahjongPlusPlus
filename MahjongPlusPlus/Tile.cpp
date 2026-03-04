@@ -24,6 +24,9 @@ Tile Tile::honorTileFromSpecs(HonorType type, int copy) {
 	return res;
 }
 
+
+
+
 std::string Tile::getHonorName() const {
 	if (getSuit() != Suit::HONOR) {
 		throw std::invalid_argument("Input tile is not an honor tile");
@@ -119,4 +122,7 @@ std::ostream& operator<<(std::ostream& os, const Tile& tile) {
 	os << "id= " << tile.getId() << " name: " << tile.getName() << " ";
 	return os;
 }
+
+//debug: ---- 
+
 

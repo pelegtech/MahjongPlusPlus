@@ -29,3 +29,16 @@ enum class TileMarker {
 	MIDDLE,
 	RIGHT
 };
+
+enum class moveType {
+	DISCARD,
+	PON,
+	CHI,
+	ANKAN,
+	DAIMINKAN,
+	SHOUMINKAN,
+	RIICHI,
+	TSUMO,
+	RON,
+	SKIP,
+};

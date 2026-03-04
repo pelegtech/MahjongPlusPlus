@@ -8,6 +8,8 @@
 #include <stdexcept>
 #include <algorithm>
 #include "GameTypes.h"
+#include "Triplet.h"
+#include "Kan.h"
 class Meld;
 class Player;
 
@@ -22,6 +24,8 @@ private:
 	static constexpr int MAX_HAND_SIZE = 14;
 
 public:
+	Hand() = default;
+	Hand(std::vector<Tile> tiles, std::vector<std::unique_ptr<Meld>> melds);
 	int legalHandSize() const; //counts kan as 3 tiles
 	int realHandSize() const; //counts kan as 4 tiles
 	const Tile& operator[](int index) const; //read only
@@ -66,7 +70,7 @@ public:
 		std::vector<std::unique_ptr<Meld>>::iterator it);
 
 
-	friend std::ostream& operator<<(std::ostream& os, const Hand& hand);
+	
 
 	class handIsFull : public std::exception {
 	public:
@@ -82,4 +86,13 @@ public:
 	};
 
 
+
+
+
+
+	//debug: --------------------------------------------------
+
+	friend std::ostream& operator<<(std::ostream& os, const Hand& hand);
+
+	
 };

@@ -1,5 +1,8 @@
 #include "Hand.h"
 
+Hand::Hand(std::vector<Tile> tiles, std::vector<std::unique_ptr<Meld>> melds):
+tiles(tiles),melds(std::move(melds)){}
+
 
 int Hand::legalHandSize() const{
 	int counter = static_cast<int>(tiles.size());
@@ -107,10 +110,14 @@ void Hand::createShouminkan(std::vector<Tile>::iterator tileIt,
 	tiles.erase(tileIt);
 }
 
+
+
+//debug functions -----
+
 std::ostream& operator<<(std::ostream& os, const Hand& hand) {
 	os << "free tiles: " << std::endl;
 	for (const auto& tile : hand.tiles) {
-		os << tile.getName() << ", ";
+		os << "["<< tile.getName() << "] ";
 	}
 	os << std::endl << "melds: " << std::endl;
 	for (const auto& meld : hand.melds) {
@@ -118,4 +125,3 @@ std::ostream& operator<<(std::ostream& os, const Hand& hand) {
 	}
 	return os;
 }
-
