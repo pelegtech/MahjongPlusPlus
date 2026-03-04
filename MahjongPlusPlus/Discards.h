@@ -12,7 +12,7 @@ private:
 public:
 	Discards();
 	void addTile(const Tile& tile);
-	Tile removeTile();
+	Tile removeTile(); //returns the last tile in the pile
 
 	//sets current last tile index to be the riichi tile
 	void riichi();

@@ -3,6 +3,7 @@
 #include "Tile.h"
 #include <stdexcept>
 #include "Player.h"
+#include <string>
 enum class TileMarker {
 	SELF,
 	LEFT,
@@ -16,11 +17,14 @@ private:
 	TileMarker marker;
 public:
 	Meld(TileMarker marker); 
+	virtual int size() const = 0;
 	virtual ~Meld()  = default;
-	virtual Tile operator[](int index) const = 0;
+	virtual const Tile& operator[](int index) const = 0;
 	TileMarker getTileMarker() const;
 	static constexpr int KAN_SIZE = 4;
 	static constexpr int TRIPLET_SIZE = 3;
+	virtual std::string getContents() const = 0;
+	friend std::ostream& operator<<(std::ostream& os, const Tile& tile);
 };
 
 class Triplet : public Meld {
@@ -28,7 +32,8 @@ private:
 	std::array<Tile, 3> tiles;
 public:
 	Triplet(const Tile& externalTile, const Tile& tile2, const Tile& tile3, TileMarker marker);
-	Tile operator[](int index) const override;
+	int size() const override;
+	const Tile& operator[](int index) const override;
 	virtual ~Triplet() = default; 
 };
 
@@ -37,12 +42,14 @@ public:
 	Pon(const Tile& externalTile, const Tile& tile2, const Tile& tile3, TileMarker marker);
 	~Pon() override = default;
 	static bool isPon(const Tile& t1, const Tile& t2, const Tile& t3);
+	virtual std::string getContents() const override;
 
 	class notPon : public std::exception {
 		const char* what() const noexcept override {
 			return "pon must only contain three identical tiles";
 		}
 	};
+
 };
 
 class Chi : public Triplet {
@@ -50,6 +57,7 @@ public:
 	Chi(const Tile& externalTile, const Tile& tile2, const Tile& tile3, TileMarker marker);
 	~Chi() override = default;
 	static bool isChi(const Tile& t1, const Tile& t2, const Tile& t3);
+	virtual std::string getContents() const override;
 
 
 	class notChi : public std::exception {
@@ -64,9 +72,11 @@ private:
 	std::array<Tile, 4> tiles;
 public:
 	Kan(const Tile& t1, const Tile& t2, const Tile& t3, const Tile& t4, TileMarker marker);
-	Tile operator[](int index) const override;
+	int size() const override;
+	const Tile& operator[](int index) const override;
 	virtual ~Kan() = default;
 	static bool isKan(const Tile& t1, const Tile& t2, const Tile& t3, const Tile& t4);
+	virtual std::string getContents() const override;
 
 	class notKan : public std::exception {
 		const char* what() const noexcept override {
@@ -93,6 +103,6 @@ public:
 //added kan
 class Shouminkan : public Kan {
 public:
-	Shouminkan(const Tile& ExternalTile,const Pon& pon);
+	Shouminkan(const Tile& ExternalTile,std::unique_ptr<Pon> pon);
 	~Shouminkan() = default;
 };
