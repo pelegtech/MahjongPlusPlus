@@ -1,17 +1,13 @@
 #pragma once
+#include "Hand.h"
+#include "GameTypes.h"
 
-
-enum class Wind {
-	EAST,
-	SOUTH,
-	WEST,
-	NORTH
-};
 
 
 class Player {
 private:
-
+	Hand hand;
+	
 public:
 
 };

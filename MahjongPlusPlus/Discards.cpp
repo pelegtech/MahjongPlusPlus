@@ -16,6 +16,6 @@ Tile Discards::removeTile() {
 }
 
 void Discards::riichi() {
-	riichiTileId = tiles.size() - 1;
+	riichiTileId = static_cast<int>(tiles.size()) - 1;
 }
 

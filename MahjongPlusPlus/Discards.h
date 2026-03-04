@@ -2,6 +2,7 @@
 #include "Tile.h"
 #include <vector>
 #include <stdexcept>
+#include "GameTypes.h"
 
 class Discards {
 private:
@@ -18,6 +19,7 @@ public:
 	void riichi();
 
 	class emptyDiscardsPile : public std::exception {
+	public:
 		const char* what() const noexcept override {
 			return "cannot make operation on an empty discards pile";
 		}

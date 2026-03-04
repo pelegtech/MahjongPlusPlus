@@ -43,6 +43,8 @@ std::string Tile::getHonorName() const {
 		return  "West";
 	case static_cast<int>(HonorType::NORTH_WIND):
 		return  "North";
+	default:
+		throw std::invalid_argument("something went wrong with getHonorName");
 	}
 }
 

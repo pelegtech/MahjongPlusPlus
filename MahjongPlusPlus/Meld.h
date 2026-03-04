@@ -2,15 +2,8 @@
 #include <array>
 #include "Tile.h"
 #include <stdexcept>
-#include "Player.h"
 #include <string>
-enum class TileMarker {
-	SELF,
-	LEFT,
-	MIDDLE,
-	RIGHT
-};
-
+#include "GameTypes.h"
 
 class Meld {
 private:
@@ -45,6 +38,7 @@ public:
 	virtual std::string getContents() const override;
 
 	class notPon : public std::exception {
+	public:
 		const char* what() const noexcept override {
 			return "pon must only contain three identical tiles";
 		}
@@ -61,6 +55,7 @@ public:
 
 
 	class notChi : public std::exception {
+	public:
 		const char* what() const noexcept override {
 			return "chi must  contain a sequence of three consecutive tiles";
 		}

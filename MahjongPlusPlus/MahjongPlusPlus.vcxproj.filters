@@ -50,5 +50,8 @@
     <ClInclude Include="Discards.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GameTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

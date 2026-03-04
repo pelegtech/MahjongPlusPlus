@@ -2,23 +2,8 @@
 #include <string>
 #include <stdexcept>
 #include <iostream>
+#include "GameTypes.h"
 
-enum class Suit {
-	MAN,
-	PIN,
-	SOU,
-	HONOR
-};
-
-enum class HonorType {
-	WHITE_DRAGON = 1,
-	GREEN_DRAGON = 2,
-	RED_DRAGON = 3,
-	EAST_WIND = 4,
-	SOUTH_WIND = 5,
-	WEST_WIND = 6,
-	NORTH_WIND = 7
-};
 
 
 class Tile {
@@ -78,18 +63,21 @@ public:
 
 	//exceptions:
 	class invalidTileID : public std::exception {
+	public:
 		const char* what() const noexcept override {
 			return "passed a tile id higher than 135 or lower than 0";
 		}
 	};
 
 	class invalidTileValue : public std::exception {
+	public:
 		const char* what() const noexcept override {
 			return "passed a tile value higher than 9 or lower than 1";
 		}
 	};
 
 	class invalidTileValueHonor : public std::exception {
+	public:
 		const char* what() const noexcept override {
 			return "passed an honor value higher than 7";
 		}

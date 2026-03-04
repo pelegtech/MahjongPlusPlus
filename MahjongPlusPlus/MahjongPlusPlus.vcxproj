@@ -142,6 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Discards.h" />
+    <ClInclude Include="GameTypes.h" />
     <ClInclude Include="Hand.h" />
     <ClInclude Include="Meld.h" />
     <ClInclude Include="Player.h" />

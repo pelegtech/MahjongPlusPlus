@@ -80,7 +80,7 @@ bool Chi::isChi(const Tile& t1, const Tile& t2, const Tile& t3) {
 	return true;
 }
 
-std::string Pon::getContents() const {
+std::string Chi::getContents() const {
 	std::string res = "Chi: ";
 	int i = 0;
 	for (; i < this->size() - 1; i++) {

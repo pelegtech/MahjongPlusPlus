@@ -7,12 +7,18 @@
 #include "Discards.h"
 #include <stdexcept>
 #include <algorithm>
+#include "GameTypes.h"
+class Meld;
+class Player;
+
 
 class Hand {
 
 private:
 	std::vector<Tile> tiles;
 	std::vector<std::unique_ptr<Meld>> melds;
+
+
 	static constexpr int MAX_HAND_SIZE = 14;
 
 public:
@@ -26,7 +32,7 @@ public:
 	//add drawn tile adds it to your hand at the correct sorted position
 	//discardDrawTile discards it to a given discards pile
 	void drawTile(const Tile& tile);
-	void addDrawnTile(); 
+	void addDrawnTile();
 	void discardDrawnTile(Discards& discards);
 	
 	
@@ -36,8 +42,8 @@ public:
 		std::vector<Tile>::iterator it1,
 		std::vector<Tile>::iterator it2, TileMarker marker) {
 		Tile external = discardsPile.removeTile();
-		melds.push_back(std::make_unique<T>(external, 
-			std::move(*it1);, std::move(*it2), marker));
+		melds.push_back(std::make_unique<T>(external,
+			std::move(*it1), std::move(*it2), marker));
 		if (it1 < it2) {
 			tiles.erase(it2);
 			tiles.erase(it1);
@@ -63,12 +69,14 @@ public:
 	friend std::ostream& operator<<(std::ostream& os, const Hand& hand);
 
 	class handIsFull : public std::exception {
-		const char* what() const override {
+	public:
+		const char* what() const noexcept override {
 			return "cannot make this operation on a full hand";
 		}
 	};
 	class handIsEmpty : public std::exception{
-		const char* what() const override {
+	public:
+		const char* what() const noexcept override {
 			return "cannot make this operation on an empty hand";
 		}
 	};

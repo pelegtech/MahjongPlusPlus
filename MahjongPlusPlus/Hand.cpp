@@ -2,7 +2,7 @@
 
 
 int Hand::legalHandSize() const{
-	int counter = tiles.size();
+	int counter = static_cast<int>(tiles.size());
 	for (const auto& meld : melds) {
 		counter += Meld::TRIPLET_SIZE;
 	}
@@ -10,7 +10,7 @@ int Hand::legalHandSize() const{
 }
 
 int Hand::realHandSize() const {
-	int counter = tiles.size();
+	int counter = static_cast<int>(tiles.size());
 	for (const auto& meld : melds) {
 		counter += meld->size();
 	}
@@ -26,7 +26,7 @@ const Tile& Hand::operator[](int index) const {
 		return tiles[index];
 	}
 	else {
-		int currIndex = index - tiles.size();
+		int currIndex = index - static_cast<int>(tiles.size());
 		int i = 0;
 		while (currIndex > melds[i]->size() - 1) {
 			currIndex = currIndex - melds[i]->size();
@@ -112,8 +112,10 @@ std::ostream& operator<<(std::ostream& os, const Hand& hand) {
 	for (const auto& tile : hand.tiles) {
 		os << tile.getName() << ", ";
 	}
-	os << std::endl;
-	os << "melds: " << std::endl;
-
+	os << std::endl << "melds: " << std::endl;
+	for (const auto& meld : hand.melds) {
+		os << meld->getContents() << std::endl;
+	}
+	return os;
 }
 
