@@ -35,6 +35,8 @@ public:
 	void Discard(int index);
 	void sortHand();
 	const Hand& getHand() const;
+	const Discards& getDiscards() const;
+	const Wind& getWind() const;
 
 	/*std::vector<MoveOption> riichiOptions() const;
 	std::vector<MoveOption> ponOptions(Tile discardedTile) const;

@@ -47,6 +47,25 @@ public:
 	//read only access to ura dora tiles by index [0,doraNum - 1]
 	
 
+	//constIterator class:
+	class ConstIterator {
+	private:
+		const Tile* tile;
+	public:
+		ConstIterator(const Tile* tile);
+		const Tile& operator*() const;
+		ConstIterator& operator++();
+		bool operator!=(const ConstIterator& other) const;
+	};
+
+	ConstIterator begin() const;
+	ConstIterator end() const;
+
+
+
+
+
+
 	//exceptions:
 	class emptyWall : public std::exception{
 	public:

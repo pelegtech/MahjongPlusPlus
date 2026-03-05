@@ -65,6 +65,14 @@ const Hand& Player::getHand() const {
 	return hand;
 }
 
+const Discards& Player::getDiscards() const {
+	return discards;
+}
+
+const Wind& Player::getWind() const {
+	return wind;
+}
+
 
 //void Player::Draw(Wall& wall){}
 //bool tenpai();

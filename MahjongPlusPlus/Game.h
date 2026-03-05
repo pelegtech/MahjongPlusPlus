@@ -14,7 +14,7 @@ enum class GameState {
 	P1_TURN,
 	P2_TURN,
 	P3_TURN,
-	P4_TURN
+	P4_TURN,
 };
 
 class Game {
@@ -30,8 +30,10 @@ public:
 		std::unique_ptr<Player> p3,
 		std::unique_ptr<Player> p4);
 	const Player& getPlayer(int index) const;
+	void dictateWinds();
 	void dealInitTiles();
 	void update();
 	void playerMoveFromInput(int index);
+	int getTilesLeft() const;
 
 };

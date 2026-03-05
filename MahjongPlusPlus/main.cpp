@@ -16,16 +16,18 @@
 int main() {
     InitWindow(1920, 1080, "Riichi Mahjong Engine - Test");
     SetTargetFPS(60);
+   
     Game game(std::make_unique<Player>(), std::make_unique<Player>()
     ,std::make_unique<Player>(), std::make_unique<Player>());
     Graphics graphics;
     graphics.init();
     game.dealInitTiles();
+    game.dictateWinds();
     InputManager inputManager(game);
     
-   /* Hand test_hand = Debug::handFromCodes
-    ("3p", "1p", "1p", "2p", "3p", "3p", "4p", "5p", "6p", "7p", "8p", "9p", "9p", "9p");*/
-    /*std::cout << test_hand;
+  /*  Hand test_hand = Debug::handFromCodes
+    ("3p", "1p", "1p", "2p", "3p", "3p", "4p", "5p", "6p", "7p", "8p", "9p", "9p", "9p");
+    std::cout << test_hand;
     std::vector<std::unique_ptr<Meld>> melds;
     melds.push_back(Debug::pon("1p"));
     melds.push_back(Debug::ankan("1s"));
@@ -46,7 +48,20 @@ int main() {
         ClearBackground(RAYWHITE);
         graphics.drawBackground();
         graphics.drawHand(((game.getPlayer(0)).getHand()));
+        graphics.drawDiscardPile(game.getPlayer(0).getDiscards(), 
+            game.getPlayer(0).getWind(), game.getPlayer(0).getWind());
+
+        graphics.drawDiscardPile(game.getPlayer(1).getDiscards(),
+            game.getPlayer(0).getWind(), game.getPlayer(1).getWind());
+
+        graphics.drawDiscardPile(game.getPlayer(2).getDiscards(),
+            game.getPlayer(0).getWind(), game.getPlayer(2).getWind());
+
+        graphics.drawDiscardPile(game.getPlayer(3).getDiscards(),
+            game.getPlayer(0).getWind(), game.getPlayer(3).getWind());
         game.update();
+
+        graphics.drawTilesLeft(game.getTilesLeft());
 
         int clickedIndex = inputManager.tileIndexFromClick();
         if (clickedIndex != -1) {

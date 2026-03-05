@@ -24,7 +24,7 @@ int Wall::tilesLeft() const{
 }
 Tile Wall::draw() {
 	if (tilesLeft() <= 0) {
-		throw emptyWall();
+ 		throw emptyWall();
 	}
 	
 	return wall[tail--];
@@ -55,4 +55,25 @@ const Tile& Wall::uraDora(int index) const{
 		throw invalidUraDora();
 	}
 	return deadWall[URA_ID + index];
+}
+
+//ConstIterator class:
+Wall::ConstIterator::ConstIterator(const Tile* tile): tile(tile) {}
+
+const Tile& Wall::ConstIterator::operator*() const {
+	return *tile;
+}
+Wall::ConstIterator& Wall::ConstIterator::operator++() {
+	tile++;
+	return *this;
+}
+bool Wall::ConstIterator::operator!=(const ConstIterator& other) const {
+	return (tile != other.tile);
+}
+
+Wall::ConstIterator Wall::begin() const {
+	return Wall::ConstIterator(&wall[head]);
+}
+Wall::ConstIterator Wall::end() const {
+	return Wall::ConstIterator((& wall[tail]) + 1);
 }
