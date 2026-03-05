@@ -6,6 +6,7 @@
 #include "Wall.h"
 #include "Triplet.h"
 #include "Kan.h"
+#include "Raylib.h"
 
 struct MoveOption {
 	moveType type;
@@ -27,9 +28,15 @@ private:
 	Wind wind;
 	int score;
 public:
-	Player(Wind wind, int score);
-	/*void Draw(Wall& wall);
-	std::vector<MoveOption> riichiOptions() const;
+	Player() = default;
+	void setWind(Wind wind);
+	void setScore(int score);
+	void Draw(Wall& wall);
+	void Discard(int index);
+	void sortHand();
+	const Hand& getHand() const;
+
+	/*std::vector<MoveOption> riichiOptions() const;
 	std::vector<MoveOption> ponOptions(Tile discardedTile) const;
 	std::vector<MoveOption> chiOptions(Tile discardedTile) const;
 	std::vector<MoveOption> kanOptions(Tile discardedTile) const;

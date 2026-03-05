@@ -3,6 +3,9 @@
 Hand::Hand(std::vector<Tile> tiles, std::vector<std::unique_ptr<Meld>> melds):
 tiles(tiles),melds(std::move(melds)){}
 
+int Hand::tilesNum() const{
+	return static_cast<int>(tiles.size());
+}
 
 int Hand::legalHandSize() const{
 	int counter = static_cast<int>(tiles.size());
@@ -20,6 +23,10 @@ int Hand::realHandSize() const {
 	return counter;
 }
 
+const Tile& Hand::lastTile() const {
+	int id = static_cast<int>(tiles.size()) - 1;
+	return (*this)[id];
+}
 
 const Tile& Hand::operator[](int index) const {
 	if (index < 0 || index > MAX_HAND_SIZE - 1) {
@@ -62,6 +69,17 @@ void Hand::discardDrawnTile(Discards& discards) {
 	discards.addTile(std::move(tiles.back()));
 	tiles.pop_back();
 }
+void Hand::discardHandTile(Discards& discards, int index) {
+	if (tiles.empty()) {
+		throw handIsEmpty();
+	}
+	if (index >= tilesNum() || index < 0) {
+		throw Hand::illegalAcess();
+	}
+	discards.addTile(std::move(tiles[index]));
+	tiles.erase(tiles.begin() + index);
+}
+
 
 
 
@@ -110,7 +128,9 @@ void Hand::createShouminkan(std::vector<Tile>::iterator tileIt,
 	tiles.erase(tileIt);
 }
 
-
+void Hand::sortHand() {
+	std::sort(tiles.begin(), tiles.end());
+}
 
 //debug functions -----
 

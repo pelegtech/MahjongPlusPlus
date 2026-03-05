@@ -31,8 +31,39 @@ MoveOption::MoveOption(moveType type, std::vector<Tile> tiles) :
 	}
 }
 
-Player::Player(Wind wind, int score): wind(wind), score(score) {}
 
+
+void Player::Draw(Wall& wall) {
+	hand.drawTile(wall.draw());
+}
+
+void Player::setWind(Wind wind) {
+	this->wind = wind;
+}
+void Player::setScore(int score) {
+	this->score = score;
+}
+
+void Player::Discard(int index) {
+	
+	if (index == hand.tilesNum() - 1) {
+		hand.discardDrawnTile(discards);
+	}
+	else {
+		hand.discardHandTile(discards,index);
+		hand.addDrawnTile();
+	}
+
+
+}
+
+void Player::sortHand() {
+	hand.sortHand();
+}
+
+const Hand& Player::getHand() const {
+	return hand;
+}
 
 
 //void Player::Draw(Wall& wall){}

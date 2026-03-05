@@ -9,15 +9,23 @@
 #include "Debug.h"
 #include "Triplet.h"
 #include "Kan.h"
-
+#include "Game.h"
+#include "InputManager.h"
+#include "Graphics.h"
 
 int main() {
-    /*InitWindow(800, 450, "Riichi Mahjong Engine - Test");
-    SetTargetFPS(60);*/
-
-    Hand test_hand = Debug::handFromCodes
-    ("3p", "1p", "1p", "2p", "3p", "3p", "4p", "5p", "6p", "7p", "8p", "9p", "9p", "9p");
-    std::cout << test_hand;
+    InitWindow(1920, 1080, "Riichi Mahjong Engine - Test");
+    SetTargetFPS(60);
+    Game game(std::make_unique<Player>(), std::make_unique<Player>()
+    ,std::make_unique<Player>(), std::make_unique<Player>());
+    Graphics graphics;
+    graphics.init();
+    game.dealInitTiles();
+    InputManager inputManager(game);
+    
+   /* Hand test_hand = Debug::handFromCodes
+    ("3p", "1p", "1p", "2p", "3p", "3p", "4p", "5p", "6p", "7p", "8p", "9p", "9p", "9p");*/
+    /*std::cout << test_hand;
     std::vector<std::unique_ptr<Meld>> melds;
     melds.push_back(Debug::pon("1p"));
     melds.push_back(Debug::ankan("1s"));
@@ -27,22 +35,27 @@ int main() {
     tiles.push_back(Debug::tileFromCode("5p",0));
     tiles.push_back(Debug::tileFromCode("5p",1));
     Hand test_hand2 = Hand(std::move(tiles),std::move(melds));
-    std::cout << test_hand2;
+    std::cout << test_hand2;*/
 
 
 
 
 
-   /* while (!WindowShouldClose()) {
+    while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
+        graphics.drawBackground();
+        graphics.drawHand(((game.getPlayer(0)).getHand()));
+        game.update();
 
-        DrawText("Raylib is working! Ready for Mahjong!", 190, 200, 20, DARKGRAY);
-        
+        int clickedIndex = inputManager.tileIndexFromClick();
+        if (clickedIndex != -1) {
+            game.playerMoveFromInput(inputManager.tileIndexFromClick());
+        }
 
         EndDrawing();
     }
-
-    CloseWindow();*/
+    graphics.clean();
+    CloseWindow();
     return 0;
 }

@@ -21,14 +21,18 @@ private:
 	std::vector<std::unique_ptr<Meld>> melds;
 
 
-	static constexpr int MAX_HAND_SIZE = 14;
+	
 
 public:
 	Hand() = default;
 	Hand(std::vector<Tile> tiles, std::vector<std::unique_ptr<Meld>> melds);
+	int tilesNum() const; //only counts free tiles
 	int legalHandSize() const; //counts kan as 3 tiles
 	int realHandSize() const; //counts kan as 4 tiles
 	const Tile& operator[](int index) const; //read only
+	const Tile& lastTile() const;
+	static constexpr int MAX_HAND_SIZE = 14;
+	void sortHand();
 
 
 	//logic:
@@ -38,6 +42,7 @@ public:
 	void drawTile(const Tile& tile);
 	void addDrawnTile();
 	void discardDrawnTile(Discards& discards);
+	void discardHandTile(Discards& discards, int index);
 	
 	
 	//creates a chi or a pon 
@@ -84,6 +89,13 @@ public:
 			return "cannot make this operation on an empty hand";
 		}
 	};
+	class illegalAcess : public std::exception {
+	public:
+		const char* what() const noexcept override {
+			return "tried to access an illegal hand tile location";
+		}
+	};
+
 
 
 
