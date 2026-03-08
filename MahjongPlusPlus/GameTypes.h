@@ -42,3 +42,4 @@ enum class moveType {
 	RON,
 	SKIP,
 };
+

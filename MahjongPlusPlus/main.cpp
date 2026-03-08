@@ -48,17 +48,10 @@ int main() {
         ClearBackground(RAYWHITE);
         graphics.drawBackground();
         graphics.drawHand(((game.getPlayer(0)).getHand()));
-        graphics.drawDiscardPile(game.getPlayer(0).getDiscards(), 
-            game.getPlayer(0).getWind(), game.getPlayer(0).getWind());
-
-        graphics.drawDiscardPile(game.getPlayer(1).getDiscards(),
-            game.getPlayer(0).getWind(), game.getPlayer(1).getWind());
-
-        graphics.drawDiscardPile(game.getPlayer(2).getDiscards(),
-            game.getPlayer(0).getWind(), game.getPlayer(2).getWind());
-
-        graphics.drawDiscardPile(game.getPlayer(3).getDiscards(),
-            game.getPlayer(0).getWind(), game.getPlayer(3).getWind());
+        graphics.drawDiscards(game.getPlayer(0),
+            game.getPlayer(1),
+            game.getPlayer(2),
+            game.getPlayer(3));
         game.update();
 
         graphics.drawTilesLeft(game.getTilesLeft());

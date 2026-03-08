@@ -44,6 +44,11 @@ public:
 	//public constants ------------------------------------------
 	static constexpr int TOTAL_TILES_NUM = 136;
 
+	//dictates identity of the akadora tile:
+	static constexpr int AKA_MAN = 16;
+	static constexpr int AKA_PIN = 52;
+	static constexpr int AKA_SOU = 88;
+
 	//c'tors ------------------------------------------
 	Tile() = default;
 
@@ -125,10 +130,7 @@ private:
 	static constexpr int SUIT_NUM = 4;
 	static constexpr int HONORS_NUM = 7;
 
-	//dictates identity of the akadora tile:
-	static constexpr int AKA_MAN = 16;
-	static constexpr int AKA_PIN = 52;
-	static constexpr int AKA_SOU = 88;
+	
 
 	//private methods---------------------------------------
 	/**
