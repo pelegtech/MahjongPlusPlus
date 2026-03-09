@@ -43,3 +43,11 @@ enum class MoveType {
 	
 };
 
+enum class MeldType {
+	PON,
+	CHI,
+	ANKAN,
+	DAIMINKAN,
+	SHOUMINKAN
+};
+

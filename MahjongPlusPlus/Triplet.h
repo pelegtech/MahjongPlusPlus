@@ -15,7 +15,8 @@ public:
 	 * @param tile2 tile3 tiles from the hand.
 	 * @param marker marks the player who discarded the external tile. 
 	 */
-	Triplet(const Tile& externalTile, const Tile& tile2, const Tile& tile3, TileMarker marker);
+	Triplet(const Tile& externalTile, const Tile& tile2, const Tile& tile3,
+		TileMarker marker, MeldType type);
 
 	/**	 * @return size of pon / chi (3) 	 */
 	int size() const override;
@@ -51,7 +52,8 @@ public:
 	 * @param tile2 tile3 the hand tiles
 	 * @param marker marks the player who discarded the external tile. 
 	 */
-	Pon(const Tile& externalTile, const Tile& tile2, const Tile& tile3, TileMarker marker);
+	Pon(const Tile& externalTile, const Tile& tile2, const Tile& tile3,
+		TileMarker marker);
 
 	~Pon() override = default;
 
@@ -90,7 +92,8 @@ public:
 	 * @param tile2 tile3 tiles from the hand .
 	 * @param marker marks the player who discarded the external tile.
 	 */
-	Chi(const Tile& externalTile, const Tile& tile2, const Tile& tile3, TileMarker marker);
+	Chi(const Tile& externalTile, const Tile& tile2, const Tile& tile3,
+		TileMarker marker);
 
 	~Chi() override = default;
 	

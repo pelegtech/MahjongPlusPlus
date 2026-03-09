@@ -65,7 +65,7 @@ void Hand::discardHandTile(Discards& discards, int index) {
 	if (tiles.empty()) {
 		throw handIsEmpty();
 	}
-	if (index >= tilesNum() || index < 0) {
+	if (index >= freeTilesNum() || index < 0) {
 		throw Hand::illegalAcess();
 	}
 	discards.addTile(std::move(tiles[index]));
@@ -193,7 +193,7 @@ void Hand::createShouminkan(const Tile& tile, int meldIndex) {
 	tiles.erase(tileIt);
 }
 
-int Hand::tilesNum() const{
+int Hand::freeTilesNum() const{
 	return static_cast<int>(tiles.size());
 }
 

@@ -169,7 +169,7 @@ public:
 
 	//getters ------------------------------------------
 	/** @returns the number of free tiles in the hand*/
-	int tilesNum() const; 
+	int freeTilesNum() const; 
 
 	/** @returns the number of tiles counted towards a valid hand
 	* @note kan counts as 3 tiles.

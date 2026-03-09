@@ -2,7 +2,8 @@
 
 //triplet functions:
 #include "Triplet.h"
-Triplet::Triplet(const Tile& externalTile, const Tile& tile2, const Tile& tile3, TileMarker marker) : Meld(marker)
+Triplet::Triplet(const Tile& externalTile, const Tile& tile2, const Tile& tile3,
+	TileMarker marker, MeldType type) : Meld(marker,type)
 , tiles{ externalTile,tile2,tile3 } {
 
 }
@@ -17,8 +18,8 @@ const Tile& Triplet::operator[](int index) const {
 }
 
 //pon functions:
-Pon::Pon(const Tile& externalTile, const Tile& tile2, const Tile& tile3, TileMarker marker) :
-	Triplet(externalTile, tile2, tile3, marker) {
+Pon::Pon(const Tile& externalTile, const Tile& tile2, const Tile& tile3,TileMarker marker) :
+	Triplet(externalTile, tile2, tile3, marker,MeldType::PON) {
 	if (!isPon(externalTile, tile2, tile3)) {
 		throw notPon();
 	}
@@ -52,8 +53,8 @@ std::string Pon::getContents() const {
 }
 
 //chi functions:
-Chi::Chi(const Tile& externalTile, const Tile& tile2, const Tile& tile3, TileMarker marker) :
-	Triplet(externalTile, tile2, tile3, marker) {
+Chi::Chi(const Tile& externalTile, const Tile& tile2, const Tile& tile3,TileMarker marker) :
+	Triplet(externalTile, tile2, tile3, marker, MeldType::CHI) {
 	if (!isChi(externalTile, tile2, tile3)) {
 		throw notChi();
 	}

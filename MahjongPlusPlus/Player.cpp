@@ -1,35 +1,7 @@
 #include "Player.h"
-
-MoveOption::MoveOption(MoveType type, std::vector<Tile> tiles) :
-	type(type), tiles(std::move(tiles)) {
-	if (type == MoveType::PON && tiles.size() != 2) {
-		throw invalidOption();
-	}
-	if (type == MoveType::CHI && tiles.size() != 2) {
-		throw invalidOption();
-	}
-	if (type == MoveType::ANKAN && tiles.size() != 4) {
-		throw invalidOption();
-	}
-	if (type == MoveType::DAIMINKAN && tiles.size() != 3) {
-		throw invalidOption();
-	}
-	if (type == MoveType::PON && tiles.size() != 1) {
-		throw invalidOption();
-	}
-	if (type == MoveType::TSUMO && tiles.size() != 0) {
-		throw invalidOption();
-	}
-	if (type == MoveType::RON && tiles.size() != 1) {
-		throw invalidOption();
-	}
-	if (type == MoveType::RIICHI && tiles.size() != 1) {
-		throw invalidOption();
-	}
-	if (type == MoveType::DISCARD && tiles.size() != 1) {
-		throw invalidOption();
-	}
-}
+#include "Triplet.h"
+#include "Meld.h"
+#include "Kan.h"
 
 
 
@@ -46,7 +18,7 @@ void Player::setScore(int score) {
 
 void Player::Discard(int index) {
 	
-	if (index == hand.tilesNum() - 1) {
+	if (index == hand.freeTilesNum() - 1) {
 		hand.discardDrawnTile(discards);
 	}
 	else {
@@ -73,20 +45,46 @@ const Wind& Player::getWind() const {
 	return wind;
 }
 
+TileMarker Player::relativePlace(Wind otherWind) {
+	int relativePosition = (static_cast<int>(wind)
+		- static_cast<int>(otherWind) + PLAYERS_NUM) % PLAYERS_NUM;
+	return static_cast<TileMarker>(relativePosition);
+}
 
-//void Player::Draw(Wall& wall){}
-//bool tenpai();
-//std::vector<MoveOption> Player::riichiOptions() const{}
-//std::vector<MoveOption> Player::ponOptions(Tile discardedTile) const{}
-//std::vector<MoveOption> Player::chiOptions(Tile discardedTile) const{}
-//std::vector<MoveOption> Player::kanOptions(Tile discardedTile) const{}
-//MoveOption Player::chosenMove(const std::vector<MoveOption>& options) const{}
-//void Player::playRiichi(const MoveOption& option){}
-//void Player::playTsumo(const MoveOption& option){}
-//void Player::playRon(const MoveOption& option){}
-//void Player::playDiscard(const MoveOption& option){}
-//void Player::playPon(const MoveOption& option, Tile discardedTile, Wind otherWind){}
-//void Player::playChi(const MoveOption& option, Tile discardedTile, Wind otherWind){}
-//void Player::playAnkan(const MoveOption& option, Wall& wall){}
-//void Player::playDaiminkan(const MoveOption& option, Tile discardedTile, Wind otherWind, Wall& wall){}
-//void Player::playShouminkan(const MoveOption& option, Wall& wall){}
+
+//options:
+
+bool Player::ponOptions(const Tile& discard) {
+	int counter = 0;
+	Tile option[3];
+	//count the number of equal tiles
+	for (int i = 0; i < hand.freeTilesNum(); i++) {
+		if (counter < 3) {
+			if (Tile::isEqual(discard, hand[i])) {
+				option[counter++] = hand[i];
+			}
+		}
+	}
+	//in the case of akadora display two options one with aka one without. 
+	//hand must be sorted by id for this to work consistently.
+	if (counter == 3 && discard.getValue() == 5 &&
+		discard.getSuit() != Suit::HONOR && discard.isAkadora() != true) {
+		options.push_back(MoveOption(MoveType::PON, { option[0],option[1] }));
+		options.push_back(MoveOption(MoveType::PON, { option[1],option[2] }));
+		return true;
+
+		//normal case of no aka.
+	} else if (counter == 2 || counter == 3) {
+		options.push_back(MoveOption(MoveType::PON, { option[0],option[1] }));
+		return true;
+	} //if not enough tiles were found.
+	else {
+		return false;
+	}
+}
+
+void Player::executePon(const MoveOption& chosenOption,
+	Discards& discards, const Wind& otherWind) {
+	hand.createTriplet<Pon>(discards, chosenOption.tiles[0],
+		chosenOption.tiles[1], relativePlace(otherWind));
+}

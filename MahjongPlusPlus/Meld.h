@@ -21,7 +21,7 @@ public:
 	/**
 	* @brief constructs meld with a marker indicating the the player who discarded the tile.
 	*/
-	Meld(TileMarker marker); 
+	Meld(TileMarker marker, MeldType type); 
 	/**
 	* @brief returns number of tiles in meld.
 	* @return 3 for chi or pon, 4 for kan.
@@ -46,6 +46,7 @@ public:
 
 private:
 	TileMarker marker;
+	MeldType type;
 };
 
 

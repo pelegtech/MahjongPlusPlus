@@ -7,19 +7,8 @@
 #include "Triplet.h"
 #include "Kan.h"
 #include "Raylib.h"
+#include "MoveOption.h"
 
-struct MoveOption {
-	MoveType type;
-	std::vector<Tile> tiles;
-	MoveOption(MoveType type, std::vector<Tile> tiles);
-
-	class invalidOption : public std::exception {
-	public:
-		const char* what() const noexcept override {
-			return "type does not match parameters";
-		}
-	};
-};
 
 class Player {
 private:
@@ -27,6 +16,7 @@ private:
 	Discards discards;
 	Wind wind;
 	int score;
+	std::vector<MoveOption> options;
 public:
 	Player() = default;
 	void setWind(Wind wind);
@@ -37,19 +27,14 @@ public:
 	const Hand& getHand() const;
 	const Discards& getDiscards() const;
 	const Wind& getWind() const;
+	TileMarker relativePlace(Wind otherWind);
 
-	/*std::vector<MoveOption> riichiOptions() const;
-	std::vector<MoveOption> ponOptions(Tile discardedTile) const;
-	std::vector<MoveOption> chiOptions(Tile discardedTile) const;
-	std::vector<MoveOption> kanOptions(Tile discardedTile) const;
-	MoveOption chosenMove(const std::vector<MoveOption>& options) const;
-	void playRiichi(const MoveOption& option);
-	void playTsumo(const MoveOption& option);
-	void playRon(const MoveOption& option);
-	void playDiscard(const MoveOption& option);
-	void playPon(const MoveOption& option, Tile discardedTile, Wind otherWind);
-	void playChi(const MoveOption& option, Tile discardedTile, Wind otherWind);
-	void playAnkan(const MoveOption& option, Wall& wall);
-	void playDaiminkan(const MoveOption& option, Tile discardedTile, Wind otherWind, Wall& wall);
-	void playShouminkan(const MoveOption& option, Wall& wall);*/
+	static constexpr int PLAYERS_NUM = 4;
+
+
+	//options:
+	bool ponOptions(const Tile& discard);
+	void executePon(const MoveOption& chosenOption, Discards& discards, const Wind& Otherwind);
+
+
 };

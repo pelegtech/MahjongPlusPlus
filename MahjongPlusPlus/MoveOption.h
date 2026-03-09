@@ -2,7 +2,8 @@
 #include "GameTypes.h"
 #include <array>
 #include <initializer_list>
-
+#include <exception>
+#include "Tile.h"
 /**
  * @brief data structure to store an option for any type of move besides discard
  *	a player can perform on his turn. this struct exist to assist displaying
@@ -14,6 +15,12 @@ struct MoveOption {
 	class unmatchingSize : public std::exception {
 		const char* what() const noexcept override {
 			return "amount of tiles passed to the c'tor doesn't match the type";
+		}
+	};
+
+	class unmatchingOption : public std::exception {
+		const char* what() const noexcept override {
+			return "requested execution does not match option type";
 		}
 	};
 

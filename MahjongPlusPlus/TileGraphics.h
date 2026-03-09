@@ -8,7 +8,7 @@
 class Tile;
 class Hand;
 class Discards;
-
+class Meld;
 
 /** @class HandTilesRenderer
 * @brief in charge of drawing the hand tiles on screen.
@@ -17,7 +17,7 @@ class Discards;
 class HandTilesRenderer {
 public:
 	//constants -------------------------------------------------------
-	
+
 	static constexpr int TILE_WIDTH = 80;
 	static constexpr int TILE_HEIGHT = 129;
 
@@ -33,8 +33,16 @@ public:
 	/** @brief num of tiles excluding draw tile*/
 	static constexpr int HAND_SIZE = 13;
 
+	static constexpr float STRAIGHT_ORIENTATION = 0.0f;
+	static constexpr float RIGHT_ORIENTATION = 270.0f;
+	static constexpr float LEFT_ORIENTATION = 90.0f;
+	static constexpr int MELD_TILE_WIDTH = 80;
+	static constexpr int MELD_TILE_HEIGHT = 116;
+
+
+
 	/**@param path - to the tiles png */
-	HandTilesRenderer(const char* path);
+	HandTilesRenderer(const char* handTilesPath, const char* meldTilesPath);
 
 	/** @brief unloads texture */
 	~HandTilesRenderer();
@@ -51,11 +59,20 @@ public:
 	*/
 	void drawTile(const Tile& tile, Vector2 position) const;
 
+	void drawMeldTileAka(const Tile& tile, Vector2 position, float orienation) const;
+
+	void drawMeldTile(const Tile& tile, Vector2 position, float orienation) const;
+
+	void drawPon(const Meld& meld, Vector2 position) const;
+
 	/**
 	* @brief draw a hand on the bottom middle of the screen
 	* @param hand to be drawn
 	*/
 	void draw(const Hand& hand) const;
+
+
+
 
 
 	/**
@@ -65,10 +82,14 @@ public:
 	static int getTileIndexFromPosition(Vector2 position);
 
 	
+	
+	
 
 private:
 
-	Texture2D textures;
+	Texture2D handTileTextures;
+	Texture2D meldTileTextures;
+
 
 	/** @brief akadora's texture relative position in the file*/
 	static constexpr int AKA_PLACE_IN_FILE = 10;

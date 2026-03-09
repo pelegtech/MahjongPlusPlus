@@ -2,7 +2,8 @@
 
 void Graphics::init() {
 	background = LoadTexture("assets/background.jpg");
-	handTilesRenderer = std::make_unique<HandTilesRenderer>(AssetPaths::handTiles);
+	handTilesRenderer = std::make_unique<HandTilesRenderer>(AssetPaths::handTiles,
+		AssetPaths::meldTiles);
 	discardTilesRenderer = std::make_unique<DiscardTilesRenderer>(AssetPaths::discardTiles);
 	buttons = LoadTexture("assets/buttons.png");
 }

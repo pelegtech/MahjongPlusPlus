@@ -38,7 +38,14 @@ int main() {
     tiles.push_back(Debug::tileFromCode("5p",1));
     Hand test_hand2 = Hand(std::move(tiles),std::move(melds));
     std::cout << test_hand2;*/
+    Pon pon1(Debug::tileFromCode("1p", 0), Debug::tileFromCode("1p", 1),
+        Debug::tileFromCode("1p", 2), TileMarker::LEFT);
+    Pon pon2(Debug::tileFromCode("2s", 0), Debug::tileFromCode("2s", 1),
+        Debug::tileFromCode("2s", 2), TileMarker::RIGHT);
+    Pon pon3(Debug::tileFromCode("4z", 0), Debug::tileFromCode("4z", 1),
+        Debug::tileFromCode("4z", 2), TileMarker::MIDDLE);
 
+    HandTilesRenderer handTilesDebug(AssetPaths::handTiles, AssetPaths::meldTiles);
 
 
 
@@ -53,6 +60,10 @@ int main() {
             game.getPlayer(2),
             game.getPlayer(3));
         game.update();
+
+        handTilesDebug.drawPon(pon1, { 500,500 });
+        handTilesDebug.drawPon(pon2, { 500,616 });
+        handTilesDebug.drawPon(pon3, { 500,732 });
 
         graphics.drawTilesLeft(game.getTilesLeft());
 

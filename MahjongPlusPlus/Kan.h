@@ -21,7 +21,8 @@ public:
 	 * @param t1 t2 t3 t4 tiles to be stored in the kan meld.
 	 * @param marker marks the player that owns the discarded tile.
 	 */
-	Kan(const Tile& t1, const Tile& t2, const Tile& t3, const Tile& t4, TileMarker marker);
+	Kan(const Tile& t1, const Tile& t2, const Tile& t3, const Tile& t4,
+		TileMarker marker, MeldType type);
 
 	/**
 	 * @return kan size 4

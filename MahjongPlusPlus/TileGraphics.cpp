@@ -3,23 +3,28 @@
 #include "Hand.h"
 #include "Discards.h"
 #include "GameTypes.h"
+#include "Meld.h"
+#include "Kan.h"
+#include "Triplet.h"
 
 //HandTilesRenderer------------------------------------------------------------
 
-HandTilesRenderer::HandTilesRenderer(const char* path) {
-	textures = LoadTexture(path);
+HandTilesRenderer::HandTilesRenderer(const char* handTilesPath, const char* MeldTilesPath) {
+	handTileTextures = LoadTexture(handTilesPath);
+	meldTileTextures = LoadTexture(MeldTilesPath);
 }
 
 
 HandTilesRenderer::~HandTilesRenderer(){
-	UnloadTexture(textures);
+	UnloadTexture(handTileTextures);
+	UnloadTexture(meldTileTextures);
 }
 
 void HandTilesRenderer::drawTileAka(const Tile& tile, Vector2 position) const {
 	Rectangle sourceRec = { (AKA_PLACE_IN_FILE - 1) * TILE_WIDTH,
 		static_cast<int>(tile.getSuit()) * TILE_HEIGHT,
 		TILE_WIDTH, TILE_HEIGHT };
-	DrawTextureRec(textures, sourceRec, position, WHITE);
+	DrawTextureRec(handTileTextures, sourceRec, position, WHITE);
 }
 
 void HandTilesRenderer::drawTile(const Tile& tile, Vector2 position) const{
@@ -30,23 +35,74 @@ void HandTilesRenderer::drawTile(const Tile& tile, Vector2 position) const{
 		Rectangle sourceRec = { (tile.getValue() - 1) * TILE_WIDTH,
 			static_cast<int>(tile.getSuit()) * TILE_HEIGHT,
 			TILE_WIDTH, TILE_HEIGHT };
-		DrawTextureRec(textures, sourceRec, position, WHITE);
+		DrawTextureRec(handTileTextures, sourceRec, position, WHITE);
+	}
+}
+
+
+
+void HandTilesRenderer::drawMeldTileAka(const Tile& tile, 
+	Vector2 position, float orientation) const
+{
+		Rectangle sourceRec = { (AKA_PLACE_IN_FILE - 1) * MELD_TILE_WIDTH,
+			static_cast<int>(tile.getSuit()) * MELD_TILE_HEIGHT,
+			MELD_TILE_WIDTH,MELD_TILE_HEIGHT };
+		Rectangle destRec = { position.x,position.y,MELD_TILE_WIDTH,MELD_TILE_HEIGHT };
+		DrawTexturePro(meldTileTextures, sourceRec, destRec, { 0,0 }, orientation, WHITE);
+}
+
+void HandTilesRenderer::drawMeldTile(const Tile& tile, 
+	Vector2 position, float orientation) const{
+	if (tile.isAkadora()) {
+		drawMeldTileAka(tile, position, orientation);
+	}
+	Rectangle sourceRec = { (tile.getValue() - 1) * MELD_TILE_WIDTH,
+		static_cast<int>(tile.getSuit()) * MELD_TILE_HEIGHT,
+		MELD_TILE_WIDTH, MELD_TILE_HEIGHT };
+	Rectangle destRec = { position.x,position.y,MELD_TILE_WIDTH,MELD_TILE_HEIGHT };
+	DrawTexturePro(meldTileTextures, sourceRec, destRec, { 0,0 }, orientation, WHITE);
+}
+
+void HandTilesRenderer::drawPon(const Meld& meld, Vector2 position) const {
+	float leaningTileY = position.y + MELD_TILE_HEIGHT;
+	switch (meld.getTileMarker()) {
+	case (TileMarker::LEFT):
+		drawMeldTile(meld[0], { position.x,leaningTileY }
+		, RIGHT_ORIENTATION);
+		drawMeldTile(meld[1], { position.x + MELD_TILE_HEIGHT, position.y }
+		, STRAIGHT_ORIENTATION);
+		drawMeldTile(meld[2], { position.x + MELD_TILE_WIDTH + MELD_TILE_HEIGHT, position.y }
+		, STRAIGHT_ORIENTATION);
+		break;
+	case (TileMarker::MIDDLE):
+		drawMeldTile(meld[1], position, STRAIGHT_ORIENTATION);
+		drawMeldTile(meld[0], { position.x + MELD_TILE_WIDTH,leaningTileY }, RIGHT_ORIENTATION);
+		drawMeldTile(meld[2], { position.x + MELD_TILE_WIDTH + MELD_TILE_HEIGHT, position.y }
+		, STRAIGHT_ORIENTATION);
+		break;
+	case (TileMarker::RIGHT):
+		drawMeldTile(meld[1], position, STRAIGHT_ORIENTATION);
+		drawMeldTile(meld[2], { position.x + MELD_TILE_WIDTH,position.y }
+		, STRAIGHT_ORIENTATION);
+		drawMeldTile(meld[0], { position.x + 2 * MELD_TILE_WIDTH,leaningTileY },
+			RIGHT_ORIENTATION);
+		break;
 	}
 }
 
 
 
 void HandTilesRenderer::draw(const Hand& hand) const {
-	int size = hand.tilesNum();
+	int size = hand.freeTilesNum();
 	if (hand.legalHandSize() < MAX_HAND_SIZE) {
-		for (int i = 0; i < hand.tilesNum(); i++) {
+		for (int i = 0; i < hand.freeTilesNum(); i++) {
 			drawTile(hand[i],
 				{ POSITION.x + (i * TILE_WIDTH),
 				POSITION.y });
 		}
 	}
 	else if (hand.legalHandSize() == MAX_HAND_SIZE) {
-		for (int i = 0; i < hand.tilesNum() - 1; i++) {
+		for (int i = 0; i < hand.freeTilesNum() - 1; i++) {
 			drawTile(hand[i],
 				{ POSITION.x + (i * TILE_WIDTH),
 				POSITION.y });

@@ -1,8 +1,9 @@
 #include "Kan.h"
 
 // kan functions:
-Kan::Kan(const Tile& t1, const Tile& t2, const Tile& t3, const Tile& t4, TileMarker marker) :
-	Meld(marker), tiles{ t1, t2, t3, t4 } {
+Kan::Kan(const Tile& t1, const Tile& t2, const Tile& t3, const Tile& t4, 
+	TileMarker marker, MeldType type) :
+	Meld(marker, type), tiles{ t1, t2, t3, t4 } {
 	if (!isKan(t1, t2, t3, t4)) {
 		throw notKan();
 	}
@@ -24,15 +25,15 @@ bool Kan::isKan(const Tile& t1, const Tile& t2, const Tile& t3, const Tile& t4) 
 }
 
 Ankan::Ankan(const Tile& t1, const Tile& t2, const Tile& t3, const Tile& t4) :
-	Kan(t1, t2, t3, t4, TileMarker::SELF) {
+	Kan(t1, t2, t3, t4, TileMarker::SELF, MeldType::ANKAN) {
 }
 
 Daiminkan::Daiminkan(const Tile& externalTile, const Tile& tile2, const Tile& tile3, const Tile& tile4,
-	TileMarker marker) : Kan(externalTile, tile2, tile3, tile4, marker) {
+	TileMarker marker) : Kan(externalTile, tile2, tile3, tile4, marker, MeldType::DAIMINKAN) {
 }
 
-Shouminkan::Shouminkan(const Tile& ExternalTile, std::unique_ptr<Pon> pon) :
-	Kan(ExternalTile, (*pon)[0], (*pon)[1], (*pon)[2], pon->getTileMarker()) {
+Shouminkan::Shouminkan(const Tile& ExternalTile, std::unique_ptr<Pon> pon) :Kan(
+	ExternalTile, (*pon)[0], (*pon)[1], (*pon)[2], pon->getTileMarker(), MeldType::SHOUMINKAN) {
 }
 
 std::string Ankan::getContents() const {
