@@ -184,6 +184,8 @@ public:
 	/** returns the last tile in the free tiles, usually that's the drawn tile*/
 	const Tile& lastTile() const;
 
+	const std::vector<std::unique_ptr<Meld>>& getMelds() const;
+
 private:
 	/** @brief includes the free tiles, those can be discarded and be used for a meld*/
 	std::vector<Tile> tiles;

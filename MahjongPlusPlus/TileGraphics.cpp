@@ -44,11 +44,11 @@ void HandTilesRenderer::drawTile(const Tile& tile, Vector2 position) const{
 void HandTilesRenderer::drawMeldTileAka(const Tile& tile, 
 	Vector2 position, float orientation) const
 {
-		Rectangle sourceRec = { (AKA_PLACE_IN_FILE - 1) * MELD_TILE_WIDTH,
+	Rectangle sourceRec = { (AKA_PLACE_IN_FILE - 1) * MELD_TILE_WIDTH,
 			static_cast<int>(tile.getSuit()) * MELD_TILE_HEIGHT,
 			MELD_TILE_WIDTH,MELD_TILE_HEIGHT };
-		Rectangle destRec = { position.x,position.y,MELD_TILE_WIDTH,MELD_TILE_HEIGHT };
-		DrawTexturePro(meldTileTextures, sourceRec, destRec, { 0,0 }, orientation, WHITE);
+	Rectangle destRec = { position.x,position.y,MELD_TILE_WIDTH,MELD_TILE_HEIGHT };
+	DrawTexturePro(meldTileTextures, sourceRec, destRec, { 0,0 }, orientation, WHITE);
 }
 
 void HandTilesRenderer::drawMeldTile(const Tile& tile, 
@@ -56,11 +56,21 @@ void HandTilesRenderer::drawMeldTile(const Tile& tile,
 	if (tile.isAkadora()) {
 		drawMeldTileAka(tile, position, orientation);
 	}
-	Rectangle sourceRec = { (tile.getValue() - 1) * MELD_TILE_WIDTH,
-		static_cast<int>(tile.getSuit()) * MELD_TILE_HEIGHT,
-		MELD_TILE_WIDTH, MELD_TILE_HEIGHT };
+	else {
+		Rectangle sourceRec = { (tile.getValue() - 1) * MELD_TILE_WIDTH,
+			static_cast<int>(tile.getSuit()) * MELD_TILE_HEIGHT,
+			MELD_TILE_WIDTH, MELD_TILE_HEIGHT };
+		Rectangle destRec = { position.x,position.y,MELD_TILE_WIDTH,MELD_TILE_HEIGHT };
+		DrawTexturePro(meldTileTextures, sourceRec, destRec, { 0,0 }, orientation, WHITE);
+	}
+}
+
+void HandTilesRenderer::drawMeldTileBack(Vector2 position) const
+{
+	Rectangle sourceRec = { (BACK_COL_IN_FILE - 1) * MELD_TILE_WIDTH,
+		(BACK_ROW_IN_FILE - 1) * MELD_TILE_HEIGHT, MELD_TILE_WIDTH, MELD_TILE_HEIGHT };
 	Rectangle destRec = { position.x,position.y,MELD_TILE_WIDTH,MELD_TILE_HEIGHT };
-	DrawTexturePro(meldTileTextures, sourceRec, destRec, { 0,0 }, orientation, WHITE);
+	DrawTexturePro(meldTileTextures, sourceRec, destRec, { 0,0 }, STRAIGHT_ORIENTATION, WHITE);
 }
 
 void HandTilesRenderer::drawPon(const Meld& meld, Vector2 position) const {
@@ -90,9 +100,95 @@ void HandTilesRenderer::drawPon(const Meld& meld, Vector2 position) const {
 	}
 }
 
+void HandTilesRenderer::drawChi(const Meld& meld, Vector2 position) const
+{
+	drawPon(meld, position);
+}
+
+void HandTilesRenderer::drawAnkan(const Meld& meld, Vector2 position) const
+{
+	drawMeldTileBack(position);
+	drawMeldTile(meld[0], { position.x + 1 * MELD_TILE_WIDTH,position.y }, STRAIGHT_ORIENTATION);
+	drawMeldTile(meld[1], { position.x + 2 * MELD_TILE_WIDTH,position.y }, STRAIGHT_ORIENTATION);
+	drawMeldTileBack({ position.x + 3 * MELD_TILE_WIDTH, position.y});
+}
+
+void HandTilesRenderer::drawDaiminkan(const Meld& meld, Vector2 position) const
+{
+	switch (meld.getTileMarker()) {
+	case (TileMarker::LEFT): {
+		Pon newPon(meld[0], meld[1], meld[2], TileMarker::LEFT);
+		drawPon(newPon, position);
+		drawMeldTile(meld[3], { position.x + TRIPLET_WIDTH,position.y }, STRAIGHT_ORIENTATION);
+		break;
+	}
+	case (TileMarker::MIDDLE): {
+		Pon newPon(meld[0], meld[1], meld[2], TileMarker::MIDDLE);
+		drawPon(newPon, position);
+		drawMeldTile(meld[3], { position.x + TRIPLET_WIDTH,position.y }, STRAIGHT_ORIENTATION);
+		break;
+	}
+	case (TileMarker::RIGHT): {
+		Pon newPon(meld[0], meld[1], meld[2], TileMarker::RIGHT);
+		drawPon(newPon, { position.x + MELD_TILE_WIDTH, position.y });
+		drawMeldTile(meld[3], position, STRAIGHT_ORIENTATION);
+		break;
+	}
+	}
+}
+
+void HandTilesRenderer::drawShouminkan(const Meld& meld, Vector2 position) const
+{
+	float addedTileY = position.y + MELD_TILE_HEIGHT - MELD_TILE_WIDTH;
+	switch (meld.getTileMarker()) {
+	case (TileMarker::LEFT): {
+		Pon newPon(meld[1], meld[2], meld[3], TileMarker::LEFT);
+		drawPon(newPon, position);
+		drawMeldTile(meld[0], {position.x, addedTileY }, RIGHT_ORIENTATION);
+		break;
+	}
+	case (TileMarker::MIDDLE): {
+		Pon newPon(meld[1], meld[2], meld[3], TileMarker::MIDDLE);
+		drawPon(newPon, position);
+		drawMeldTile(meld[0], { position.x + MELD_TILE_WIDTH,addedTileY }, RIGHT_ORIENTATION);
+		break;
+	}
+	case (TileMarker::RIGHT): {
+		Pon newPon(meld[1], meld[2], meld[3], TileMarker::RIGHT);
+		drawPon(newPon,position);
+		drawMeldTile(meld[0], {position.x + 2 * MELD_TILE_WIDTH, addedTileY }, RIGHT_ORIENTATION);
+		break;
+	}
+	}
+}
+
+void HandTilesRenderer::drawMeld(const Meld& meld, Vector2 position) const
+{
+	//offsets to align melds with 	
+	switch (meld.getMeldType()) {
+	case(MeldType::PON):
+		drawPon(meld, {position.x + PON_OFFSET, position.y});
+		break;
+	case(MeldType::CHI):
+		drawChi(meld, { position.x + CHI_OFFSET, position.y });
+		break;
+	case(MeldType::ANKAN):
+		drawAnkan(meld, { position.x + ANKAN_OFFSET, position.y });
+		break;
+	case(MeldType::DAIMINKAN):
+		drawDaiminkan(meld, position);
+		break;
+	case(MeldType::SHOUMINKAN):
+		drawShouminkan(meld, { position.x + SHOUMINKAN_OFFSET, position.y });
+		break;
+	}
+}
+
+
 
 
 void HandTilesRenderer::draw(const Hand& hand) const {
+	//draw hand tiles
 	int size = hand.freeTilesNum();
 	if (hand.legalHandSize() < MAX_HAND_SIZE) {
 		for (int i = 0; i < hand.freeTilesNum(); i++) {
@@ -110,6 +206,20 @@ void HandTilesRenderer::draw(const Hand& hand) const {
 		drawTile(hand.lastTile(), { POSITION.x + (TILE_WIDTH * (MAX_HAND_SIZE - 1))
 			+ DRAW_TILE_OFFSET,POSITION.y });
 	}
+	//draw hand melds
+	float currentY = MELDS_POS.y;
+	for(const auto& meld : hand.getMelds()){
+		drawMeld(*meld, { MELDS_POS.x,currentY });
+		//to align heights with shouminkan
+		if (meld->getMeldType() == MeldType::SHOUMINKAN) {
+			currentY -= 2 * MELD_TILE_WIDTH;
+		}
+		else {
+			currentY -= MELD_TILE_HEIGHT;
+		}
+
+	}
+
 }
 
 int HandTilesRenderer::getTileIndexFromPosition(Vector2 position){

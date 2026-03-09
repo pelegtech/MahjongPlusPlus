@@ -38,6 +38,14 @@ public:
 	static constexpr float LEFT_ORIENTATION = 90.0f;
 	static constexpr int MELD_TILE_WIDTH = 80;
 	static constexpr int MELD_TILE_HEIGHT = 116;
+	static constexpr int TRIPLET_WIDTH = 2 * MELD_TILE_WIDTH + MELD_TILE_HEIGHT;
+	static constexpr int DAIMINKAN_WIDTH = 3 * MELD_TILE_WIDTH + MELD_TILE_HEIGHT;
+	static constexpr Vector2 MELDS_POS = { 1920 - DAIMINKAN_WIDTH - 50,1080 - MELD_TILE_HEIGHT - 50};
+	static constexpr int PON_OFFSET = MELD_TILE_WIDTH;
+	static constexpr int CHI_OFFSET = MELD_TILE_WIDTH;
+	static constexpr int SHOUMINKAN_OFFSET = MELD_TILE_WIDTH;
+	static constexpr int ANKAN_OFFSET = MELD_TILE_HEIGHT - MELD_TILE_WIDTH;
+	//static constexpr int  
 
 
 
@@ -59,11 +67,61 @@ public:
 	*/
 	void drawTile(const Tile& tile, Vector2 position) const;
 
+	/**
+	* @param meld tile must be one of the three aka tiles (id) 16/52/88
+	* @param position on screen
+	*/
 	void drawMeldTileAka(const Tile& tile, Vector2 position, float orienation) const;
 
+	/**
+	* @param meld tile to be drawn
+	* @param position on screen
+	*/
 	void drawMeldTile(const Tile& tile, Vector2 position, float orienation) const;
 
+	/**
+	* @brief draws a meld tile back, for ankan.
+	* @param position on screen
+	*/
+	void drawMeldTileBack(Vector2 position) const;
+
+	/**
+	 * @param meld pon to be drawm
+	 * @param position on screen
+	 */
 	void drawPon(const Meld& meld, Vector2 position) const;
+
+	/**
+	 * @param meld chi to be drawm
+	 * @param position on screen
+	 */
+	void drawChi(const Meld& meld, Vector2 position) const;
+
+	/**
+	 * @param meld ankan to be drawm
+	 * @param position on screen
+	 */
+	void drawAnkan(const Meld& meld, Vector2 position) const;
+
+	/**
+	 * @param meld daiminkan to be drawm
+	 * @param position on screen
+	 */
+	void drawDaiminkan(const Meld& meld, Vector2 position) const;
+
+	/**
+	 * @param meld shouminkan to be drawm
+	 * @param position on screen
+	 */
+	void drawShouminkan(const Meld& meld, Vector2 position) const;
+
+	/**
+	 * @brief uses above functions to draw any meld by it's type.
+	 * adds offsets to align the melds
+	 * @param meld to be drawm
+	 * @param position on screen
+	 */
+	void drawMeld(const Meld& meld, Vector2 position) const;
 
 	/**
 	* @brief draw a hand on the bottom middle of the screen
@@ -93,6 +151,10 @@ private:
 
 	/** @brief akadora's texture relative position in the file*/
 	static constexpr int AKA_PLACE_IN_FILE = 10;
+
+	static constexpr int BACK_ROW_IN_FILE = 4;
+
+	static constexpr int BACK_COL_IN_FILE = 8;
 
 };
 

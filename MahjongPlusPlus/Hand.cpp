@@ -218,6 +218,11 @@ const Tile& Hand::lastTile() const {
 	return (*this)[id];
 }
 
+const std::vector<std::unique_ptr<Meld>>& Hand::getMelds() const
+{
+	return melds;
+}
+
 
 
 

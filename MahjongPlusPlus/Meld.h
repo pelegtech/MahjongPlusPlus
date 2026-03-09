@@ -38,6 +38,8 @@ public:
 	/**@return marker indicates the player who discarded the tile. */
 	TileMarker getTileMarker() const;
 
+	MeldType getMeldType() const;
+
 	/**@return string with tile contents of the meld for debugging. */
 	virtual std::string getContents() const = 0;
 

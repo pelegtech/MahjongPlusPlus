@@ -25,7 +25,7 @@ int main() {
     game.dictateWinds();
     InputManager inputManager(game);
     
-  /*  Hand test_hand = Debug::handFromCodes
+   /* Hand test_hand = Debug::handFromCodes
     ("3p", "1p", "1p", "2p", "3p", "3p", "4p", "5p", "6p", "7p", "8p", "9p", "9p", "9p");
     std::cout << test_hand;
     std::vector<std::unique_ptr<Meld>> melds;
@@ -33,19 +33,29 @@ int main() {
     melds.push_back(Debug::ankan("1s"));
     melds.push_back(Debug::shouminkan("2m"));
     melds.push_back(Debug::daiminkan("4p"));
+
     std::vector<Tile> tiles;
     tiles.push_back(Debug::tileFromCode("5p",0));
     tiles.push_back(Debug::tileFromCode("5p",1));
     Hand test_hand2 = Hand(std::move(tiles),std::move(melds));
-    std::cout << test_hand2;*/
-    Pon pon1(Debug::tileFromCode("1p", 0), Debug::tileFromCode("1p", 1),
-        Debug::tileFromCode("1p", 2), TileMarker::LEFT);
-    Pon pon2(Debug::tileFromCode("2s", 0), Debug::tileFromCode("2s", 1),
-        Debug::tileFromCode("2s", 2), TileMarker::RIGHT);
-    Pon pon3(Debug::tileFromCode("4z", 0), Debug::tileFromCode("4z", 1),
-        Debug::tileFromCode("4z", 2), TileMarker::MIDDLE);
+    std::unique_ptr<Pon> pon1 = std::make_unique<Pon>(
+        Debug::tileFromCode("1p", 0),
+        Debug::tileFromCode("1p", 1),
+        Debug::tileFromCode("1p", 2),TileMarker::LEFT);
+    std::unique_ptr<Pon> pon2 = std::make_unique<Pon>(
+        Debug::tileFromCode("5p", 0),
+        Debug::tileFromCode("5p", 1),
+        Debug::tileFromCode("5p", 2), TileMarker::RIGHT);
+    std::unique_ptr<Pon> pon3  = std::make_unique<Pon>(
+        Debug::tileFromCode("5s", 0),
+        Debug::tileFromCode("5s", 1),
+        Debug::tileFromCode("5s", 2),TileMarker::MIDDLE);
 
-    HandTilesRenderer handTilesDebug(AssetPaths::handTiles, AssetPaths::meldTiles);
+    Shouminkan kan1(Debug::tileFromCode("1p", 3), std::move(pon1));
+    Shouminkan kan2(Debug::tileFromCode("5p", 3), std::move(pon2));
+    Shouminkan kan3(Debug::tileFromCode("5s", 3), std::move(pon3));
+
+    HandTilesRenderer handTilesDebug(AssetPaths::handTiles, AssetPaths::meldTiles);*/
 
 
 
@@ -61,9 +71,8 @@ int main() {
             game.getPlayer(3));
         game.update();
 
-        handTilesDebug.drawPon(pon1, { 500,500 });
-        handTilesDebug.drawPon(pon2, { 500,616 });
-        handTilesDebug.drawPon(pon3, { 500,732 });
+
+
 
         graphics.drawTilesLeft(game.getTilesLeft());
 
