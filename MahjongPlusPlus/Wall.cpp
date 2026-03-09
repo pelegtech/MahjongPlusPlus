@@ -13,7 +13,7 @@ Wall::Wall():doraNum(1), tail(Tile::TOTAL_TILES_NUM - 1), head(0){
 	std::mt19937 randomizer(randomNumber());
 	std::shuffle(wall.begin(), wall.end(), randomizer);
 
-	//move the last 14 tiles from the wall to the dead wall
+	//copy the last 14 tiles from the wall to the dead wall
 	for (int i = 0; i < DEAD_WALL_SIZE; i++) {
 		deadWall.push_back(wall[head]);
 		head++;
@@ -22,16 +22,19 @@ Wall::Wall():doraNum(1), tail(Tile::TOTAL_TILES_NUM - 1), head(0){
 int Wall::tilesLeft() const{
 	return tail - head + 1;
 }
-Tile Wall::draw() {
+
+const Tile& Wall::draw() {
 	if (tilesLeft() <= 0) {
  		throw emptyWall();
 	}
 	
 	return wall[tail--];
 }
+
 int Wall::addedKanCount() const{
 	return doraNum - 1;
 }
+
 Tile Wall::kanDraw() {
 	if (tilesLeft() <= 0) {
 		throw emptyWall();
@@ -41,15 +44,18 @@ Tile Wall::kanDraw() {
 	deadWall[currentkanDrawId] = wall[head++];
 	return res;
 }
+
 void Wall::addDora() {
 	doraNum++;
 }
+
 const Tile& Wall::dora(int index) const{
 	if (index >= doraNum || index < 0) {
 		throw invalidDora();
 	}
 	return deadWall[DORA_ID + index];
 }
+
 const Tile& Wall::uraDora(int index) const{
 	if (index >= doraNum || index < 0) {
 		throw invalidUraDora();
