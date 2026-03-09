@@ -9,9 +9,9 @@
 #include "Raylib.h"
 
 struct MoveOption {
-	moveType type;
+	MoveType type;
 	std::vector<Tile> tiles;
-	MoveOption(moveType type, std::vector<Tile> tiles);
+	MoveOption(MoveType type, std::vector<Tile> tiles);
 
 	class invalidOption : public std::exception {
 	public:

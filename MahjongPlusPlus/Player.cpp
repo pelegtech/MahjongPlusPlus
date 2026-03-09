@@ -1,32 +1,32 @@
 #include "Player.h"
 
-MoveOption::MoveOption(moveType type, std::vector<Tile> tiles) :
+MoveOption::MoveOption(MoveType type, std::vector<Tile> tiles) :
 	type(type), tiles(std::move(tiles)) {
-	if (type == moveType::PON && tiles.size() != 2) {
+	if (type == MoveType::PON && tiles.size() != 2) {
 		throw invalidOption();
 	}
-	if (type == moveType::CHI && tiles.size() != 2) {
+	if (type == MoveType::CHI && tiles.size() != 2) {
 		throw invalidOption();
 	}
-	if (type == moveType::ANKAN && tiles.size() != 4) {
+	if (type == MoveType::ANKAN && tiles.size() != 4) {
 		throw invalidOption();
 	}
-	if (type == moveType::DAIMINKAN && tiles.size() != 3) {
+	if (type == MoveType::DAIMINKAN && tiles.size() != 3) {
 		throw invalidOption();
 	}
-	if (type == moveType::PON && tiles.size() != 1) {
+	if (type == MoveType::PON && tiles.size() != 1) {
 		throw invalidOption();
 	}
-	if (type == moveType::TSUMO && tiles.size() != 0) {
+	if (type == MoveType::TSUMO && tiles.size() != 0) {
 		throw invalidOption();
 	}
-	if (type == moveType::RON && tiles.size() != 1) {
+	if (type == MoveType::RON && tiles.size() != 1) {
 		throw invalidOption();
 	}
-	if (type == moveType::RIICHI && tiles.size() != 1) {
+	if (type == MoveType::RIICHI && tiles.size() != 1) {
 		throw invalidOption();
 	}
-	if (type == moveType::DISCARD && tiles.size() != 1) {
+	if (type == MoveType::DISCARD && tiles.size() != 1) {
 		throw invalidOption();
 	}
 }

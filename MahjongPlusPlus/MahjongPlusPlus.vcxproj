@@ -142,6 +142,7 @@
     <ClCompile Include="Kan.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Meld.cpp" />
+    <ClCompile Include="MoveOption.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="TileGraphics.cpp" />
@@ -159,6 +160,7 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Kan.h" />
     <ClInclude Include="Meld.h" />
+    <ClInclude Include="MoveOption.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="TileGraphics.h" />

@@ -30,8 +30,8 @@ enum class TileMarker {
 	RIGHT
 };
 
-enum class moveType {
-	DISCARD,
+enum class MoveType {
+	SKIP,
 	PON,
 	CHI,
 	ANKAN,
@@ -39,7 +39,7 @@ enum class moveType {
 	SHOUMINKAN,
 	RIICHI,
 	TSUMO,
-	RON,
-	SKIP,
+	RON
+	
 };
 
