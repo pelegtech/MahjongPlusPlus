@@ -24,10 +24,12 @@ Discards::ConstIterator::ConstIterator(const Tile* tile) : tile(tile) {}
 const Tile& Discards::ConstIterator::operator*() const {
 	return *tile;
 }
+
 Discards::ConstIterator& Discards::ConstIterator::operator++() {
 	tile++;
 	return *this;
 }
+
 bool Discards::ConstIterator::operator!=(const ConstIterator& other) const {
 	return (tile != other.tile);
 }
@@ -35,6 +37,7 @@ bool Discards::ConstIterator::operator!=(const ConstIterator& other) const {
 Discards::ConstIterator Discards::begin() const {
 	return Discards::ConstIterator(tiles.data());
 }
+
 Discards::ConstIterator Discards::end() const {
 	return Discards::ConstIterator(tiles.data() + tiles.size());
 }

@@ -4,21 +4,25 @@
 #include <stdexcept>
 #include "GameTypes.h"
 
+
+/** @clas Discards
+*	@brief holds information about a player's discard pool
+*/
 class Discards {
-private:
-	static constexpr int UNDECIDED = -1;
-	static constexpr int ROW_SIZE = 6;
-	std::vector<Tile> tiles;
-	int riichiTileId;
 public:
-	Discards();
-	void addTile(const Tile& tile);
-	Tile removeTile(); //returns the last tile in the pile
 
-	//sets current last tile index to be the riichi tile
-	void riichi();
+	//------------------------------------------------------------
+	//nested classes 
+	//------------------------------------------------------------
+	//exceptions:
+	class emptyDiscardsPile : public std::exception {
+	public:
+		const char* what() const noexcept override {
+			return "cannot make operation on an empty discards pile";
+		}
+	};
 
-	//ConstIterator 
+	//ConstIterator :
 	class ConstIterator {
 	private:
 		const Tile* tile;
@@ -29,16 +33,44 @@ public:
 		bool operator!=(const ConstIterator& other) const;
 	};
 
+	//----------------------------------------------------------
+
+
 	ConstIterator begin() const;
 	ConstIterator end() const;
 
 
+	/** @brief initializes riichi tile ID to unknown */
+	Discards();
 
-	//exception
-	class emptyDiscardsPile : public std::exception {
-	public:
-		const char* what() const noexcept override {
-			return "cannot make operation on an empty discards pile";
-		}
-	};
+	/**
+	 * @brief naively adds selected tile to the pile.
+	 * @param tile to be added
+	 */
+	void addTile(const Tile& tile);
+
+	/**
+	 * @brief removes tile from pile 
+	 * @return the tile removed
+	 */
+	Tile removeTile(); //returns the last tile in the pile
+
+	/**
+	 * @brief sets riichi tile id to the last tile on the pile
+	 */
+	void riichi();
+
+
+
+
+private:
+	/**	 * @brief default for riichi tile id 	 */
+	static constexpr int UNDECIDED = -1;
+	/**	 * @brief amount of tile in each discards row	 */
+	static constexpr int ROW_SIZE = 6;
+	/**	 * @brief discard tiles data	 */
+	std::vector<Tile> tiles;
+	/**	 * @brief marks the number of the tile to mark a riichi.	 */
+	int riichiTileId;
+
 };
