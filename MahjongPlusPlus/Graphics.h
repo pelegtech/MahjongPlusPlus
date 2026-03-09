@@ -54,6 +54,8 @@ public:
 	*/
 	void drawTilesLeft(int tilesLeft);
 
+	void drawTileHitBox(const Hand& hand) const;
+
 private:
 	Texture2D background;
 	Texture2D discardTiles;

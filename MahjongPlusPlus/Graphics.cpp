@@ -13,7 +13,7 @@ void Graphics::drawBackground() {
 		static_cast<float>(background.width),static_cast<float>(background.height) };
 	Rectangle destRec = { 0.0f,0.0f,
 	static_cast<float>(SCREEN_WIDTH),static_cast<float>(SCREEN_HEIGHT)};
-	DrawTexturePro(background, sourceRec, destRec, { 0.0f,0.0f }, 0.0f, WHITE);
+	DrawTexturePro(background, sourceRec, destRec, { 0.0f,0.0f }, 0.0f, GRAY);
 }
 
 void Graphics::clean() {
@@ -25,6 +25,13 @@ void Graphics::drawTilesLeft(int tilesLeft) {
 	std::string str = "Tiles left: " + std::to_string(tilesLeft);
 	DrawText(str.c_str(), TILES_COUNTER_POSITION.x, TILES_COUNTER_POSITION.y,
 		TILES_COUNTER_SIZE, BLACK);
+}
+
+void Graphics::drawTileHitBox(const Hand& hand) const
+{
+	handTilesRenderer->drawHitBoxes(hand);
+	Vector2 mousePos = GetMousePosition();
+	DrawCircleV(mousePos, 5.0f, RED);
 }
 
 void Graphics::drawHand(const Hand& hand) const {

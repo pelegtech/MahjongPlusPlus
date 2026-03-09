@@ -9,5 +9,5 @@ private:
 	Game& game;
 public:
 	InputManager(Game& game);
-	int tileIndexFromClick() const;
+	int tileIndexFromClick(const Hand& hand) const;
 };

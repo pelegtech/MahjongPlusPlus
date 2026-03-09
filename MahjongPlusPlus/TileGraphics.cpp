@@ -1,4 +1,4 @@
-#include "TileGraphics.h"
+﻿#include "TileGraphics.h"
 #include "Tile.h"
 #include "Hand.h"
 #include "Discards.h"
@@ -167,19 +167,19 @@ void HandTilesRenderer::drawMeld(const Meld& meld, Vector2 position) const
 	//offsets to align melds with 	
 	switch (meld.getMeldType()) {
 	case(MeldType::PON):
-		drawPon(meld, {position.x + PON_OFFSET, position.y});
+		drawPon(meld,position);
 		break;
 	case(MeldType::CHI):
-		drawChi(meld, { position.x + CHI_OFFSET, position.y });
+		drawChi(meld, position);
 		break;
 	case(MeldType::ANKAN):
-		drawAnkan(meld, { position.x + ANKAN_OFFSET, position.y });
+		drawAnkan(meld, position);
 		break;
 	case(MeldType::DAIMINKAN):
 		drawDaiminkan(meld, position);
 		break;
 	case(MeldType::SHOUMINKAN):
-		drawShouminkan(meld, { position.x + SHOUMINKAN_OFFSET, position.y });
+		drawShouminkan(meld, position);
 		break;
 	}
 }
@@ -203,41 +203,66 @@ void HandTilesRenderer::draw(const Hand& hand) const {
 				{ POSITION.x + (i * TILE_WIDTH),
 				POSITION.y });
 		}
-		drawTile(hand.lastTile(), { POSITION.x + (TILE_WIDTH * (MAX_HAND_SIZE - 1))
+		drawTile(hand.lastTile(), { POSITION.x + (TILE_WIDTH * (hand.freeTilesNum() - 1))
 			+ DRAW_TILE_OFFSET,POSITION.y });
 	}
-	//draw hand melds
-	float currentY = MELDS_POS.y;
-	for(const auto& meld : hand.getMelds()){
-		drawMeld(*meld, { MELDS_POS.x,currentY });
-		//to align heights with shouminkan
-		if (meld->getMeldType() == MeldType::SHOUMINKAN) {
-			currentY -= 2 * MELD_TILE_WIDTH;
-		}
-		else {
-			currentY -= MELD_TILE_HEIGHT;
-		}
 
+	//draw hand melds
+	float currentX = MELDS_POS.x;
+	
+	for(const auto& meld : hand.getMelds()){
+		float currentMeldWidth = 0;
+		
+		if (meld->getMeldType() == MeldType::PON || meld->getMeldType() == MeldType::CHI
+			|| meld->getMeldType() == MeldType::SHOUMINKAN) {
+			currentMeldWidth = TRIPLET_WIDTH;
+		}
+		else if (meld->getMeldType() == MeldType::DAIMINKAN) {
+			currentMeldWidth = DAIMINKAN_WIDTH;
+		} 
+		else if (meld->getMeldType() == MeldType::ANKAN) {
+			currentMeldWidth = ANKAN_WIDTH;
+		}
+		currentX -= currentMeldWidth;
+		drawMeld(*meld, { currentX,MELDS_POS.y });
+		currentX -= MELD_SPACE;
 	}
 
 }
 
-int HandTilesRenderer::getTileIndexFromPosition(Vector2 position){
-	if (position.x > POSITION.x + (TILE_WIDTH * (MAX_HAND_SIZE) + DRAW_TILE_OFFSET)
-		|| position.x < POSITION.x) {
-		return -1;
+Rectangle HandTilesRenderer::getTileRec(const Hand& hand, int index) 
+{
+	if (index >= hand.freeTilesNum() || index < 0) {
+		throw Hand::illegalAcess();
 	}
-	if (position.x > POSITION.x + (TILE_WIDTH * (HAND_SIZE)) &&
-		position.x < POSITION.x + (TILE_WIDTH * (HAND_SIZE)) + DRAW_TILE_OFFSET) {
-		return -1;
+	if (index == (hand.freeTilesNum() - 1)) {
+		Rectangle res = { POSITION.x + (index) * TILE_WIDTH + DRAW_TILE_OFFSET,
+			POSITION.y, TILE_WIDTH,TILE_HEIGHT };
+		return res;
 	}
-	if (position.y > POSITION.y + TILE_HEIGHT || position.y < POSITION.y) {
-		return -1;
+	else {
+		Rectangle res = { POSITION.x + (index) * TILE_WIDTH,
+			POSITION.y, TILE_WIDTH,TILE_HEIGHT };
+		return res;
 	}
-	if (position.x > POSITION.x + (TILE_WIDTH * (HAND_SIZE))) {
-		return (HAND_SIZE);
+}
+
+void HandTilesRenderer::drawHitBoxes(const Hand& hand)
+{
+	for (int i = 0; i < hand.freeTilesNum();i++) {
+		DrawRectangleLinesEx(getTileRec(hand, i), 4.0f, GOLD);
 	}
-	return static_cast<int>((position.x - POSITION.x) / TILE_WIDTH);
+}
+
+
+
+int HandTilesRenderer::getTileIndexFromPosition(Vector2 position,const Hand& hand){
+	for (int i = 0; i < hand.freeTilesNum(); i++) {
+		if (CheckCollisionPointRec(position, getTileRec(hand, i))) {
+			return i;
+		}
+	}
+	return -1;
 }
 
 

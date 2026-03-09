@@ -2,6 +2,7 @@
 #include "raylib.h"
 #include <string>
 #include "GameTypes.h"
+#include <iostream>
 
 
 //Forward declarations
@@ -36,15 +37,14 @@ public:
 	static constexpr float STRAIGHT_ORIENTATION = 0.0f;
 	static constexpr float RIGHT_ORIENTATION = 270.0f;
 	static constexpr float LEFT_ORIENTATION = 90.0f;
-	static constexpr int MELD_TILE_WIDTH = 80;
-	static constexpr int MELD_TILE_HEIGHT = 116;
+	static constexpr int MELD_TILE_WIDTH = 60;
+	static constexpr int MELD_TILE_HEIGHT = 87;
 	static constexpr int TRIPLET_WIDTH = 2 * MELD_TILE_WIDTH + MELD_TILE_HEIGHT;
 	static constexpr int DAIMINKAN_WIDTH = 3 * MELD_TILE_WIDTH + MELD_TILE_HEIGHT;
-	static constexpr Vector2 MELDS_POS = { 1920 - DAIMINKAN_WIDTH - 50,1080 - MELD_TILE_HEIGHT - 50};
-	static constexpr int PON_OFFSET = MELD_TILE_WIDTH;
-	static constexpr int CHI_OFFSET = MELD_TILE_WIDTH;
-	static constexpr int SHOUMINKAN_OFFSET = MELD_TILE_WIDTH;
-	static constexpr int ANKAN_OFFSET = MELD_TILE_HEIGHT - MELD_TILE_WIDTH;
+	static constexpr int SHOUMINKAN_WIDTH = TRIPLET_WIDTH;
+	static constexpr int ANKAN_WIDTH = 4 * MELD_TILE_WIDTH;
+	static constexpr Vector2 MELDS_POS = { 1900,1080 - MELD_TILE_HEIGHT - 50};
+	static constexpr int MELD_SPACE = 10;
 	//static constexpr int  
 
 
@@ -117,7 +117,6 @@ public:
 
 	/**
 	 * @brief uses above functions to draw any meld by it's type.
-	 * adds offsets to align the melds
 	 * @param meld to be drawm
 	 * @param position on screen
 	 */
@@ -129,15 +128,25 @@ public:
 	*/
 	void draw(const Hand& hand) const;
 
+	/**
+	 * @brief get hand tile rectangles for collision checks
+	 * @param index of tile in the free tiles you want to check 
+	 * @return rectangle of the location of the requested hand tile
+	 */
+	static Rectangle getTileRec(const Hand& hand, int index);
 
-
+	/**
+	 * @brief shows tile hitboxes for debug purposes.
+	 * @param hand 
+	 */
+	void drawHitBoxes(const Hand& hand);
 
 
 	/**
 	* @param position of the mouse pointer
 	* @return index of tile from leftmost to rightmost
 	*/
-	static int getTileIndexFromPosition(Vector2 position);
+	static int getTileIndexFromPosition(Vector2 position, const Hand& hand);
 
 	
 	
@@ -165,8 +174,8 @@ private:
 class DiscardTilesRenderer {
 public:
 	//constants-------------------------------
-	static constexpr int TILE_WIDTH = 80;
-	static constexpr int TILE_HEIGHT = 116;
+	static constexpr int TILE_WIDTH = 60;
+	static constexpr int TILE_HEIGHT = 87;
 	static constexpr float FRONT_ORIENTATION = 0.0f;
 	static constexpr float RIGHT_ORIENTATION = 270.0f;
 	static constexpr float TOP_ORIENTATION = 180.0f;

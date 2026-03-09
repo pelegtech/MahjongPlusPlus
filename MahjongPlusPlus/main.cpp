@@ -14,6 +14,7 @@
 #include "Graphics.h"
 
 int main() {
+    SetConfigFlags(FLAG_WINDOW_UNDECORATED);
     InitWindow(1920, 1080, "Riichi Mahjong Engine - Test");
     SetTargetFPS(60);
    
@@ -25,7 +26,7 @@ int main() {
     game.dictateWinds();
     InputManager inputManager(game);
     
-   /* Hand test_hand = Debug::handFromCodes
+    Hand test_hand = Debug::handFromCodes
     ("3p", "1p", "1p", "2p", "3p", "3p", "4p", "5p", "6p", "7p", "8p", "9p", "9p", "9p");
     std::cout << test_hand;
     std::vector<std::unique_ptr<Meld>> melds;
@@ -55,7 +56,7 @@ int main() {
     Shouminkan kan2(Debug::tileFromCode("5p", 3), std::move(pon2));
     Shouminkan kan3(Debug::tileFromCode("5s", 3), std::move(pon3));
 
-    HandTilesRenderer handTilesDebug(AssetPaths::handTiles, AssetPaths::meldTiles);*/
+    HandTilesRenderer handTilesDebug(AssetPaths::handTiles, AssetPaths::meldTiles);
 
 
 
@@ -64,21 +65,25 @@ int main() {
         BeginDrawing();
         ClearBackground(RAYWHITE);
         graphics.drawBackground();
-        graphics.drawHand(((game.getPlayer(0)).getHand()));
+        //graphics.drawHand(((game.getPlayer(0)).getHand()));
         graphics.drawDiscards(game.getPlayer(0),
             game.getPlayer(1),
             game.getPlayer(2),
             game.getPlayer(3));
         game.update();
+        if (IsKeyPressed(KEY_F11)) {
+            ToggleFullscreen();
+        }
 
-
-
-
+        handTilesDebug.draw(test_hand2);
+        
+       
         graphics.drawTilesLeft(game.getTilesLeft());
+        //graphics.drawTileHitBox(((game.getPlayer(0)).getHand()));
 
-        int clickedIndex = inputManager.tileIndexFromClick();
+        int clickedIndex = inputManager.tileIndexFromClick(game.getPlayer(0).getHand());
         if (clickedIndex != -1) {
-            game.playerMoveFromInput(inputManager.tileIndexFromClick());
+            game.playerMoveFromInput(inputManager.tileIndexFromClick(game.getPlayer(0).getHand()));
         }
 
         EndDrawing();
