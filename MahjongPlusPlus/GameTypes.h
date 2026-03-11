@@ -31,6 +31,7 @@ enum class TileMarker {
 };
 
 enum class MoveType {
+	WAITING,
 	SKIP,
 	PON,
 	CHI,
@@ -49,5 +50,13 @@ enum class MeldType {
 	ANKAN,
 	DAIMINKAN,
 	SHOUMINKAN
+};
+
+enum class GameState {
+	DRAW,
+	WAITING_FOR_DRAW_INPUT,
+	WAITING_FOR_PLAYERS_DISCARD_DCEISIONS,
+	EXECUTE_DISACRD_DECISION,
+	GAME_END
 };
 

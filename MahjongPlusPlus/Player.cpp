@@ -52,6 +52,8 @@ TileMarker Player::relativePlace(Wind otherWind) {
 }
 
 
+
+
 //options:
 
 bool Player::ponOptions(const Tile& discard) {
@@ -87,4 +89,9 @@ void Player::executePon(const MoveOption& chosenOption,
 	Discards& discards, const Wind& otherWind) {
 	hand.createTriplet<Pon>(discards, chosenOption.tiles[0],
 		chosenOption.tiles[1], relativePlace(otherWind));
+}
+
+void Player::updateOptionsDiscard(const Tile& tile)
+{
+	ponOptions(tile);
 }

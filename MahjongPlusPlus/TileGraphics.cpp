@@ -9,177 +9,151 @@
 
 //HandTilesRenderer------------------------------------------------------------
 
-HandTilesRenderer::HandTilesRenderer(const char* handTilesPath, const char* MeldTilesPath) {
+HandTilesRenderer::HandTilesRenderer(const char* handTilesPath, const char* meldTilesPath,
+	const char* meldTilesRPath) {
 	handTileTextures = LoadTexture(handTilesPath);
-	meldTileTextures = LoadTexture(MeldTilesPath);
+	meldTileTextures = LoadTexture(meldTilesPath);
+	meldTileTexturesR = LoadTexture(meldTilesRPath);
 }
 
 
 HandTilesRenderer::~HandTilesRenderer(){
 	UnloadTexture(handTileTextures);
 	UnloadTexture(meldTileTextures);
+	UnloadTexture(meldTileTexturesR);
 }
 
-void HandTilesRenderer::drawTileAka(const Tile& tile, Vector2 position) const {
-	Rectangle sourceRec = { (AKA_PLACE_IN_FILE - 1) * TILE_WIDTH,
-		static_cast<int>(tile.getSuit()) * TILE_HEIGHT,
-		TILE_WIDTH, TILE_HEIGHT };
-	DrawTextureRec(handTileTextures, sourceRec, position, WHITE);
+void HandTilesRenderer::drawTileAka(const Tile& tile,Rectangle layout) const {
+	Rectangle sourceRec = { (AKA_PLACE_IN_FILE - 1) * TILE_WIDTH_SRC,
+		static_cast<int>(tile.getSuit()) * TILE_HEIGHT_SRC,
+		TILE_WIDTH_SRC, TILE_HEIGHT_SRC };
+	DrawTexturePro(handTileTextures, sourceRec, layout, { 0,0 }, 0.0f, WHITE);
 }
 
-void HandTilesRenderer::drawTile(const Tile& tile, Vector2 position) const{
+void HandTilesRenderer::drawTile(const Tile& tile,Rectangle layout) const{
 	if (tile.isAkadora()) {
-		drawTileAka(tile,position);
+		drawTileAka(tile,layout);
 	}
 	else {
-		Rectangle sourceRec = { (tile.getValue() - 1) * TILE_WIDTH,
-			static_cast<int>(tile.getSuit()) * TILE_HEIGHT,
-			TILE_WIDTH, TILE_HEIGHT };
-		DrawTextureRec(handTileTextures, sourceRec, position, WHITE);
+		Rectangle sourceRec = { (tile.getValue() - 1) * TILE_WIDTH_SRC,
+			static_cast<int>(tile.getSuit()) * TILE_HEIGHT_SRC,
+			TILE_WIDTH_SRC,  TILE_HEIGHT_SRC };
+		DrawTexturePro(handTileTextures, sourceRec, layout, { 0,0 }, 0.0f, WHITE);
 	}
 }
 
 
 
-void HandTilesRenderer::drawMeldTileAka(const Tile& tile, 
-	Vector2 position, float orientation) const
+void HandTilesRenderer::drawMeldTileAka(const Tile& tile, Rectangle layout) const
 {
-	Rectangle sourceRec = { (AKA_PLACE_IN_FILE - 1) * MELD_TILE_WIDTH,
-			static_cast<int>(tile.getSuit()) * MELD_TILE_HEIGHT,
-			MELD_TILE_WIDTH,MELD_TILE_HEIGHT };
-	Rectangle destRec = { position.x,position.y,MELD_TILE_WIDTH,MELD_TILE_HEIGHT };
-	DrawTexturePro(meldTileTextures, sourceRec, destRec, { 0,0 }, orientation, WHITE);
+	Rectangle sourceRec = { (AKA_PLACE_IN_FILE - 1) * MELD_TILE_WIDTH_SRC,
+			static_cast<int>(tile.getSuit()) * MELD_TILE_HEIGHT_SRC,
+			MELD_TILE_WIDTH_SRC,MELD_TILE_HEIGHT_SRC };
+	DrawTexturePro(meldTileTextures, sourceRec, layout, { 0,0 }, 0.0f, WHITE);
 }
 
-void HandTilesRenderer::drawMeldTile(const Tile& tile, 
-	Vector2 position, float orientation) const{
+void HandTilesRenderer::drawMeldTile(const Tile& tile, Rectangle layout) const{
 	if (tile.isAkadora()) {
-		drawMeldTileAka(tile, position, orientation);
+		drawMeldTileAka(tile,layout);
 	}
 	else {
-		Rectangle sourceRec = { (tile.getValue() - 1) * MELD_TILE_WIDTH,
-			static_cast<int>(tile.getSuit()) * MELD_TILE_HEIGHT,
-			MELD_TILE_WIDTH, MELD_TILE_HEIGHT };
-		Rectangle destRec = { position.x,position.y,MELD_TILE_WIDTH,MELD_TILE_HEIGHT };
-		DrawTexturePro(meldTileTextures, sourceRec, destRec, { 0,0 }, orientation, WHITE);
+		Rectangle sourceRec = { (tile.getValue() - 1) * MELD_TILE_WIDTH_SRC,
+			static_cast<int>(tile.getSuit()) * MELD_TILE_HEIGHT_SRC,
+			MELD_TILE_WIDTH_SRC, MELD_TILE_HEIGHT_SRC };
+		DrawTexturePro(meldTileTextures, sourceRec, layout, { 0,0 }, 0.0f, WHITE);
 	}
 }
 
-void HandTilesRenderer::drawMeldTileBack(Vector2 position) const
+void HandTilesRenderer::drawMeldTileBack(Rectangle layout) const
 {
-	Rectangle sourceRec = { (BACK_COL_IN_FILE - 1) * MELD_TILE_WIDTH,
-		(BACK_ROW_IN_FILE - 1) * MELD_TILE_HEIGHT, MELD_TILE_WIDTH, MELD_TILE_HEIGHT };
-	Rectangle destRec = { position.x,position.y,MELD_TILE_WIDTH,MELD_TILE_HEIGHT };
-	DrawTexturePro(meldTileTextures, sourceRec, destRec, { 0,0 }, STRAIGHT_ORIENTATION, WHITE);
+	Rectangle sourceRec = { (BACK_COL_IN_FILE - 1) * MELD_TILE_WIDTH_SRC,
+		(BACK_ROW_IN_FILE - 1) * MELD_TILE_HEIGHT_SRC, MELD_TILE_WIDTH_SRC, MELD_TILE_HEIGHT_SRC };
+	DrawTexturePro(meldTileTextures, sourceRec, layout, { 0,0 },0.0f, WHITE);
 }
 
-void HandTilesRenderer::drawPon(const Meld& meld, Vector2 position) const {
-	float leaningTileY = position.y + MELD_TILE_HEIGHT;
+void HandTilesRenderer::drawMeldTileAkaRight(const Tile& tile, Rectangle layout) const
+{
+	Rectangle sourceRec = { static_cast<int>(tile.getSuit()) * MELD_TILE_HEIGHT_SRC
+		,(AKA_PLACE_IN_FILE - 1)* MELD_TILE_WIDTH_SRC,MELD_TILE_HEIGHT_SRC, MELD_TILE_WIDTH_SRC };
+	DrawTexturePro(meldTileTexturesR, sourceRec, layout, { 0,0 }, 0.0f, WHITE);
+}
+
+void HandTilesRenderer::drawMeldTileRight(const Tile& tile, Rectangle layout) const
+{
+	if (tile.isAkadora()) {
+		drawMeldTileAkaRight(tile, layout);
+	}
+	else {
+		Rectangle sourceRec = { static_cast<int>(tile.getSuit()) * MELD_TILE_HEIGHT_SRC
+			,(tile.getValue() - 1)* MELD_TILE_WIDTH_SRC,MELD_TILE_HEIGHT_SRC, MELD_TILE_WIDTH_SRC };
+		DrawTexturePro(meldTileTexturesR, sourceRec, layout, { 0,0 }, 0.0f, WHITE);
+	}
+}
+
+void HandTilesRenderer::drawPon(const Meld& meld,const MeldLayout& layout) const {
 	switch (meld.getTileMarker()) {
 	case (TileMarker::LEFT):
-		drawMeldTile(meld[0], { position.x,leaningTileY }
-		, RIGHT_ORIENTATION);
-		drawMeldTile(meld[1], { position.x + MELD_TILE_HEIGHT, position.y }
-		, STRAIGHT_ORIENTATION);
-		drawMeldTile(meld[2], { position.x + MELD_TILE_WIDTH + MELD_TILE_HEIGHT, position.y }
-		, STRAIGHT_ORIENTATION);
+		drawMeldTileRight(meld[0], layout.recs[0]);
+		drawMeldTile(meld[1], layout.recs[1]);
+		drawMeldTile(meld[2], layout.recs[2]);
 		break;
 	case (TileMarker::MIDDLE):
-		drawMeldTile(meld[1], position, STRAIGHT_ORIENTATION);
-		drawMeldTile(meld[0], { position.x + MELD_TILE_WIDTH,leaningTileY }, RIGHT_ORIENTATION);
-		drawMeldTile(meld[2], { position.x + MELD_TILE_WIDTH + MELD_TILE_HEIGHT, position.y }
-		, STRAIGHT_ORIENTATION);
+		drawMeldTile(meld[1], layout.recs[0]);
+		drawMeldTileRight(meld[0], layout.recs[1]);
+		drawMeldTile(meld[2], layout.recs[2]);
 		break;
 	case (TileMarker::RIGHT):
-		drawMeldTile(meld[1], position, STRAIGHT_ORIENTATION);
-		drawMeldTile(meld[2], { position.x + MELD_TILE_WIDTH,position.y }
-		, STRAIGHT_ORIENTATION);
-		drawMeldTile(meld[0], { position.x + 2 * MELD_TILE_WIDTH,leaningTileY },
-			RIGHT_ORIENTATION);
+		drawMeldTile(meld[1], layout.recs[0]);
+		drawMeldTile(meld[2], layout.recs[1]);
+		drawMeldTileRight(meld[0], layout.recs[2]);
 		break;
 	}
 }
 
-void HandTilesRenderer::drawChi(const Meld& meld, Vector2 position) const
+void HandTilesRenderer::drawChi(const Meld& meld, const MeldLayout& layout) const
 {
-	drawPon(meld, position);
+	drawPon(meld, layout);
 }
 
-void HandTilesRenderer::drawAnkan(const Meld& meld, Vector2 position) const
+void HandTilesRenderer::drawAnkan(const Meld& meld, const MeldLayout& layout) const
 {
-	drawMeldTileBack(position);
-	drawMeldTile(meld[0], { position.x + 1 * MELD_TILE_WIDTH,position.y }, STRAIGHT_ORIENTATION);
-	drawMeldTile(meld[1], { position.x + 2 * MELD_TILE_WIDTH,position.y }, STRAIGHT_ORIENTATION);
-	drawMeldTileBack({ position.x + 3 * MELD_TILE_WIDTH, position.y});
+	drawMeldTileBack(layout.recs[0]);
+	drawMeldTile(meld[0],layout.recs[1]);
+	drawMeldTile(meld[1], layout.recs[2]);
+	drawMeldTileBack(layout.recs[3]);
 }
 
-void HandTilesRenderer::drawDaiminkan(const Meld& meld, Vector2 position) const
+void HandTilesRenderer::drawDaiminkan(const Meld& meld, const MeldLayout& layout) const
 {
-	switch (meld.getTileMarker()) {
-	case (TileMarker::LEFT): {
-		Pon newPon(meld[0], meld[1], meld[2], TileMarker::LEFT);
-		drawPon(newPon, position);
-		drawMeldTile(meld[3], { position.x + TRIPLET_WIDTH,position.y }, STRAIGHT_ORIENTATION);
-		break;
-	}
-	case (TileMarker::MIDDLE): {
-		Pon newPon(meld[0], meld[1], meld[2], TileMarker::MIDDLE);
-		drawPon(newPon, position);
-		drawMeldTile(meld[3], { position.x + TRIPLET_WIDTH,position.y }, STRAIGHT_ORIENTATION);
-		break;
-	}
-	case (TileMarker::RIGHT): {
-		Pon newPon(meld[0], meld[1], meld[2], TileMarker::RIGHT);
-		drawPon(newPon, { position.x + MELD_TILE_WIDTH, position.y });
-		drawMeldTile(meld[3], position, STRAIGHT_ORIENTATION);
-		break;
-	}
-	}
+	Pon newPon(meld[0], meld[1], meld[2], meld.getTileMarker());
+	drawPon(newPon, layout);
+	drawMeldTile(meld[3], layout.recs[3]);
 }
 
-void HandTilesRenderer::drawShouminkan(const Meld& meld, Vector2 position) const
+void HandTilesRenderer::drawShouminkan(const Meld& meld,const MeldLayout& layout) const
 {
-	float addedTileY = position.y + MELD_TILE_HEIGHT - MELD_TILE_WIDTH;
-	switch (meld.getTileMarker()) {
-	case (TileMarker::LEFT): {
-		Pon newPon(meld[1], meld[2], meld[3], TileMarker::LEFT);
-		drawPon(newPon, position);
-		drawMeldTile(meld[0], {position.x, addedTileY }, RIGHT_ORIENTATION);
-		break;
-	}
-	case (TileMarker::MIDDLE): {
-		Pon newPon(meld[1], meld[2], meld[3], TileMarker::MIDDLE);
-		drawPon(newPon, position);
-		drawMeldTile(meld[0], { position.x + MELD_TILE_WIDTH,addedTileY }, RIGHT_ORIENTATION);
-		break;
-	}
-	case (TileMarker::RIGHT): {
-		Pon newPon(meld[1], meld[2], meld[3], TileMarker::RIGHT);
-		drawPon(newPon,position);
-		drawMeldTile(meld[0], {position.x + 2 * MELD_TILE_WIDTH, addedTileY }, RIGHT_ORIENTATION);
-		break;
-	}
-	}
+	Pon newPon(meld[0], meld[1], meld[2], meld.getTileMarker());
+	drawPon(newPon, layout);
+	drawMeldTileRight(meld[3], layout.recs[3]);
 }
 
-void HandTilesRenderer::drawMeld(const Meld& meld, Vector2 position) const
+void HandTilesRenderer::drawMeld(const Meld& meld,const MeldLayout& layout) const
 {
-	//offsets to align melds with 	
 	switch (meld.getMeldType()) {
 	case(MeldType::PON):
-		drawPon(meld,position);
+		drawPon(meld,layout);
 		break;
 	case(MeldType::CHI):
-		drawChi(meld, position);
+		drawChi(meld, layout);
 		break;
 	case(MeldType::ANKAN):
-		drawAnkan(meld, position);
+		drawAnkan(meld, layout);
 		break;
 	case(MeldType::DAIMINKAN):
-		drawDaiminkan(meld, position);
+		drawDaiminkan(meld, layout);
 		break;
 	case(MeldType::SHOUMINKAN):
-		drawShouminkan(meld, position);
+		drawShouminkan(meld, layout);
 		break;
 	}
 }
@@ -187,83 +161,27 @@ void HandTilesRenderer::drawMeld(const Meld& meld, Vector2 position) const
 
 
 
-void HandTilesRenderer::draw(const Hand& hand) const {
+void HandTilesRenderer::draw(const Hand& hand, const HandTilesLayout& handTilesLayout,
+	const MeldsLayout& meldsLayout) const {
 	//draw hand tiles
-	int size = hand.freeTilesNum();
-	if (hand.legalHandSize() < MAX_HAND_SIZE) {
-		for (int i = 0; i < hand.freeTilesNum(); i++) {
-			drawTile(hand[i],
-				{ POSITION.x + (i * TILE_WIDTH),
-				POSITION.y });
-		}
+	for (int i = 0; i < hand.freeTilesNum(); i++) {
+		drawTile(hand[i], handTilesLayout.recs[i]);
+			
 	}
-	else if (hand.legalHandSize() == MAX_HAND_SIZE) {
-		for (int i = 0; i < hand.freeTilesNum() - 1; i++) {
-			drawTile(hand[i],
-				{ POSITION.x + (i * TILE_WIDTH),
-				POSITION.y });
-		}
-		drawTile(hand.lastTile(), { POSITION.x + (TILE_WIDTH * (hand.freeTilesNum() - 1))
-			+ DRAW_TILE_OFFSET,POSITION.y });
-	}
-
-	//draw hand melds
-	float currentX = MELDS_POS.x;
-	
-	for(const auto& meld : hand.getMelds()){
-		float currentMeldWidth = 0;
-		
-		if (meld->getMeldType() == MeldType::PON || meld->getMeldType() == MeldType::CHI
-			|| meld->getMeldType() == MeldType::SHOUMINKAN) {
-			currentMeldWidth = TRIPLET_WIDTH;
-		}
-		else if (meld->getMeldType() == MeldType::DAIMINKAN) {
-			currentMeldWidth = DAIMINKAN_WIDTH;
-		} 
-		else if (meld->getMeldType() == MeldType::ANKAN) {
-			currentMeldWidth = ANKAN_WIDTH;
-		}
-		currentX -= currentMeldWidth;
-		drawMeld(*meld, { currentX,MELDS_POS.y });
-		currentX -= MELD_SPACE;
-	}
-
-}
-
-Rectangle HandTilesRenderer::getTileRec(const Hand& hand, int index) 
-{
-	if (index >= hand.freeTilesNum() || index < 0) {
-		throw Hand::illegalAcess();
-	}
-	if (index == (hand.freeTilesNum() - 1)) {
-		Rectangle res = { POSITION.x + (index) * TILE_WIDTH + DRAW_TILE_OFFSET,
-			POSITION.y, TILE_WIDTH,TILE_HEIGHT };
-		return res;
-	}
-	else {
-		Rectangle res = { POSITION.x + (index) * TILE_WIDTH,
-			POSITION.y, TILE_WIDTH,TILE_HEIGHT };
-		return res;
+	//draw meld tiles
+	for (int i = 0; i < hand.getMelds().size(); i++) {
+		drawMeld(*(hand.getMelds()[i]),meldsLayout.layouts[i]);
 	}
 }
 
-void HandTilesRenderer::drawHitBoxes(const Hand& hand)
+void HandTilesRenderer::drawHitBoxes(const Hand& hand, const HandTilesLayout& handTilesLayout) const
 {
 	for (int i = 0; i < hand.freeTilesNum();i++) {
-		DrawRectangleLinesEx(getTileRec(hand, i), 4.0f, GOLD);
+		DrawRectangleLinesEx(handTilesLayout.recs[i], 4.0f, GOLD);
 	}
 }
 
 
-
-int HandTilesRenderer::getTileIndexFromPosition(Vector2 position,const Hand& hand){
-	for (int i = 0; i < hand.freeTilesNum(); i++) {
-		if (CheckCollisionPointRec(position, getTileRec(hand, i))) {
-			return i;
-		}
-	}
-	return -1;
-}
 
 
 
@@ -300,11 +218,13 @@ void DiscardTilesRenderer::drawTile(const Tile& tile, Vector2 position,
 	if (tile.isAkadora()) {
 		drawTileAka(tile, position,orientation);
 	}
-	Rectangle sourceRec = { (tile.getValue() - 1) * TILE_WIDTH,
-		static_cast<int>(tile.getSuit()) * TILE_HEIGHT,
-		TILE_WIDTH, TILE_HEIGHT };
-	Rectangle destRec = { position.x,position.y,TILE_WIDTH,TILE_HEIGHT };
-	DrawTexturePro(textures, sourceRec, destRec, { 0,0 }, orientation, WHITE);
+	else {
+		Rectangle sourceRec = { (tile.getValue() - 1) * TILE_WIDTH,
+			static_cast<int>(tile.getSuit()) * TILE_HEIGHT,
+			TILE_WIDTH, TILE_HEIGHT };
+		Rectangle destRec = { position.x,position.y,TILE_WIDTH,TILE_HEIGHT };
+		DrawTexturePro(textures, sourceRec, destRec, { 0,0 }, orientation, WHITE);
+	}
 }
 
 void DiscardTilesRenderer::drawDiscardsMine(const Discards& discards) const{

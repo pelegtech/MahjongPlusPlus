@@ -3,7 +3,8 @@
 #include <string>
 #include "GameTypes.h"
 #include <iostream>
-
+#include <memory>
+#include "Layout.h"
 
 //Forward declarations
 class Tile;
@@ -19,14 +20,9 @@ class HandTilesRenderer {
 public:
 	//constants -------------------------------------------------------
 
-	static constexpr int TILE_WIDTH = 80;
-	static constexpr int TILE_HEIGHT = 129;
+	
 
-	/** @brief position of the upper left corner of the hand*/
-	static constexpr Vector2 POSITION = { 340,900 };
 
-	/** @brief position of the drawn tile relative to the last hand tile*/
-	static constexpr int DRAW_TILE_OFFSET = 20;
 
 	/** @brief num of tiles including draw tile*/
 	static constexpr int MAX_HAND_SIZE = 14;
@@ -34,119 +30,69 @@ public:
 	/** @brief num of tiles excluding draw tile*/
 	static constexpr int HAND_SIZE = 13;
 
-	static constexpr float STRAIGHT_ORIENTATION = 0.0f;
-	static constexpr float RIGHT_ORIENTATION = 270.0f;
-	static constexpr float LEFT_ORIENTATION = 90.0f;
-	static constexpr int MELD_TILE_WIDTH = 60;
-	static constexpr int MELD_TILE_HEIGHT = 87;
-	static constexpr int TRIPLET_WIDTH = 2 * MELD_TILE_WIDTH + MELD_TILE_HEIGHT;
-	static constexpr int DAIMINKAN_WIDTH = 3 * MELD_TILE_WIDTH + MELD_TILE_HEIGHT;
-	static constexpr int SHOUMINKAN_WIDTH = TRIPLET_WIDTH;
-	static constexpr int ANKAN_WIDTH = 4 * MELD_TILE_WIDTH;
-	static constexpr Vector2 MELDS_POS = { 1900,1080 - MELD_TILE_HEIGHT - 50};
-	static constexpr int MELD_SPACE = 10;
-	//static constexpr int  
+	static constexpr int TILE_WIDTH_SRC = 80;
+	static constexpr int TILE_HEIGHT_SRC = 129;
+	static constexpr int MELD_TILE_WIDTH_SRC = 60;
+	static constexpr int MELD_TILE_HEIGHT_SRC = 87;
 
 
+	/**
+	 * @brief loads in the textures to be used
+	 * @param handTilesPath hand tiles file
+	 * @param meldTilesPath meld tiles file
+	 * @param meldTilesRPath meld tiles file but rotated to the right
+	 */
+	HandTilesRenderer(const char* handTilesPath, const char* meldTilesPath, const char* meldTilesRPath);
 
-	/**@param path - to the tiles png */
-	HandTilesRenderer(const char* handTilesPath, const char* meldTilesPath);
-
-	/** @brief unloads texture */
+	/**
+	 * @brief unloads textures.
+	 */
 	~HandTilesRenderer();
 
-	/**
-	* @param tile must be one of the three aka tiles (id) 16/52/88
-	* @param position on screen
-	*/
-	void drawTileAka(const Tile& tile, Vector2 position) const;
+	
 
 	/**
-	* @param tile to be drawn
-	* @param position on screen
-	*/
-	void drawTile(const Tile& tile, Vector2 position) const;
-
-	/**
-	* @param meld tile must be one of the three aka tiles (id) 16/52/88
-	* @param position on screen
-	*/
-	void drawMeldTileAka(const Tile& tile, Vector2 position, float orienation) const;
-
-	/**
-	* @param meld tile to be drawn
-	* @param position on screen
-	*/
-	void drawMeldTile(const Tile& tile, Vector2 position, float orienation) const;
-
-	/**
-	* @brief draws a meld tile back, for ankan.
-	* @param position on screen
-	*/
-	void drawMeldTileBack(Vector2 position) const;
-
-	/**
-	 * @param meld pon to be drawm
-	 * @param position on screen
+	 * @param tile to be draw
+	 * @param layout position and size of tile to be drawn.
 	 */
-	void drawPon(const Meld& meld, Vector2 position) const;
-
+	void drawTile(const Tile& tile, Rectangle layout) const;
+	
 	/**
-	 * @param meld chi to be drawm
-	 * @param position on screen
+	 * @brief each of the functions below is used to draw the corresponding meld. 
+	 * @param meld to be drawn. must be of corresponding meld type.
+	 * @param layout 
 	 */
-	void drawChi(const Meld& meld, Vector2 position) const;
+	void drawPon(const Meld& meld,const MeldLayout& layout) const;
+
+	void drawChi(const Meld& meld, const MeldLayout& layout) const;
+
+	void drawAnkan(const Meld& meld, const MeldLayout& layout) const;
+	
+	void drawDaiminkan(const Meld& meld, const MeldLayout& layout) const;
+	
+	void drawShouminkan(const Meld& meld, const MeldLayout& layout) const;
+	
 
 	/**
-	 * @param meld ankan to be drawm
-	 * @param position on screen
+	 * @brief uses functions above to draw any type of given meld.
+	 * @param meld  to be drawn
+	 * @param layout positions and sizes of the meld tiles.
 	 */
-	void drawAnkan(const Meld& meld, Vector2 position) const;
+	void drawMeld(const Meld& meld, const MeldLayout& layout) const;
 
 	/**
-	 * @param meld daiminkan to be drawm
-	 * @param position on screen
+	 * @brief uses hand tile functions and meld functions to draw the entire hand.
+	 * @param hand to be drawn.
 	 */
-	void drawDaiminkan(const Meld& meld, Vector2 position) const;
+	void draw(const Hand& hand,const HandTilesLayout& handTilesLayout,
+		const MeldsLayout& meldsLayout) const;
 
 	/**
-	 * @param meld shouminkan to be drawm
-	 * @param position on screen
+	 * @brief draws the tile hitboxes for debugging purposes.
+	 * @param hand to be described.
 	 */
-	void drawShouminkan(const Meld& meld, Vector2 position) const;
+	void drawHitBoxes(const Hand& hand, const HandTilesLayout& handTilesLayout) const;
 
-	/**
-	 * @brief uses above functions to draw any meld by it's type.
-	 * @param meld to be drawm
-	 * @param position on screen
-	 */
-	void drawMeld(const Meld& meld, Vector2 position) const;
-
-	/**
-	* @brief draw a hand on the bottom middle of the screen
-	* @param hand to be drawn
-	*/
-	void draw(const Hand& hand) const;
-
-	/**
-	 * @brief get hand tile rectangles for collision checks
-	 * @param index of tile in the free tiles you want to check 
-	 * @return rectangle of the location of the requested hand tile
-	 */
-	static Rectangle getTileRec(const Hand& hand, int index);
-
-	/**
-	 * @brief shows tile hitboxes for debug purposes.
-	 * @param hand 
-	 */
-	void drawHitBoxes(const Hand& hand);
-
-
-	/**
-	* @param position of the mouse pointer
-	* @return index of tile from leftmost to rightmost
-	*/
-	static int getTileIndexFromPosition(Vector2 position, const Hand& hand);
 
 	
 	
@@ -156,13 +102,43 @@ private:
 
 	Texture2D handTileTextures;
 	Texture2D meldTileTextures;
+	Texture2D meldTileTexturesR;
+
+	/**
+	 * @brief draws a tile in case of aka, helper function for draw tile.
+	 * @param tile aka tile to be drawn 
+	 * @param layout position and dimension
+	 */
+	void drawTileAka(const Tile& tile, Rectangle layout) const;
+	void drawMeldTileAka(const Tile& tile, Rectangle layout) const;
+	void drawMeldTileAkaRight(const Tile& tile, Rectangle layout) const;
+
+	/**
+	 * @brief draws one of the meld tiles, used for the meld drawing methodes.
+	 * @param tile to be drawn
+	 * @param layout position and size of the tile to be drawn
+	 */
+	void drawMeldTile(const Tile& tile, Rectangle layout) const;
+
+	/**
+	 * @brief draws the back of a tile, for ankan purposes.
+	 * @param position of the tile.
+	 */
+	void drawMeldTileBack(Rectangle position) const;
+
+	/**
+	 * @brief draws a meld tile rotated 90 degrees right.
+	 * @param tile to be drawn on it's side
+	 * @param layout position and dimension of the tile on screen.
+	 */
+	void drawMeldTileRight(const Tile& tile, Rectangle layout) const;
 
 
 	/** @brief akadora's texture relative position in the file*/
 	static constexpr int AKA_PLACE_IN_FILE = 10;
 
+	/**	 * @brief location of the back of the tile in the file	 */
 	static constexpr int BACK_ROW_IN_FILE = 4;
-
 	static constexpr int BACK_COL_IN_FILE = 8;
 
 };

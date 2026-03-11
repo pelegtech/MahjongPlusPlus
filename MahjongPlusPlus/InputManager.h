@@ -6,8 +6,9 @@
 class Graphics;
 class InputManager {
 private:
-	Game& game;
+	//Game& game;
 public:
-	InputManager(Game& game);
-	int tileIndexFromClick(const Hand& hand) const;
+	InputManager() = default;
+	//InputManager(Game& game);
+	int tileIndexFromClick( const HandTilesLayout& handTilesLayout) const;
 };

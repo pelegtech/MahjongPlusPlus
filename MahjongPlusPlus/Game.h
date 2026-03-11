@@ -8,14 +8,7 @@
 #include <vector>
 #include "Wall.h"
 #include "raylib.h"
-
-enum class GameState {
-	WAITING_FOR_INPUT,
-	P1_TURN,
-	P2_TURN,
-	P3_TURN,
-	P4_TURN,
-};
+#include "Layout.h"
 
 class Game {
 private:
@@ -23,6 +16,14 @@ private:
 	std::array<std::unique_ptr<Player>, PLAYERS_NUM> players;
 	Wall wall;
 	GameState state;
+	Wind currentTurn;
+	std::array<MoveType, PLAYERS_NUM> playersDecisions;
+
+
+	Player& currentPlayer();
+	Player& playerFromWind(Wind wind);
+
+
 public:
 	
 	Game(std::unique_ptr<Player> p1,
@@ -33,7 +34,14 @@ public:
 	void dictateWinds();
 	void dealInitTiles();
 	void update();
+	void discardTile(int index);
 	void playerMoveFromInput(int index);
 	int getTilesLeft() const;
+	void nextTurn();
+	const Player& getCurrentPlayer();
+	GameState getState() const;
+	int getPlayerIdFromWind(Wind wind) const;
+	int getCurrentPlayerId() const;
+	
 
 };

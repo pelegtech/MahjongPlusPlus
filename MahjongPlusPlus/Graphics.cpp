@@ -3,7 +3,7 @@
 void Graphics::init() {
 	background = LoadTexture("assets/background.jpg");
 	handTilesRenderer = std::make_unique<HandTilesRenderer>(AssetPaths::handTiles,
-		AssetPaths::meldTiles);
+		AssetPaths::meldTiles,AssetPaths::meldTilesR);
 	discardTilesRenderer = std::make_unique<DiscardTilesRenderer>(AssetPaths::discardTiles);
 	buttons = LoadTexture("assets/buttons.png");
 }
@@ -24,18 +24,19 @@ void Graphics::clean() {
 void Graphics::drawTilesLeft(int tilesLeft) {
 	std::string str = "Tiles left: " + std::to_string(tilesLeft);
 	DrawText(str.c_str(), TILES_COUNTER_POSITION.x, TILES_COUNTER_POSITION.y,
-		TILES_COUNTER_SIZE, BLACK);
+		TILES_COUNTER_SIZE, RED);
 }
 
-void Graphics::drawTileHitBox(const Hand& hand) const
+void Graphics::drawTileHitBox(const Hand& hand, const HandTilesLayout& layout) const
 {
-	handTilesRenderer->drawHitBoxes(hand);
+	handTilesRenderer->drawHitBoxes(hand,layout);
 	Vector2 mousePos = GetMousePosition();
 	DrawCircleV(mousePos, 5.0f, RED);
 }
 
-void Graphics::drawHand(const Hand& hand) const {
-	handTilesRenderer->draw(hand);
+void Graphics::drawHand(const Hand& hand,
+	const HandTilesLayout handTilesLayout, const MeldsLayout meldsLayout) const {
+	handTilesRenderer->draw(hand, handTilesLayout, meldsLayout);
 }
 
 void Graphics::drawDiscards(const Player& perspectivePayer, const Player& p2, const Player& p3,

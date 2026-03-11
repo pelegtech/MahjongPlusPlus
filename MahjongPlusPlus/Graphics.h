@@ -8,7 +8,9 @@
 #include <string>
 #include <memory>
 #include "TileGraphics.h"
-#include "Constants.h"
+#include "Paths.h"
+#include "Layout.h"
+
 
 /**
 * @class Graphics
@@ -39,7 +41,8 @@ public:
 	/** @brief uses handTilesRendered to draw the hand tiles
 	*	@param hand to be drawn in the middle of the screen
 	*/
-	void drawHand(const Hand& hand) const;
+	void drawHand(const Hand& hand,
+		const HandTilesLayout handTilesLayout, const MeldsLayout meldsLayout) const;
 
 	/** @brief uses discardTilesRendered to draw the discard piles
 	*	@param hand to be drawn in the middle of the screen
@@ -54,7 +57,11 @@ public:
 	*/
 	void drawTilesLeft(int tilesLeft);
 
-	void drawTileHitBox(const Hand& hand) const;
+	/**
+	 * @brief draw mouse and hand tiles hitboxes for debug purposes
+	 * @param hand to be drawn
+	 */
+	void drawTileHitBox(const Hand& hand, const HandTilesLayout& layout) const;
 
 private:
 	Texture2D background;

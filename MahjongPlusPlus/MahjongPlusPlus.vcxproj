@@ -133,6 +133,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Buttons.cpp" />
+    <ClCompile Include="Controller.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="Discards.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -140,6 +142,7 @@
     <ClCompile Include="Hand.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Kan.cpp" />
+    <ClCompile Include="Layout.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Meld.cpp" />
     <ClCompile Include="MoveOption.cpp" />
@@ -150,7 +153,10 @@
     <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Constants.h" />
+    <ClInclude Include="Buttons.h" />
+    <ClInclude Include="Controller.h" />
+    <ClInclude Include="Layout.h" />
+    <ClInclude Include="Paths.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Discards.h" />
     <ClInclude Include="Game.h" />

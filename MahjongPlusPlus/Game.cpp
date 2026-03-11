@@ -4,9 +4,11 @@
 Game::Game(std::unique_ptr<Player> p1,
 	std::unique_ptr<Player> p2,
 	std::unique_ptr<Player> p3,
-	std::unique_ptr<Player> p4) : 
+	std::unique_ptr<Player> p4) :
 	players{ std::move(p1),std::move(p2),std::move(p3),std::move(p4) },
-	state(GameState::P1_TURN) {
+	state(GameState::DRAW), currentTurn(Wind::EAST)
+{
+	playersDecisions.fill(MoveType::WAITING);
 }
 
 void Game::dealInitTiles() {
@@ -27,36 +29,29 @@ const Player& Game::getPlayer(int index) const {
 }
 
 void Game::update(){
-	
 	switch (state) {
-	case GameState::WAITING_FOR_INPUT:
+	case GameState::DRAW:
+		currentPlayer().Draw(wall);
+		state = GameState::WAITING_FOR_DRAW_INPUT;
 		break;
-	case GameState::P1_TURN:
-		players[0]->Draw(wall);
-		state = GameState::WAITING_FOR_INPUT;
-		break;
-	case GameState::P2_TURN:
-		players[1]->Draw(wall);
-		players[1]->Discard(13);
-		state = GameState::P3_TURN;
-		break;
-	case GameState::P3_TURN:
-		players[2]->Draw(wall);
-		players[2]->Discard(13);
-		state = GameState::P4_TURN;
-		break;
-	case GameState::P4_TURN:
-		players[3]->Draw(wall);
-		players[3]->Discard(13);
-		state = GameState::P1_TURN;
+
+	case GameState::WAITING_FOR_DRAW_INPUT:
 		break;
 	}
+	
 
 }
 
+void Game::discardTile(int index)
+{
+	currentPlayer().Discard(index);
+	//change later
+	nextTurn();
+	state = GameState::DRAW;
+}
+
 void Game::playerMoveFromInput(int index) {
-	players[0]->Discard(index);
-	state = GameState::P2_TURN;
+	
 }
 
 void Game::dictateWinds() {
@@ -73,3 +68,49 @@ void Game::dictateWinds() {
 int Game::getTilesLeft() const {
 	return wall.tilesLeft();
 }
+
+void Game::nextTurn()
+{
+	Wind nextWind = static_cast<Wind>((static_cast<int>(currentTurn) + 1) % 4);
+	currentTurn = nextWind;
+}
+
+const Player& Game::getCurrentPlayer()
+{
+	return currentPlayer();
+}
+
+GameState Game::getState() const
+{
+	return state;
+}
+
+int Game::getPlayerIdFromWind(Wind wind) const
+{
+	for (int i = 0; i < PLAYERS_NUM; i++) {
+		if (players[i]->getWind() == wind) {
+			return i;
+		}
+	}
+}
+
+int Game::getCurrentPlayerId() const
+{
+	return getPlayerIdFromWind(currentTurn);
+}
+
+Player& Game::currentPlayer()
+{
+	return playerFromWind(currentTurn);
+}
+
+Player& Game::playerFromWind(Wind wind)
+{
+	for (const auto& player : players) {
+		if (player->getWind() == wind) {
+			return *player;
+		}
+	}
+}
+
+

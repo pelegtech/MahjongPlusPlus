@@ -28,6 +28,7 @@ public:
 	const Discards& getDiscards() const;
 	const Wind& getWind() const;
 	TileMarker relativePlace(Wind otherWind);
+	void updateOptionsDiscard(const Tile& tile);
 
 	static constexpr int PLAYERS_NUM = 4;
 
