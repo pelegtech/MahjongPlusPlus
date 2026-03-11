@@ -31,6 +31,10 @@ const Player& Game::getPlayer(int index) const {
 void Game::update(){
 	switch (state) {
 	case GameState::DRAW:
+		if (wall.tilesLeft() == 0) {
+			state = GameState::GAME_END;
+			break;
+		}
 		currentPlayer().Draw(wall);
 		state = GameState::WAITING_FOR_DRAW_INPUT;
 		break;

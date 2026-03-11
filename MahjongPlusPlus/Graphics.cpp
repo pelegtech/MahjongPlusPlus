@@ -34,6 +34,17 @@ void Graphics::drawTileHitBox(const Hand& hand, const HandTilesLayout& layout) c
 	DrawCircleV(mousePos, 5.0f, RED);
 }
 
+void Graphics::drawWinds(Wind perspectiveWind) const
+{
+	std::string WINDSTR[4] = {"E","S","W","N"};
+	int playerWind = static_cast<int>(perspectiveWind);
+	DrawText(WINDSTR[playerWind].c_str(), MY_WIND_POS.x, MY_WIND_POS.y, 100, RED);
+	DrawText(WINDSTR[(playerWind + 1) % 4].c_str(), RIGHT_WIND_POS.x, RIGHT_WIND_POS.y, 100, BLACK);
+	DrawText(WINDSTR[(playerWind + 2) % 4].c_str(), TOP_WIND_POS.x, TOP_WIND_POS.y, 100, BLACK);
+	DrawText(WINDSTR[(playerWind + 3) % 4].c_str(), LEFT_WIND_POS.x, LEFT_WIND_POS.y, 100, BLACK);
+}
+
+
 void Graphics::drawHand(const Hand& hand,
 	const HandTilesLayout handTilesLayout, const MeldsLayout meldsLayout) const {
 	handTilesRenderer->draw(hand, handTilesLayout, meldsLayout);

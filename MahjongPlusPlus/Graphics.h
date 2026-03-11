@@ -23,7 +23,11 @@ public:
 	static constexpr int HAND_SIZE = 14;
 	static constexpr Vector2 TILES_COUNTER_POSITION = { 700,480 };
 	static constexpr int TILES_COUNTER_SIZE = 50;
-	
+	static constexpr Vector2 MY_WIND_POS = { 200,800 };
+	static constexpr Vector2 LEFT_WIND_POS = { 100,500 };
+	static constexpr Vector2 RIGHT_WIND_POS = { 1800,500 };
+	static constexpr Vector2 TOP_WIND_POS = { 1000,100 };
+	static constexpr Vector2 CURRENT_WIND_POS = { 700,500 };
 
 
 	Graphics() = default;
@@ -62,6 +66,9 @@ public:
 	 * @param hand to be drawn
 	 */
 	void drawTileHitBox(const Hand& hand, const HandTilesLayout& layout) const;
+
+	void drawWinds(Wind perspectiveWind) const;
+
 
 private:
 	Texture2D background;

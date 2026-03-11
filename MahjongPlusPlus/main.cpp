@@ -44,13 +44,9 @@ int main() {
         }
 
 
-        graphics.drawBackground();
         
-        graphics.drawDiscards(game.getPlayer(0),
-            game.getPlayer(1),
-            game.getPlayer(2),
-            game.getPlayer(3));
-        game.update();
+        
+        
        
 
         if (game.getState() == GameState::WAITING_FOR_DRAW_INPUT) {
@@ -63,12 +59,30 @@ int main() {
                 game.discardTile(chosenTileIndex);
             }
         }
-       
-        graphics.drawTilesLeft(game.getTilesLeft());
+        if (game.getState() == GameState::GAME_END) {
+            ClearBackground(RAYWHITE);
+            DrawText("GAME OVER NO MORE TILES", 500, 500, 50, BLACK);
+            DrawText("press escape to quit", 500, 550, 20, RED);
 
-        HandTilesLayout myHandLayout(game.getPlayer(0).getHand());
-        MeldsLayout myMeldsLayout(game.getPlayer(0).getHand().getMelds());
-        graphics.drawHand(((game.getPlayer(0)).getHand()), myHandLayout, myMeldsLayout);
+        }
+        else {
+            graphics.drawBackground();
+            graphics.drawWinds(game.getPlayer(0).getWind());
+            graphics.drawTilesLeft(game.getTilesLeft());
+            HandTilesLayout myHandLayout(game.getPlayer(0).getHand());
+            MeldsLayout myMeldsLayout(game.getPlayer(0).getHand().getMelds());
+            graphics.drawHand(((game.getPlayer(0)).getHand()), myHandLayout, myMeldsLayout);
+            graphics.drawDiscards(game.getPlayer(0),
+                game.getPlayer(1),
+                game.getPlayer(2),
+                game.getPlayer(3));
+            game.update();
+        }
+
+
+        
+
+        
         
         DrawFPS(10, 10);
         EndDrawing();
