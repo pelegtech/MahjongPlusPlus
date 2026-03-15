@@ -1,14 +1,12 @@
 #pragma once
-#include "Discards.h"
-#include "Wall.h"
-#include "Hand.h"
-#include "Tile.h"
-#include "Player.h"
 #include "GameTypes.h"
 #include <vector>
+#include <memory>
 #include "Wall.h"
-#include "raylib.h"
-#include "Layout.h"
+#include <array>
+
+class Player;
+
 
 class Game {
 private:
@@ -42,6 +40,7 @@ public:
 	GameState getState() const;
 	int getPlayerIdFromWind(Wind wind) const;
 	int getCurrentPlayerId() const;
+	const std::array<std::unique_ptr<Player>, PLAYERS_NUM>& getPlayers() const;
 	
 
 };

@@ -1,9 +1,9 @@
 #pragma once
 #include "Raylib.h"
 #include "Game.h"
-#include "Graphics.h"
 
-class Graphics;
+struct  HandTilesLayout;
+
 class InputManager {
 private:
 	//Game& game;

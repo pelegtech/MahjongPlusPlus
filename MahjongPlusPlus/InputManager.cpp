@@ -1,6 +1,5 @@
 #include "InputManager.h"
-#include "TileGraphics.h"
-#include "Layout.h"
+#include "TilesLayouts.h"
 #include "raylib.h"
 
 //InputManager::InputManager(Game& game) :game(game){}

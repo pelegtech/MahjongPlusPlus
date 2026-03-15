@@ -195,100 +195,49 @@ void HandTilesRenderer::drawHitBoxes(const Hand& hand, const HandTilesLayout& ha
 
 //DiscardTilesRenderer------------------------------------------------------------
 
-DiscardTilesRenderer::DiscardTilesRenderer(const char* path) {
-	textures = LoadTexture(path);
-}
+DiscardTilesRenderer::DiscardTilesRenderer(const char* pathSelf, const char* pathLeft, 
+	const char* pathUp, const char* pathRight) : 
+	textures{ LoadTexture(pathSelf) ,LoadTexture(pathLeft),LoadTexture(pathUp),LoadTexture(pathRight) } {}
 
 
 DiscardTilesRenderer::~DiscardTilesRenderer() {
-	UnloadTexture(textures);
+	for (int i = 0; i < PLAYERS_NUM; i++) {
+		UnloadTexture(textures[i]);
+	}
 }
 
-void DiscardTilesRenderer::drawTileAka(const Tile& tile, Vector2 position,
-	float orientation) const{
-	Rectangle sourceRec = { (AKA_PLACE_IN_FILE - 1) * TILE_WIDTH,
-		static_cast<int>(tile.getSuit()) * TILE_HEIGHT,
-		TILE_WIDTH,TILE_HEIGHT };
-	Rectangle destRec = { position.x,position.y,TILE_WIDTH,TILE_HEIGHT };
-	DrawTexturePro(textures, sourceRec, destRec, { 0,0 }, orientation, WHITE);
+void DiscardTilesRenderer::drawTileAka(const Tile& tile, Rectangle dest, RelativePosition seat) const{
+	int relativePosition = static_cast<int>(seat);
+	int suit = static_cast<int>(tile.getSuit());
+	Rectangle sourceRec = {	(AKA_PLACE_IN_FILE - 1) * SRC_DIMENSIONS[relativePosition].x,
+	suit * SRC_DIMENSIONS[relativePosition].y,
+		SRC_DIMENSIONS[relativePosition].x,SRC_DIMENSIONS[relativePosition].y };
+	DrawTexturePro(textures[relativePosition], sourceRec, dest, { 0,0 }, 0, WHITE);
 }
 
-void DiscardTilesRenderer::drawTile(const Tile& tile, Vector2 position,
-	float orientation) const{
+void DiscardTilesRenderer::drawTile(const Tile& tile, Rectangle dest, RelativePosition seat) const{
 	if (tile.isAkadora()) {
-		drawTileAka(tile, position,orientation);
+		drawTileAka(tile, dest, seat);
 	}
 	else {
-		Rectangle sourceRec = { (tile.getValue() - 1) * TILE_WIDTH,
-			static_cast<int>(tile.getSuit()) * TILE_HEIGHT,
-			TILE_WIDTH, TILE_HEIGHT };
-		Rectangle destRec = { position.x,position.y,TILE_WIDTH,TILE_HEIGHT };
-		DrawTexturePro(textures, sourceRec, destRec, { 0,0 }, orientation, WHITE);
+		int relativePosition = static_cast<int>(seat);
+		int suit = static_cast<int>(tile.getSuit());
+		Rectangle sourceRec = { (tile.getValue() - 1) * SRC_DIMENSIONS[relativePosition].x,
+			suit  * SRC_DIMENSIONS[relativePosition].y,
+			SRC_DIMENSIONS[relativePosition].x, SRC_DIMENSIONS[relativePosition].y };
+		DrawTexturePro(textures[relativePosition], sourceRec, dest, { 0,0 }, 0, WHITE);
 	}
 }
 
-void DiscardTilesRenderer::drawDiscardsMine(const Discards& discards) const{
+void DiscardTilesRenderer::draw(const Discards& discards,
+	const PlayerDiscardsLayout& layout) const{
 	int i = 0;
 	for (const auto& tile : discards) {
-		drawTile(tile, { MY_PILE_POS.x +
-		((i % TILES_IN_ROW) * TILE_WIDTH) ,MY_PILE_POS.y +
-			(i / TILES_IN_ROW) * TILE_HEIGHT }, FRONT_ORIENTATION);
-		i++;
-	}
-}
-
-void DiscardTilesRenderer::drawDiscardsTop(const Discards& discards) const{
-	int i = 0;
-	for (const auto& tile : discards) {
-		drawTile(tile, { TOP_PILE_POS.x -
-		((i % TILES_IN_ROW) * TILE_WIDTH) ,TOP_PILE_POS.y -
-			(i / TILES_IN_ROW) * TILE_HEIGHT }, TOP_ORIENTATION);
-		i++;
-	}
-}
-void DiscardTilesRenderer::drawDiscardsRight(const Discards& discards) const{
-	int i = 0;
-	for (const auto& tile : discards) {
-		drawTile(tile, { RIGHT_PILE_POS.x +
-		((i / TILES_IN_ROW) * TILE_HEIGHT) ,RIGHT_PILE_POS.y -
-			(i % TILES_IN_ROW) * TILE_WIDTH }, RIGHT_ORIENTATION);
-		i++;
-	}
-}
-void DiscardTilesRenderer::drawDiscardsLeft(const Discards& discards) const{
-	int i = 0;
-	for (const auto& tile : discards) {
-		drawTile(tile, { LEFT_PILE_POS.x -
-		((i / TILES_IN_ROW) * TILE_HEIGHT) ,LEFT_PILE_POS.y +
-			(i % TILES_IN_ROW) * TILE_WIDTH }, LEFT_ORIENTATION);
-		i++;
+		drawTile(tile, layout.recs[i++],layout.position);
 	}
 }
 
 
 
-void DiscardTilesRenderer::draw(const Discards& discards
-	, Wind playerWind, Wind discardsWind) const {
 
-	//calculates a number based on given player wind relative to given discard pile wind.
-	// 0 = me, 1 = left pile, 2 = top pile, 3 = right pile.
-	int relativePosition = (static_cast<int>(playerWind)
-		- static_cast<int>(discardsWind) + PLAYERS_NUM) % PLAYERS_NUM;
 
-	switch (relativePosition) {
-	case RELATIVE_POSITION_MINE:
-		drawDiscardsMine(discards);
-		break;
-	case  RELATIVE_POSITION_LEFT:
-		drawDiscardsLeft(discards);
-		break;
-
-	case RELATIVE_POSITION_TOP:
-		drawDiscardsTop(discards);
-		break;
-
-	case RELATIVE_POSITION_RIGHT:
-		drawDiscardsRight(discards);
-		break;
-	}
-}

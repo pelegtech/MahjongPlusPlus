@@ -2,7 +2,7 @@
 #include "Triplet.h"
 #include "Meld.h"
 #include "Kan.h"
-
+#include <iostream>
 
 
 void Player::Draw(Wall& wall) {
@@ -25,8 +25,6 @@ void Player::Discard(int index) {
 		hand.discardHandTile(discards,index);
 		hand.addDrawnTile();
 	}
-
-
 }
 
 void Player::sortHand() {

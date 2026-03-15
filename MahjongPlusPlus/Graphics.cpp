@@ -1,11 +1,22 @@
 #include "Graphics.h"
+#include "Paths.h"
+#include "TileGraphics.h"
+#include "Player.h"
+#include "GameTypes.h"
+
+Graphics::Graphics() = default;
+Graphics::~Graphics() = default;
+
 
 void Graphics::init() {
 	background = LoadTexture("assets/background.jpg");
 	handTilesRenderer = std::make_unique<HandTilesRenderer>(AssetPaths::handTiles,
 		AssetPaths::meldTiles,AssetPaths::meldTilesR);
-	discardTilesRenderer = std::make_unique<DiscardTilesRenderer>(AssetPaths::discardTiles);
-	buttons = LoadTexture("assets/buttons.png");
+	discardTilesRenderer = 
+		std::make_unique<DiscardTilesRenderer>(	AssetPaths::discardTiles,
+			AssetPaths::discardTilesL,
+			AssetPaths::discardTilesU,
+			AssetPaths::discardTilesR);
 }
 
 void Graphics::drawBackground() {
@@ -18,7 +29,6 @@ void Graphics::drawBackground() {
 
 void Graphics::clean() {
 	UnloadTexture(background);
-	UnloadTexture(buttons);
 }
 
 void Graphics::drawTilesLeft(int tilesLeft) {
@@ -46,17 +56,15 @@ void Graphics::drawWinds(Wind perspectiveWind) const
 
 
 void Graphics::drawHand(const Hand& hand,
-	const HandTilesLayout handTilesLayout, const MeldsLayout meldsLayout) const {
+	const HandTilesLayout& handTilesLayout, const MeldsLayout& meldsLayout) const {
 	handTilesRenderer->draw(hand, handTilesLayout, meldsLayout);
 }
 
-void Graphics::drawDiscards(const Player& perspectivePayer, const Player& p2, const Player& p3,
-	const Player& p4) const {
-	discardTilesRenderer->draw(perspectivePayer.getDiscards(), perspectivePayer.getWind()
-		, perspectivePayer.getWind());
-	discardTilesRenderer->draw(p2.getDiscards(), perspectivePayer.getWind(), p2.getWind());
-	discardTilesRenderer->draw(p3.getDiscards(), perspectivePayer.getWind(), p3.getWind());
-	discardTilesRenderer->draw(p4.getDiscards(), perspectivePayer.getWind(), p4.getWind());
+void Graphics::drawDiscards(const std::array<std::unique_ptr<Player>, Constants::PLAYERS_NUM>& players,
+	std::array<PlayerDiscardsLayout, Constants::PLAYERS_NUM> layouts) const {
+	for (int i = 0; i < Constants::PLAYERS_NUM; i++) {
+		discardTilesRenderer->draw(players[i]->getDiscards(),layouts[i]);
+	}
 }
 
 

@@ -63,7 +63,7 @@
     <ClCompile Include="Buttons.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Layout.cpp">
+    <ClCompile Include="TilesLayouts.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Controller.cpp">
@@ -122,7 +122,7 @@
     <ClInclude Include="Buttons.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Layout.h">
+    <ClInclude Include="TilesLayouts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Controller.h">

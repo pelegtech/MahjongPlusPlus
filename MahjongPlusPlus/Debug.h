@@ -10,7 +10,7 @@
 
 namespace Debug {
 
-	Tile tileFromCode(const std::string& str, int copy) {
+	inline Tile tileFromCode(const std::string& str, int copy) {
 		int val = str[0] - '0';
 		char c = str[1];
 		Suit suit;
@@ -45,13 +45,13 @@ namespace Debug {
 		return Tile::tileFromSpecs(suit, val, copy);
 	}
 
-	int tileNumFromCode(const std::string& str) {
+	inline int tileNumFromCode(const std::string& str) {
 		Tile temp = tileFromCode(str, 0);
 		return temp.getId() / 4;
 	}
 
 
-	Hand handFromCodes(
+	inline Hand handFromCodes(
 		const std::string& s1,
 		const std::string& s2,
 		const std::string& s3,
@@ -114,13 +114,13 @@ namespace Debug {
 
 		return hand;
 	}
-	std::unique_ptr<Meld> pon(const std::string& s) {
+	inline std::unique_ptr<Meld> pon(const std::string& s) {
 		Tile t1 = tileFromCode(s,0);
 		Tile t2 = tileFromCode(s,1);
 		Tile t3 = tileFromCode(s,2);
 		return std::make_unique<Pon>(t1, t2, t3, TileMarker::RIGHT);
 	}
-	std::unique_ptr<Meld> chi(const std::string& s1, const std::string& s2, const std::string& s3) {
+	inline std::unique_ptr<Meld> chi(const std::string& s1, const std::string& s2, const std::string& s3) {
 		int hist[34] = { 0 };
 		hist[tileNumFromCode(s1)]++;
 		hist[tileNumFromCode(s2)]++;
@@ -130,21 +130,21 @@ namespace Debug {
 		Tile t3 = tileFromCode(s3, --hist[tileNumFromCode(s3)]);
 		return std::make_unique<Chi>(t1, t2, t3, TileMarker::RIGHT);
 	}
-	std::unique_ptr<Meld> ankan(const std::string& s) {
+	inline std::unique_ptr<Meld> ankan(const std::string& s) {
 		Tile t1 = tileFromCode(s,0);
 		Tile t2 = tileFromCode(s,1);
 		Tile t3 = tileFromCode(s,2);
 		Tile t4 = tileFromCode(s,3);
 		return std::make_unique<Ankan>(t1, t2, t3,t4);
 	}
-	std::unique_ptr<Meld> daiminkan(const std::string& s) {
+	inline std::unique_ptr<Meld> daiminkan(const std::string& s) {
 		Tile t1 = tileFromCode(s, 0);
 		Tile t2 = tileFromCode(s, 1);
 		Tile t3 = tileFromCode(s, 2);
 		Tile t4 = tileFromCode(s, 3);
 		return std::make_unique<Daiminkan>(t1, t2, t3, t4,TileMarker::RIGHT);
 	}
-	std::unique_ptr<Meld> shouminkan(const std::string& s) {
+	inline std::unique_ptr<Meld> shouminkan(const std::string& s) {
 		Tile t1 = tileFromCode(s, 0);
 		Tile t2 = tileFromCode(s, 1);
 		Tile t3 = tileFromCode(s, 2);
@@ -153,7 +153,27 @@ namespace Debug {
 		return std::make_unique<Shouminkan>
 			(t4,std::make_unique<Pon>(t1, t2, t3, TileMarker::RIGHT));
 	}
+
+	inline std::string windToStr(const Wind& wind) {
+		switch (wind) {
+		case (Wind::EAST):
+			return "East";
+			break;
+		case(Wind::SOUTH):
+			return "South";
+			break;
+		case(Wind::WEST):
+			return "West";
+			break;
+		case(Wind::NORTH):
+			return "North";
+			break;
+		}
+	}
+
 }
+
+
 
 
 //Hand test_hand = Debug::handFromCodes

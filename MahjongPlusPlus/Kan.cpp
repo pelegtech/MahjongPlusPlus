@@ -1,4 +1,5 @@
 #include "Kan.h"
+#include "Triplet.h"
 
 // kan functions:
 Kan::Kan(const Tile& t1, const Tile& t2, const Tile& t3, const Tile& t4, 

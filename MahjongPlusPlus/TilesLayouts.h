@@ -2,11 +2,14 @@
 #include "raylib.h"
 #include "GameTypes.h"
 #include <array>
-#include "Meld.h"
 #include <vector>
 #include <memory>
-class Hand;
+#include <iostream>
 
+class Player;
+class Hand;
+class Meld;
+class Discards;
 
 /**
  * @brief provides dimensions and positions for 
@@ -147,3 +150,53 @@ struct MeldsLayout {
 	MeldsLayout(const std::vector<std::unique_ptr<Meld>>& melds);
 };
 
+struct discardsLayoutParams {
+	Vector2 position;
+	Vector2 colStep;
+	Vector2 rowStep;
+	Vector2 riichiOffset;
+	Vector2 afterRiichiShift;
+	float width;
+	float height;
+};
+
+struct PlayerDiscardsLayout {
+	static constexpr int MAX_DISCARDS_TILES = 24;
+	std::array<Rectangle, MAX_DISCARDS_TILES> recs;
+	int size;
+	RelativePosition position;
+
+
+	static constexpr int TILE_WIDTH = 60;
+	static constexpr int TILE_HEIGHT = 87;
+	static constexpr Vector2 MY_PILE_POS = { (1920 - 6 * TILE_WIDTH) / 2,630 };
+	static constexpr Vector2 RIGHT_PILE_POS = { MY_PILE_POS.x + 6 * TILE_WIDTH,MY_PILE_POS.y - TILE_WIDTH };
+	static constexpr Vector2 TOP_PILE_POS = { MY_PILE_POS.x + 5 * TILE_WIDTH, MY_PILE_POS.y - 6 * TILE_WIDTH - TILE_HEIGHT };
+	static constexpr Vector2 LEFT_PILE_POS = { MY_PILE_POS.x - TILE_HEIGHT,MY_PILE_POS.y - 6 * TILE_WIDTH };
+	static constexpr int TILES_IN_ROW = 6;
+	static constexpr int PLAYERS_NUM = 4;
+
+	static constexpr std::array < discardsLayoutParams, PLAYERS_NUM> posConsts = {{
+		//self
+		{MY_PILE_POS,{TILE_WIDTH,0},{0,TILE_HEIGHT},{0,TILE_HEIGHT - TILE_WIDTH},{-TILE_WIDTH + TILE_HEIGHT,0},TILE_WIDTH,TILE_HEIGHT},
+		//left
+		{LEFT_PILE_POS,{0,TILE_WIDTH},{-TILE_HEIGHT,0},{-TILE_HEIGHT + TILE_WIDTH,0},{0,-TILE_WIDTH + TILE_HEIGHT},TILE_HEIGHT,TILE_WIDTH},
+		//top
+		{TOP_PILE_POS,{-TILE_WIDTH,0},{0,-TILE_HEIGHT},{0,-TILE_HEIGHT + TILE_WIDTH},{-TILE_WIDTH + TILE_HEIGHT,0},TILE_WIDTH,TILE_HEIGHT},
+		//right
+		{RIGHT_PILE_POS,{0,-TILE_WIDTH},{+TILE_HEIGHT,0},{TILE_HEIGHT - TILE_WIDTH,0},{0,TILE_WIDTH - TILE_HEIGHT},TILE_HEIGHT,TILE_WIDTH},
+	}
+};
+
+
+	PlayerDiscardsLayout() = default;
+	PlayerDiscardsLayout(const Discards& discards, RelativePosition position);
+
+};
+
+struct GameDiscardsLayout {
+	std::array< PlayerDiscardsLayout, Constants::PLAYERS_NUM> layouts;
+	RelativePosition getRelativePosition(Wind perspective, Wind other);
+	GameDiscardsLayout(const std::array<std::unique_ptr<Player>, Constants::PLAYERS_NUM>& players);
+	void drawHitBoxes() const;
+};

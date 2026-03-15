@@ -1,16 +1,18 @@
 #pragma once
 #include "raylib.h"
-#include "Player.h"
-#include "Hand.h"
-#include "Tile.h"
 #include "Discards.h"
 #include "GameTypes.h"
 #include <string>
 #include <memory>
-#include "TileGraphics.h"
-#include "Paths.h"
-#include "Layout.h"
+#include "GameTypes.h"
 
+class Player;
+class Hand;
+struct HandTilesLayout;
+struct MeldsLayout;
+class HandTilesRenderer;
+class DiscardTilesRenderer;
+struct PlayerDiscardsLayout;
 
 /**
 * @class Graphics
@@ -29,8 +31,9 @@ public:
 	static constexpr Vector2 TOP_WIND_POS = { 1000,100 };
 	static constexpr Vector2 CURRENT_WIND_POS = { 700,500 };
 
+	Graphics();
+	~Graphics();
 
-	Graphics() = default;
 
 	/**
 	* @brief creats the renderers objects and
@@ -46,13 +49,13 @@ public:
 	*	@param hand to be drawn in the middle of the screen
 	*/
 	void drawHand(const Hand& hand,
-		const HandTilesLayout handTilesLayout, const MeldsLayout meldsLayout) const;
+		const HandTilesLayout& handTilesLayout, const MeldsLayout& meldsLayout) const;
 
 	/** @brief uses discardTilesRendered to draw the discard piles
 	*	@param hand to be drawn in the middle of the screen
 	*/
-	void drawDiscards(const Player& perspectivePayer, const Player& p2,const Player& p3,
-		const Player& p4) const;
+	void drawDiscards(const std::array<std::unique_ptr<Player>, Constants::PLAYERS_NUM>& players
+		,std::array<PlayerDiscardsLayout,Constants::PLAYERS_NUM> layouts) const;
 
 	/** @brief unload textures that are loaded by this class */
 	void clean();
@@ -73,7 +76,6 @@ public:
 private:
 	Texture2D background;
 	Texture2D discardTiles;
-	Texture2D buttons;
 	std::unique_ptr<HandTilesRenderer> handTilesRenderer;
 	std::unique_ptr<DiscardTilesRenderer> discardTilesRenderer;
 };

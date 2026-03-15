@@ -1,4 +1,5 @@
 #include "Discards.h"
+#include "Tile.h"
 
 Discards::Discards(): riichiTileId(UNDECIDED) {}
 
@@ -17,6 +18,16 @@ Tile Discards::removeTile() {
 
 void Discards::riichi() {
 	riichiTileId = static_cast<int>(tiles.size()) - 1;
+}
+
+int Discards::getRiichiId() const
+{
+	return riichiTileId;
+}
+
+int Discards::getSize() const
+{
+	return tiles.size();
 }
 
 Discards::ConstIterator::ConstIterator(const Tile* tile) : tile(tile) {}

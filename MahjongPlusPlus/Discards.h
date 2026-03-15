@@ -1,9 +1,9 @@
 #pragma once
-#include "Tile.h"
 #include <vector>
 #include <stdexcept>
 #include "GameTypes.h"
 
+class Tile;
 
 /** @clas Discards
 *	@brief holds information about a player's discard pool
@@ -59,6 +59,10 @@ public:
 	 * @brief sets riichi tile id to the last tile on the pile
 	 */
 	void riichi();
+
+	int getRiichiId() const;
+
+	int getSize() const;
 
 
 

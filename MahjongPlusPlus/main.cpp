@@ -15,6 +15,9 @@
 #include "Paths.h"
 #include "Controller.h"
 #include <memory>
+#include "TilesLayouts.h"
+#include <array>
+
 
 int main() {
     SetConfigFlags(FLAG_WINDOW_UNDECORATED);
@@ -25,15 +28,17 @@ int main() {
     ,std::make_unique<Player>(), std::make_unique<Player>());
     Graphics graphics;
     graphics.init();
-    game.dealInitTiles();
+    
     game.dictateWinds();
+    game.dealInitTiles();
+    
     InputManager inputManager;
     std::vector<std::unique_ptr<Controller>> controllers;
     controllers.push_back(std::make_unique<HumanController>());
     controllers.push_back(std::make_unique<BotController>());
     controllers.push_back(std::make_unique<BotController>());
     controllers.push_back(std::make_unique<BotController>());
-
+    std::array<PlayerDiscardsLayout, Constants::PLAYERS_NUM> discardsLayouts;
 
 
     while (!WindowShouldClose()) {
@@ -71,11 +76,10 @@ int main() {
             graphics.drawTilesLeft(game.getTilesLeft());
             HandTilesLayout myHandLayout(game.getPlayer(0).getHand());
             MeldsLayout myMeldsLayout(game.getPlayer(0).getHand().getMelds());
+            GameDiscardsLayout discardsLayouts(game.getPlayers());
+            graphics.drawDiscards(game.getPlayers(), discardsLayouts.layouts);
             graphics.drawHand(((game.getPlayer(0)).getHand()), myHandLayout, myMeldsLayout);
-            graphics.drawDiscards(game.getPlayer(0),
-                game.getPlayer(1),
-                game.getPlayer(2),
-                game.getPlayer(3));
+            //discardsLayouts.drawHitBoxes();
             game.update();
         }
 

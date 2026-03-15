@@ -60,3 +60,15 @@ enum class GameState {
 	GAME_END
 };
 
+enum class RelativePosition {
+	SELF,
+	LEFT,
+	TOP,
+	RIGHT
+};
+
+namespace Constants {
+
+	constexpr int PLAYERS_NUM = 4;
+}
+

@@ -1,6 +1,8 @@
 #pragma once
 #include "Meld.h"
-#include "Triplet.h"
+
+class Pon;
+
 
 /**
  * @brief kan abstract class in charge of all kan-type data structures.

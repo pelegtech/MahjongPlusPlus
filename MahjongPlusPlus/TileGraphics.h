@@ -4,7 +4,7 @@
 #include "GameTypes.h"
 #include <iostream>
 #include <memory>
-#include "Layout.h"
+#include "TilesLayouts.h"
 
 //Forward declarations
 class Tile;
@@ -150,77 +150,42 @@ private:
 class DiscardTilesRenderer {
 public:
 	//constants-------------------------------
-	static constexpr int TILE_WIDTH = 60;
-	static constexpr int TILE_HEIGHT = 87;
-	static constexpr float FRONT_ORIENTATION = 0.0f;
-	static constexpr float RIGHT_ORIENTATION = 270.0f;
-	static constexpr float TOP_ORIENTATION = 180.0f;
-	static constexpr float LEFT_ORIENTATION = 90.0f;
-	static constexpr Vector2 MY_PILE_POS = { 700,545 };
-	static constexpr Vector2 RIGHT_PILE_POS = { 1280,720 };
-	static constexpr Vector2 TOP_PILE_POS = { 1180,400 };
-	static constexpr Vector2 LEFT_PILE_POS = { 600,240 };
-	static constexpr int TILES_IN_ROW = 6;
-	static constexpr int RELATIVE_POSITION_MINE = 0;
-	static constexpr int RELATIVE_POSITION_LEFT = 1;
-	static constexpr int RELATIVE_POSITION_TOP = 2;
-	static constexpr int RELATIVE_POSITION_RIGHT = 3;
+	
+	static constexpr int TILE_WIDTH_SRC = 60;
+	static constexpr int TILE_HEIGHT_SRC = 87;
+	static constexpr std::array<Vector2, 4> SRC_DIMENSIONS = { {
+			//self
+			{TILE_WIDTH_SRC,TILE_HEIGHT_SRC},
+			//left
+			{TILE_HEIGHT_SRC,TILE_WIDTH_SRC},
+			//top
+			{TILE_WIDTH_SRC,TILE_HEIGHT_SRC},
+			//right
+			{TILE_HEIGHT_SRC,TILE_WIDTH_SRC}
+
+		} };
+	
 	static constexpr int PLAYERS_NUM = 4;
 	
 
-	/**@param path - to the tiles png */
-	DiscardTilesRenderer(const char* path);
+	DiscardTilesRenderer(const char* pathSelf, const char* pathLeft, const char* pathUp, const char* pathRight);
 
-	/** @brief unloads texture */
 	~DiscardTilesRenderer();
 
-	/**
-	* @param tile must be one of the three aka tiles (id) 16/52/88
-	* @param position on screen
-	*/
-	void drawTileAka(const Tile& tile, Vector2 position, float orienation) const;
+	
+	void drawTileAka(const Tile& tile,Rectangle dest,RelativePosition seat) const;
 
-	/**
-	* @param tile to be drawn
-	* @param position on screen
-	*/
-	void drawTile(const Tile& tile, Vector2 position, float orienation) const;
+	
+	void drawTile(const Tile& tile, Rectangle dest, RelativePosition seat) const;
 
-	/**
-	* @brief draws player's perspective own discards
-	* @param discards player's discard pool
-	*/
-	void drawDiscardsMine(const Discards& discards) const;
+	
+	void draw(const Discards& discards, const PlayerDiscardsLayout& layout) const;
 
-	/**
-	* @brief draws player's perspective top player discards
-	* @param discards top player's discard pool
-	*/
-	void drawDiscardsTop(const Discards& discards) const;
-
-	/**
-	* @brief draws player's perspective right player discards
-	* @param discards right player's discard pool
-	*/
-	void drawDiscardsRight(const Discards& discards) const;
-
-	/**
-	* @brief draws player's perspective left player discards
-	* @param discards left player's discard pool
-	*/
-	void drawDiscardsLeft(const Discards& discards) const;
-
-	/**
-	* @brief draws a discard pool relative to the player's wind
-	* @param discard pool to be drawn
-	* @param playerWind the perspective player's own wind
-	* @param discardsWind the wind of the player who owns the discard pool
-	*/
-	void draw(const Discards& discards, Wind playerWind, Wind discardsWind) const;
 
 private:
 
-	Texture2D textures;
+	std::array<Texture2D, 4> textures;
+
 
 	/** @brief akadora's texture relative position in the file*/
 	static constexpr int AKA_PLACE_IN_FILE = 10;

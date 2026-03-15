@@ -1,5 +1,11 @@
 #include "Game.h"
-
+#include "Player.h"
+#include <utility>
+#include <array>
+#include <random>
+#include <algorithm>
+#include <iostream>
+#include "Debug.h"
 
 Game::Game(std::unique_ptr<Player> p1,
 	std::unique_ptr<Player> p2,
@@ -48,8 +54,11 @@ void Game::update(){
 
 void Game::discardTile(int index)
 {
+	if (currentPlayer().getWind() == Wind::EAST) {
+		std::cout << "next round" << std::endl;
+	}
+	std::cout << Debug::windToStr(currentPlayer().getWind()) << " discarded: " << currentPlayer().getHand()[index] << std::endl;
 	currentPlayer().Discard(index);
-	//change later
 	nextTurn();
 	state = GameState::DRAW;
 }
@@ -101,6 +110,11 @@ int Game::getPlayerIdFromWind(Wind wind) const
 int Game::getCurrentPlayerId() const
 {
 	return getPlayerIdFromWind(currentTurn);
+}
+
+const std::array<std::unique_ptr<Player>, Constants::PLAYERS_NUM>& Game::getPlayers() const
+{
+	return players;
 }
 
 Player& Game::currentPlayer()

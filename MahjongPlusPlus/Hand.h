@@ -3,10 +3,10 @@
 #include <vector>
 #include <memory>
 #include "Discards.h"
-#include <stdexcept>
+#include <exception>
 #include "GameTypes.h"
+#include "Triplet.h"
 class Meld;
-class Player;
 
 /**
  * @class Hand
