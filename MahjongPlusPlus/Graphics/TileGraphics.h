@@ -152,8 +152,17 @@ class DiscardTilesRenderer {
 public:
 	//constants-------------------------------
 	
+	/**
+	 * @brief the dimensions of each tile in the texture files.
+	 */
 	static constexpr int TILE_WIDTH_SRC = 60;
 	static constexpr int TILE_HEIGHT_SRC = 87;
+
+
+	/**
+	 * @brief self and top tiles texture files uses vertical tiles dimensions,
+	 * while left and right has the exact same dimensions but flipped horizontally.
+	 */
 	static constexpr std::array<Vector2, 4> SRC_DIMENSIONS = { {
 			//self
 			{TILE_WIDTH_SRC,TILE_HEIGHT_SRC},
@@ -168,18 +177,37 @@ public:
 	
 	static constexpr int PLAYERS_NUM = 4;
 	
-
+	/**
+	 * @brief loads textures from paths.
+	 */
 	DiscardTilesRenderer(const char* pathSelf, const char* pathLeft, const char* pathUp, const char* pathRight);
 
+	/**
+	 * @brief unloads textures.
+	 */
 	~DiscardTilesRenderer();
 
-	
+	/**
+	 * @brief draws discards tile in case of aka tile. 
+	 * @param tile to be drawn {5m,5p,5s}
+	 * @param dest where to draw it. usually taken from a layout. 
+	 * @param seat to determine angle. 
+	 */
 	void drawTileAka(const Tile& tile,Rectangle dest,RelativePosition seat) const;
 
-	
+	/**
+	 * @brief draws discards tile.
+	 * @param tile to be drawn {5m,5p,5s}
+	 * @param dest where to draw it. usually taken from a layout.
+	 * @param seat to determine angle.
+	 */
 	void drawTile(const Tile& tile, Rectangle dest, RelativePosition seat) const;
 
-	
+	/**
+	 * @brief draws one player's discards pile.
+	 * @param discards to be drawn.
+	 * @param layout of the player's discards pile.
+	 */
 	void draw(const Discards& discards, const PlayerDiscardsLayout& layout) const;
 
 
