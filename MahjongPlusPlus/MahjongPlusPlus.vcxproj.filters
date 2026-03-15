@@ -119,7 +119,7 @@
     <ClCompile Include="Layouts\Buttons.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Layouts\TilesLayouts.cpp">
+    <ClCompile Include="Layouts\TileLayouts.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
@@ -181,7 +181,7 @@
     <ClInclude Include="Layouts\Buttons.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Layouts\TilesLayouts.h">
+    <ClInclude Include="Layouts\TileLayouts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

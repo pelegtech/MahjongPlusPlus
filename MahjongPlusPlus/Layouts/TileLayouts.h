@@ -150,32 +150,72 @@ struct MeldsLayout {
 	MeldsLayout(const std::vector<std::unique_ptr<Meld>>& melds);
 };
 
-struct discardsLayoutParams {
-	Vector2 position;
-	Vector2 colStep;
-	Vector2 rowStep;
-	Vector2 riichiOffset;
-	Vector2 afterRiichiShift;
-	float width;
-	float height;
-};
 
+/**
+ * @brief a data set used to contain rectangles describing a player's
+ * discards pile poisitions and dimensions. 
+ */
 struct PlayerDiscardsLayout {
+
+	/**
+	 * @brief a data set used to describe how a player's discard pool is built.
+	 */
+	struct discardsLayoutParams {
+
+		/**		 * @brief upper left corner coordinates of the first tile discarded in the pool.		 */
+		Vector2 position;
+
+		/**		 * @brief amount of pixels in each axis to be added after collumn advancement.		 */
+
+		Vector2 colStep;
+		/**		 * @brief amount of pixels in each axis to be added after row advancement.		 */
+		Vector2 rowStep;
+
+		/**
+		 * @brief to adjust riichi tile position to the rest of the row.
+		 * to account for riichi tile beind put horizontally.
+		 */
+		Vector2 riichiOffset;
+
+		/**		 * @brief 	to adjust positions of tiles in the same row of the riichi tile 	 */
+		Vector2 afterRiichiShift;
+
+		//rectangles width and height (switch between tile_width and tile_height for horizontal / vertical)
+		float width;
+		float height;
+	};
+
+	/**	 * @brief 	maximum amount of tiles in a player's discards pile */
 	static constexpr int MAX_DISCARDS_TILES = 24;
+	
+
+	//------------------------------------------------------------
+	//publics fields
+	//------------------------------------------------------------
 	std::array<Rectangle, MAX_DISCARDS_TILES> recs;
 	int size;
+
+	/**	 * @brief	describes pile's position relative to the camera perspective */
 	RelativePosition position;
 
 
 	static constexpr int TILE_WIDTH = 60;
 	static constexpr int TILE_HEIGHT = 87;
+
+	/**
+	 * @brief each position describes the location of the upper left corner of the first tile to be discarded.
+	 */
 	static constexpr Vector2 MY_PILE_POS = { (1920 - 6 * TILE_WIDTH) / 2,630 };
 	static constexpr Vector2 RIGHT_PILE_POS = { MY_PILE_POS.x + 6 * TILE_WIDTH,MY_PILE_POS.y - TILE_WIDTH };
 	static constexpr Vector2 TOP_PILE_POS = { MY_PILE_POS.x + 5 * TILE_WIDTH, MY_PILE_POS.y - 6 * TILE_WIDTH - TILE_HEIGHT };
 	static constexpr Vector2 LEFT_PILE_POS = { MY_PILE_POS.x - TILE_HEIGHT,MY_PILE_POS.y - 6 * TILE_WIDTH };
+
 	static constexpr int TILES_IN_ROW = 6;
 	static constexpr int PLAYERS_NUM = 4;
 
+	/**
+	 * @brief constant values describing the way each player's discards pile is built by riichi standards.
+	 */
 	static constexpr std::array < discardsLayoutParams, PLAYERS_NUM> posConsts = {{
 		//self
 		{MY_PILE_POS,{TILE_WIDTH,0},{0,TILE_HEIGHT},{0,TILE_HEIGHT - TILE_WIDTH},{-TILE_WIDTH + TILE_HEIGHT,0},TILE_WIDTH,TILE_HEIGHT},
@@ -190,13 +230,38 @@ struct PlayerDiscardsLayout {
 
 
 	PlayerDiscardsLayout() = default;
+
+	/**
+	 * @brief constructs a layout using an algorithm that takes into account above data
+	 * and riichi mahjong standard tile placing routine.
+	 * @param discards a player's discards pile.
+	 * @param position {self, left, top, right} to determine pile position and angle.
+	 */
 	PlayerDiscardsLayout(const Discards& discards, RelativePosition position);
 
 };
 
+/**
+ * @brief uses above data structure to construct a full discards river made of 4 player's discards piles.
+ */
 struct GameDiscardsLayout {
+
+	/**
+	 * @brief contains each player's discards pile.
+	 */
 	std::array< PlayerDiscardsLayout, Constants::PLAYERS_NUM> layouts;
+
+	/**
+	 * @param perspective perspective player's wind
+	 * @param other another player's wind
+	 * @return the relative position of the other player to the perspective player.
+	 */
 	RelativePosition getRelativePosition(Wind perspective, Wind other);
+
 	GameDiscardsLayout(const std::array<std::unique_ptr<Player>, Constants::PLAYERS_NUM>& players);
+
+	/**
+	 * @brief draws rectangles for debug purposes.
+	 */
 	void drawHitBoxes() const;
 };

@@ -11,7 +11,7 @@
 #include "Graphics/Graphics.h"
 #include "Graphics/Paths.h"
 #include "Input/Controller.h"
-#include "Layouts/TilesLayouts.h"
+#include "Layouts/TileLayouts.h"
 #include "raylib.h"
 #include <array>
 #include <memory>
@@ -28,6 +28,7 @@ int main() {
     ,std::make_unique<Player>(), std::make_unique<Player>());
     Graphics graphics;
     graphics.init();
+    bool debugMode = false;
     
     game.dictateWinds();
     game.dealInitTiles();
@@ -47,13 +48,6 @@ int main() {
         if (IsKeyPressed(KEY_F11)) {
             ToggleFullscreen();
         }
-
-
-        
-        
-        
-       
-
         if (game.getState() == GameState::WAITING_FOR_DRAW_INPUT) {
             int currentPlayerId = game.getCurrentPlayerId();
             const Hand& currentHand = game.getCurrentPlayer().getHand();
@@ -71,6 +65,7 @@ int main() {
 
         }
         else {
+            game.update();
             graphics.drawBackground();
             graphics.drawWinds(game.getPlayer(0).getWind());
             graphics.drawTilesLeft(game.getTilesLeft());
@@ -79,16 +74,18 @@ int main() {
             GameDiscardsLayout discardsLayouts(game.getPlayers());
             graphics.drawDiscards(game.getPlayers(), discardsLayouts.layouts);
             graphics.drawHand(((game.getPlayer(0)).getHand()), myHandLayout, myMeldsLayout);
-            //discardsLayouts.drawHitBoxes();
-            game.update();
+
+            if (IsKeyPressed(KEY_F3)) {
+                debugMode = !debugMode;
+            }
+            if (debugMode) {
+                Vector2 mousePos(GetMousePosition());
+                graphics.drawTileHitBox(myHandLayout);
+                graphics.drawDiscardsHitboxes(discardsLayouts);
+                DrawText(TextFormat("%.0f,%.0f", mousePos.x, mousePos.y), mousePos.x + 15, mousePos.y, 20, RED);
+                DrawFPS(10, 10);
+            }
         }
-
-
-        
-
-        
-        
-        DrawFPS(10, 10);
         EndDrawing();
     }
     graphics.clean();

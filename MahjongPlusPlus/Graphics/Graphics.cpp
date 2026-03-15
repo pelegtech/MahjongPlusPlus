@@ -3,6 +3,7 @@
 #include "Graphics/TileGraphics.h"
 #include "Core/Player.h"
 #include "Core/GameTypes.h"
+#include "Layouts\TileLayouts.h"
 
 Graphics::Graphics() = default;
 Graphics::~Graphics() = default;
@@ -37,22 +38,28 @@ void Graphics::drawTilesLeft(int tilesLeft) {
 		TILES_COUNTER_SIZE, RED);
 }
 
-void Graphics::drawTileHitBox(const Hand& hand, const HandTilesLayout& layout) const
+void Graphics::drawTileHitBox(const HandTilesLayout& layout) const
 {
-	handTilesRenderer->drawHitBoxes(hand,layout);
+	handTilesRenderer->drawHitBoxes(layout);
 	Vector2 mousePos = GetMousePosition();
 	DrawCircleV(mousePos, 5.0f, RED);
 }
 
 void Graphics::drawWinds(Wind perspectiveWind) const
 {
-	std::string WINDSTR[4] = {"E","S","W","N"};
+	static const char* WINDSTR[4] = {"E","S","W","N"};
+	Vector2 POSITIONS[4] = { MY_WIND_POS,RIGHT_WIND_POS,TOP_WIND_POS, LEFT_WIND_POS };
 	int playerWind = static_cast<int>(perspectiveWind);
-	DrawText(WINDSTR[playerWind].c_str(), MY_WIND_POS.x, MY_WIND_POS.y, 100, RED);
-	DrawText(WINDSTR[(playerWind + 1) % 4].c_str(), RIGHT_WIND_POS.x, RIGHT_WIND_POS.y, 100, BLACK);
-	DrawText(WINDSTR[(playerWind + 2) % 4].c_str(), TOP_WIND_POS.x, TOP_WIND_POS.y, 100, BLACK);
-	DrawText(WINDSTR[(playerWind + 3) % 4].c_str(), LEFT_WIND_POS.x, LEFT_WIND_POS.y, 100, BLACK);
+	for(int i = 0; i < Constants::PLAYERS_NUM; i++){
+		DrawText(WINDSTR[(playerWind + i) % 4], POSITIONS[i].x, POSITIONS[i].y, WIND_INDICATOR_SIZE, (((playerWind + i) % 4) == 0) ? RED : BLACK);
+	}
 }
+
+void Graphics::drawDiscardsHitboxes(const GameDiscardsLayout& layout) const
+{
+	layout.drawHitBoxes();
+}
+
 
 
 void Graphics::drawHand(const Hand& hand,

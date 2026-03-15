@@ -1,4 +1,4 @@
-#include "Layouts/TilesLayouts.h"
+#include "Layouts/TileLayouts.h"
 #include "Core/Hand.h"
 #include "Core/Meld.h"
 #include "Core/Discards.h"
@@ -212,202 +212,6 @@ PlayerDiscardsLayout::PlayerDiscardsLayout(const Discards& discards, RelativePos
 	
 }
 
-//void PlayerDiscardsLayout::selfDiscardsLayout(const Discards& discards)
-//{
-//	size = discards.getSize();
-//	int riichiId = discards.getRiichiId();
-//	if (riichiId == -1) {
-//		for (int i = 0; i < size; i++) {
-//			int row = i / TILES_IN_ROW;
-//			int col = i % TILES_IN_ROW;
-//			Rectangle current = { MY_PILE_POS.x + (col * TILE_WIDTH),
-//				MY_PILE_POS.y + row * TILE_HEIGHT
-//			,TILE_WIDTH, TILE_HEIGHT };
-//			recs[i] = current;
-//		}
-//	}
-//	else {
-//		int riichiRow = riichiId / TILES_IN_ROW;
-//		for (int i = 0; i < size; i++) {
-//			int row = i / TILES_IN_ROW;
-//			int col = i % TILES_IN_ROW;
-//			if (i < riichiId || (i > riichiId && row != riichiRow)) {
-//				Rectangle current = { MY_PILE_POS.x + (col * TILE_WIDTH),
-//					MY_PILE_POS.y + row * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT };
-//				recs[i] = current;
-//			}
-//			else if (i > riichiId && (row  == riichiRow)) {
-//				Rectangle current = { MY_PILE_POS.x + (col * TILE_WIDTH) - TILE_WIDTH + TILE_HEIGHT,
-//					MY_PILE_POS.y + row * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT };
-//				recs[i] = current;
-//			}
-//			else if (i == riichiId) {
-//				Rectangle current = { MY_PILE_POS.x + (col * TILE_WIDTH),
-//					MY_PILE_POS.y + row * TILE_HEIGHT + TILE_HEIGHT - TILE_WIDTH
-//				,TILE_HEIGHT, TILE_WIDTH };
-//				recs[i] = current;
-//			}
-//		}
-//	}
-//}
-//
-//void PlayerDiscardsLayout::leftDiscardsLayout(const Discards& discards)
-//{
-//	size = discards.getSize();
-//	int riichiId = discards.getRiichiId();
-//	if (riichiId == -1) {
-//		for (int i = 0; i < size; i++) {
-//			int row = i / TILES_IN_ROW;
-//			int col = i % TILES_IN_ROW;
-//			Rectangle current = { LEFT_PILE_POS.x - (row * TILE_HEIGHT),LEFT_PILE_POS.y + (col * TILE_WIDTH),
-//			TILE_HEIGHT,TILE_WIDTH };
-//			recs[i] = current;
-//		}
-//	}
-//	else {
-//		int riichiRow = riichiId / TILES_IN_ROW;
-//		for (int i = 0; i < size; i++) {
-//			int row = i / TILES_IN_ROW;
-//			int col = i % TILES_IN_ROW;
-//			if (i < riichiId || (i > riichiId && row != riichiRow)) {
-//				Rectangle current = { LEFT_PILE_POS.x - (row * TILE_HEIGHT),LEFT_PILE_POS.y + (col * TILE_WIDTH),
-//				TILE_HEIGHT,TILE_WIDTH };
-//				recs[i] = current;
-//			}
-//			else if (i > riichiId && (row == riichiRow)) {
-//				Rectangle current = { LEFT_PILE_POS.x - (row * TILE_HEIGHT),
-//					LEFT_PILE_POS.y + (col * TILE_WIDTH) - TILE_WIDTH + TILE_HEIGHT,
-//				TILE_HEIGHT,TILE_WIDTH };
-//				recs[i] = current;
-//			}
-//			else if (i == riichiId) {
-//				Rectangle current = { LEFT_PILE_POS.x - (row * TILE_HEIGHT) - TILE_HEIGHT + TILE_WIDTH
-//					,LEFT_PILE_POS.y + (col * TILE_WIDTH),
-//				TILE_WIDTH,TILE_HEIGHT };
-//				recs[i] = current;
-//			}
-//		}
-//	}
-//}
-//
-//void PlayerDiscardsLayout::rightDiscardsLayout(const Discards& discards)
-//{
-//	size = discards.getSize();
-//	int riichiId = discards.getRiichiId();
-//	if (riichiId == -1) {
-//		for (int i = 0; i < size; i++) {
-//			int row = i / TILES_IN_ROW;
-//			int col = i % TILES_IN_ROW;
-//			Rectangle current = { RIGHT_PILE_POS.x + (row * TILE_HEIGHT), RIGHT_PILE_POS.y - (col * TILE_WIDTH),
-//			TILE_HEIGHT, TILE_WIDTH };
-//			recs[i] = current;
-//		}
-//	}
-//	else {
-//		int riichiRow = riichiId / TILES_IN_ROW;
-//		for (int i = 0; i < size; i++) {
-//			int row = i / TILES_IN_ROW;
-//			int col = i % TILES_IN_ROW;
-//			if (i < riichiId || (i > riichiId && row != riichiRow)) {
-//				Rectangle current = { RIGHT_PILE_POS.x + (row * TILE_HEIGHT), RIGHT_PILE_POS.y - (col * TILE_WIDTH),
-//				TILE_HEIGHT, TILE_WIDTH };
-//				recs[i] = current;
-//			}
-//			else if (i > riichiId && (row == riichiRow)) {
-//				Rectangle current = { RIGHT_PILE_POS.x + (row * TILE_HEIGHT),
-//					RIGHT_PILE_POS.y - (col * TILE_WIDTH) - TILE_HEIGHT + TILE_WIDTH,
-//				TILE_HEIGHT, TILE_WIDTH };
-//				recs[i] = current;
-//			}
-//			else if (i == riichiId) {
-//				Rectangle current = { RIGHT_PILE_POS.x + (row * TILE_HEIGHT), RIGHT_PILE_POS.y - (col * TILE_WIDTH),
-//				TILE_WIDTH, TILE_HEIGHT };
-//				recs[i] = current;
-//			}
-//		}
-//	}
-//}
-//
-//void PlayerDiscardsLayout::topDiscardsLayout(const Discards& discards)
-//{
-//	size = discards.getSize();
-//	int riichiId = discards.getRiichiId();
-//	if (riichiId == -1) {
-//		for (int i = 0; i < size; i++) {
-//			int row = i / TILES_IN_ROW;
-//			int col = i % TILES_IN_ROW;
-//			Rectangle current = { TOP_PILE_POS.x - (col * TILE_WIDTH), TOP_PILE_POS.y - (row * TILE_HEIGHT),
-//			TILE_WIDTH,TILE_HEIGHT };
-//			recs[i] = current;
-//		}
-//	}
-//	else {
-//		int riichiRow = riichiId / TILES_IN_ROW;
-//		for (int i = 0; i < size; i++) {
-//			int row = i / TILES_IN_ROW;
-//			int col = i % TILES_IN_ROW;
-//			if (i < riichiId || (i > riichiId && row != riichiRow)) {
-//				Rectangle current = { TOP_PILE_POS.x - (col * TILE_WIDTH), TOP_PILE_POS.y - (row * TILE_WIDTH),
-//				TILE_WIDTH,TILE_HEIGHT };
-//				recs[i] = current;
-//			}
-//			else if (i > riichiId && (row == riichiRow)) {
-//				Rectangle current = { TOP_PILE_POS.x - (col * TILE_WIDTH) + TILE_HEIGHT - TILE_WIDTH
-//					, TOP_PILE_POS.y - (row * TILE_WIDTH),
-//				TILE_WIDTH,TILE_HEIGHT };
-//				recs[i] = current;
-//			}
-//			else if (i == riichiId) {
-//				Rectangle current = { TOP_PILE_POS.x - (col * TILE_WIDTH), TOP_PILE_POS.y - (row * TILE_WIDTH),
-//				TILE_HEIGHT,TILE_WIDTH };
-//				recs[i] = current;
-//			}
-//		}
-//	}
-//}
-//
-//void PlayerDiscardsLayout::ultimateDiscardsLayout(const Discards& discards, RelativePosition position)
-//{
-//	size = discards.getSize();
-//	int posNum = static_cast<int>(position);
-//	int riichiId = discards.getRiichiId();
-//	if (riichiId == -1) {
-//		for (int i = 0; i < size; i++) {
-//			int row = i / TILES_IN_ROW;
-//			int col = i % TILES_IN_ROW;
-//			float currentX = posConsts[posNum].position.x + col * posConsts[posNum].colStep.x + row * posConsts[posNum].rowStep.x;
-//			float currentY = posConsts[posNum].position.y + col * posConsts[posNum].colStep.y + row * posConsts[posNum].rowStep.y;
-//			Rectangle current = { currentX, currentY, posConsts[posNum].width,posConsts[posNum].height };
-//			recs[i] = current;
-//		}
-//	}
-//	else {
-//		int riichiRow = riichiId / TILES_IN_ROW;
-//		for (int i = 0; i < size; i++) {
-//			int row = i / TILES_IN_ROW;
-//			int col = i % TILES_IN_ROW;
-//			float currentX = posConsts[posNum].position.x + col * posConsts[posNum].colStep.x + row * posConsts[posNum].rowStep.x;
-//			float currentY = posConsts[posNum].position.y + col * posConsts[posNum].colStep.y + row * posConsts[posNum].rowStep.y;
-//			if (i < riichiId || (i > riichiId && row != riichiRow)) {
-//				Rectangle current = { currentX, currentY, posConsts[posNum].width,posConsts[posNum].height };
-//				recs[i] = current;
-//			}
-//			else if (i > riichiId && (row == riichiRow)) {
-//				currentX += posConsts[posNum].afterRiichiShift.x;
-//				currentY += posConsts[posNum].afterRiichiShift.y;
-//				Rectangle current = { currentX, currentY, posConsts[posNum].width,posConsts[posNum].height };
-//				recs[i] = current;
-//			}
-//			else if (i == riichiId) {
-//				currentX += posConsts[posNum].riichiOffset.x;
-//				currentY += posConsts[posNum].riichiOffset.y;
-//				Rectangle current = { currentX, currentY,posConsts[posNum].height, posConsts[posNum].width };
-//				recs[i] = current;
-//			}
-//		}
-//	}
-//}
-
 RelativePosition GameDiscardsLayout::getRelativePosition(Wind perspective, Wind other)
 {
 	RelativePosition res = static_cast<RelativePosition>( (static_cast<int>(perspective)
@@ -427,15 +231,12 @@ GameDiscardsLayout::GameDiscardsLayout(const std::array<std::unique_ptr<Player>,
 void GameDiscardsLayout::drawHitBoxes() const
 {	
 	for (const auto& layout : layouts) {
-		for (int i = 0; i < layout.recs.size(); i++) {
+		for (int i = 0; i < layout.size; i++) {
 			DrawRectangleLinesEx(layout.recs[i], 4.0f, GOLD);
 		}
 	}
-
 	DrawCircleV(PlayerDiscardsLayout::MY_PILE_POS, 5.0f, RED);
 	DrawCircleV(PlayerDiscardsLayout::RIGHT_PILE_POS, 5.0f, GREEN);
 	DrawCircleV(PlayerDiscardsLayout::LEFT_PILE_POS, 5.0f, RED);
 	DrawCircleV(PlayerDiscardsLayout::TOP_PILE_POS, 5.0f, RED);
-
-
 }

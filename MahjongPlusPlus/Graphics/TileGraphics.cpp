@@ -174,9 +174,9 @@ void HandTilesRenderer::draw(const Hand& hand, const HandTilesLayout& handTilesL
 	}
 }
 
-void HandTilesRenderer::drawHitBoxes(const Hand& hand, const HandTilesLayout& handTilesLayout) const
+void HandTilesRenderer::drawHitBoxes(const HandTilesLayout& handTilesLayout) const
 {
-	for (int i = 0; i < hand.freeTilesNum();i++) {
+	for (int i = 0; i < handTilesLayout.size ;i++) {
 		DrawRectangleLinesEx(handTilesLayout.recs[i], 4.0f, GOLD);
 	}
 }

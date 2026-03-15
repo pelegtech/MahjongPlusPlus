@@ -55,7 +55,7 @@
     <ClCompile Include="Input\Controller.cpp" />
     <ClCompile Include="Input\InputManager.cpp" />
     <ClCompile Include="Layouts\Buttons.cpp" />
-    <ClCompile Include="Layouts\TilesLayouts.cpp" />
+    <ClCompile Include="Layouts\TileLayouts.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -77,7 +77,7 @@
     <ClInclude Include="Input\Controller.h" />
     <ClInclude Include="Input\InputManager.h" />
     <ClInclude Include="Layouts\Buttons.h" />
-    <ClInclude Include="Layouts\TilesLayouts.h" />
+    <ClInclude Include="Layouts\TileLayouts.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

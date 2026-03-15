@@ -1,7 +1,7 @@
 #pragma once
 #include "raylib.h"
 #include "Core/GameTypes.h"
-#include "Layouts/TilesLayouts.h"
+#include "Layouts/TileLayouts.h"
 #include <iostream>
 #include <memory>
 #include <string>
@@ -92,7 +92,7 @@ public:
 	 * @brief draws the tile hitboxes for debugging purposes.
 	 * @param hand to be described.
 	 */
-	void drawHitBoxes(const Hand& hand, const HandTilesLayout& handTilesLayout) const;
+	void drawHitBoxes( const HandTilesLayout& handTilesLayout) const;
 
 
 	

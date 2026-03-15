@@ -1,6 +1,6 @@
 #include "Input/Controller.h"
 #include "Input/InputManager.h"
-#include "Layouts/TilesLayouts.h"
+#include "Layouts/TileLayouts.h"
 #include "Core/Hand.h"
 
 int HumanController::decideDiscard(const Hand& hand,

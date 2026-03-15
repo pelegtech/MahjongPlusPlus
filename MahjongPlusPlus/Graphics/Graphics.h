@@ -10,9 +10,11 @@ class Player;
 class Hand;
 struct HandTilesLayout;
 struct MeldsLayout;
+struct GameDiscardsLayout;
 class HandTilesRenderer;
 class DiscardTilesRenderer;
 struct PlayerDiscardsLayout;
+
 
 /**
 * @class Graphics
@@ -23,13 +25,13 @@ public:
 	static constexpr int SCREEN_WIDTH = 1920;
 	static constexpr int SCREEN_HEIGHT = 1080;
 	static constexpr int HAND_SIZE = 14;
-	static constexpr Vector2 TILES_COUNTER_POSITION = { 700,480 };
-	static constexpr int TILES_COUNTER_SIZE = 50;
-	static constexpr Vector2 MY_WIND_POS = { 200,800 };
-	static constexpr Vector2 LEFT_WIND_POS = { 100,500 };
-	static constexpr Vector2 RIGHT_WIND_POS = { 1800,500 };
-	static constexpr Vector2 TOP_WIND_POS = { 1000,100 };
-	static constexpr Vector2 CURRENT_WIND_POS = { 700,500 };
+	static constexpr Vector2 TILES_COUNTER_POSITION = { 890,415 };
+	static constexpr int TILES_COUNTER_SIZE = 20;
+	static constexpr Vector2 MY_WIND_POS = { 950,570 };
+	static constexpr Vector2 LEFT_WIND_POS = { 800,430 };
+	static constexpr Vector2 RIGHT_WIND_POS = { 1110,430 };
+	static constexpr Vector2 TOP_WIND_POS = { 950,300 };
+	static constexpr int WIND_INDICATOR_SIZE = 30;
 
 	Graphics();
 	~Graphics();
@@ -68,9 +70,11 @@ public:
 	 * @brief draw mouse and hand tiles hitboxes for debug purposes
 	 * @param hand to be drawn
 	 */
-	void drawTileHitBox(const Hand& hand, const HandTilesLayout& layout) const;
+	void drawTileHitBox(const HandTilesLayout& layout) const;
 
 	void drawWinds(Wind perspectiveWind) const;
+
+	void drawDiscardsHitboxes(const GameDiscardsLayout& layout) const;
 
 
 private:
