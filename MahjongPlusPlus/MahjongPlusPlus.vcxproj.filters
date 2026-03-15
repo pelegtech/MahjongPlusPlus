@@ -15,117 +15,173 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="assets\background.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\background.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\backup (2).png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\backup (3).png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\backup (4).png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\backup.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\backup.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\buttons.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\discard_tiles - COPYY.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\discard_tiles.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\discard_tiles_l.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\discard_tiles_r.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\discard_tiles_u.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\discard_tiles2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\meld_tiles.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\mjs_tiles - Copy.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\mjs_tiles.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\tsumo.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Core\Debug.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Discards.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Hand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Kan.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Meld.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\MoveOption.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Tile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Triplet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Wall.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Graphics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\TileGraphics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\Controller.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\InputManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Layouts\Buttons.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Layouts\TilesLayouts.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Tile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Hand.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Meld.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Discards.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Wall.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Kan.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Triplet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TileGraphics.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MoveOption.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Buttons.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TilesLayouts.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Controller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Tile.h">
+    <ClInclude Include="Core\Debug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Hand.h">
+    <ClInclude Include="Core\Discards.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Meld.h">
+    <ClInclude Include="Core\Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
+    <ClInclude Include="Core\GameTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Discards.h">
+    <ClInclude Include="Core\Hand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameTypes.h">
+    <ClInclude Include="Core\Kan.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Wall.h">
+    <ClInclude Include="Core\Meld.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Debug.h">
+    <ClInclude Include="Core\MoveOption.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Triplet.h">
+    <ClInclude Include="Core\Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Kan.h">
+    <ClInclude Include="Core\Tile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game.h">
+    <ClInclude Include="Core\Triplet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics.h">
+    <ClInclude Include="Core\Wall.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InputManager.h">
+    <ClInclude Include="Graphics\Graphics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Paths.h">
+    <ClInclude Include="Graphics\Paths.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TileGraphics.h">
+    <ClInclude Include="Graphics\TileGraphics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MoveOption.h">
+    <ClInclude Include="Input\Controller.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Buttons.h">
+    <ClInclude Include="Input\InputManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TilesLayouts.h">
+    <ClInclude Include="Layouts\Buttons.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Controller.h">
+    <ClInclude Include="Layouts\TilesLayouts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

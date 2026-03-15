@@ -18,6 +18,67 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\background.bmp" />
+    <Image Include="assets\background.jpg" />
+    <Image Include="assets\backup (2).png" />
+    <Image Include="assets\backup (3).png" />
+    <Image Include="assets\backup (4).png" />
+    <Image Include="assets\backup.jpg" />
+    <Image Include="assets\backup.png" />
+    <Image Include="assets\buttons.png" />
+    <Image Include="assets\discard_tiles - COPYY.png" />
+    <Image Include="assets\discard_tiles.png" />
+    <Image Include="assets\discard_tiles2.png" />
+    <Image Include="assets\discard_tiles_l.png" />
+    <Image Include="assets\discard_tiles_r.png" />
+    <Image Include="assets\discard_tiles_u.png" />
+    <Image Include="assets\meld_tiles.png" />
+    <Image Include="assets\mjs_tiles - Copy.png" />
+    <Image Include="assets\mjs_tiles.png" />
+    <Image Include="assets\tsumo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Core\Debug.cpp" />
+    <ClCompile Include="Core\Discards.cpp" />
+    <ClCompile Include="Core\Game.cpp" />
+    <ClCompile Include="Core\Hand.cpp" />
+    <ClCompile Include="Core\Kan.cpp" />
+    <ClCompile Include="Core\Meld.cpp" />
+    <ClCompile Include="Core\MoveOption.cpp" />
+    <ClCompile Include="Core\Player.cpp" />
+    <ClCompile Include="Core\Tile.cpp" />
+    <ClCompile Include="Core\Triplet.cpp" />
+    <ClCompile Include="Core\Wall.cpp" />
+    <ClCompile Include="Graphics\Graphics.cpp" />
+    <ClCompile Include="Graphics\TileGraphics.cpp" />
+    <ClCompile Include="Input\Controller.cpp" />
+    <ClCompile Include="Input\InputManager.cpp" />
+    <ClCompile Include="Layouts\Buttons.cpp" />
+    <ClCompile Include="Layouts\TilesLayouts.cpp" />
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Core\Debug.h" />
+    <ClInclude Include="Core\Discards.h" />
+    <ClInclude Include="Core\Game.h" />
+    <ClInclude Include="Core\GameTypes.h" />
+    <ClInclude Include="Core\Hand.h" />
+    <ClInclude Include="Core\Kan.h" />
+    <ClInclude Include="Core\Meld.h" />
+    <ClInclude Include="Core\MoveOption.h" />
+    <ClInclude Include="Core\Player.h" />
+    <ClInclude Include="Core\Tile.h" />
+    <ClInclude Include="Core\Triplet.h" />
+    <ClInclude Include="Core\Wall.h" />
+    <ClInclude Include="Graphics\Graphics.h" />
+    <ClInclude Include="Graphics\Paths.h" />
+    <ClInclude Include="Graphics\TileGraphics.h" />
+    <ClInclude Include="Input\Controller.h" />
+    <ClInclude Include="Input\InputManager.h" />
+    <ClInclude Include="Layouts\Buttons.h" />
+    <ClInclude Include="Layouts\TilesLayouts.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -104,7 +165,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\raylibM\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);C:\raylibM\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -121,7 +182,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\raylibM\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);C:\raylibM\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -132,47 +193,6 @@
       <AdditionalDependencies>raylib.lib;winmm.lib;gdi32.lib;user32.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Buttons.cpp" />
-    <ClCompile Include="Controller.cpp" />
-    <ClCompile Include="Debug.cpp" />
-    <ClCompile Include="Discards.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Graphics.cpp" />
-    <ClCompile Include="Hand.cpp" />
-    <ClCompile Include="InputManager.cpp" />
-    <ClCompile Include="Kan.cpp" />
-    <ClCompile Include="TilesLayouts.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Meld.cpp" />
-    <ClCompile Include="MoveOption.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Tile.cpp" />
-    <ClCompile Include="TileGraphics.cpp" />
-    <ClCompile Include="Triplet.cpp" />
-    <ClCompile Include="Wall.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Buttons.h" />
-    <ClInclude Include="Controller.h" />
-    <ClInclude Include="TilesLayouts.h" />
-    <ClInclude Include="Paths.h" />
-    <ClInclude Include="Debug.h" />
-    <ClInclude Include="Discards.h" />
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="GameTypes.h" />
-    <ClInclude Include="Graphics.h" />
-    <ClInclude Include="Hand.h" />
-    <ClInclude Include="InputManager.h" />
-    <ClInclude Include="Kan.h" />
-    <ClInclude Include="Meld.h" />
-    <ClInclude Include="MoveOption.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="Tile.h" />
-    <ClInclude Include="TileGraphics.h" />
-    <ClInclude Include="Triplet.h" />
-    <ClInclude Include="Wall.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

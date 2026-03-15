@@ -1,22 +1,22 @@
-﻿#include "raylib.h"
-#include "Tile.h"
+﻿#include "Core/Tile.h"
+#include "Core/Wall.h"
+#include "Core/Hand.h"
+#include "Core/Player.h"
+#include "Core/Meld.h"
+#include "Core/Debug.h"
+#include "Core/Triplet.h"
+#include "Core/Kan.h"
+#include "Core/Game.h"
+#include "Input/InputManager.h"
+#include "Graphics/Graphics.h"
+#include "Graphics/Paths.h"
+#include "Input/Controller.h"
+#include "Layouts/TilesLayouts.h"
+#include "raylib.h"
+#include <array>
+#include <memory>
 #include <vector>
 #include <iostream>
-#include "Wall.h"
-#include "Hand.h"
-#include "Player.h"
-#include "Meld.h"
-#include "Debug.h"
-#include "Triplet.h"
-#include "Kan.h"
-#include "Game.h"
-#include "InputManager.h"
-#include "Graphics.h"
-#include "Paths.h"
-#include "Controller.h"
-#include <memory>
-#include "TilesLayouts.h"
-#include <array>
 
 
 int main() {
