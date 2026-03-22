@@ -69,9 +69,12 @@
     <Image Include="assets\tsumo.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="assets\meld_tiles_r.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Core\Debug.cpp">
+    <ClCompile Include="Debug\Debug.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Core\Discards.cpp">
@@ -116,10 +119,16 @@
     <ClCompile Include="Input\InputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Layouts\Buttons.cpp">
+    <ClCompile Include="UI\Button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Layouts\TileLayouts.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\MeldSelection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\CallSelection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
@@ -127,7 +136,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Core\Debug.h">
+    <ClInclude Include="Debug\Debug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Core\Discards.h">
@@ -178,11 +187,20 @@
     <ClInclude Include="Input\InputManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Layouts\Buttons.h">
+    <ClInclude Include="UI\Button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Layouts\TileLayouts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="UI\MeldSelection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\CallSelection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="gamelog.txt" />
   </ItemGroup>
 </Project>

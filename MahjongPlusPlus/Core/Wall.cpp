@@ -1,4 +1,6 @@
 #include "Core/Wall.h"
+#include "Debug/Debug.h"
+
 
 Wall::Wall():doraNum(1), tail(Tile::TOTAL_TILES_NUM - 1), head(0){
 	//reserve space for vectors and initiate the tiles in sequence order
@@ -27,8 +29,10 @@ const Tile& Wall::draw() {
 	if (tilesLeft() <= 0) {
  		throw emptyWall();
 	}
-	
-	return wall[tail--];
+	int resId = tail;
+	tail--;
+	Log::add(wall[resId].getName());
+	return wall[resId];
 }
 
 int Wall::addedKanCount() const{

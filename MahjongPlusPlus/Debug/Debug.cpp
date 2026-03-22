@@ -161,5 +161,20 @@ std::string Debug::windToStr(const Wind& wind)
 	}
 }
 
+std::ofstream& Log::getStream()
+{
+	static std::ofstream logFile("gamelog.txt", std::ios::trunc);
+	return logFile;
+}
 
+void Log::init()
+{
+	{
+		getStream() << "----Game Start----\n";
+	}
+}
 
+void Log::add(const std::string& msg)
+{
+	getStream() << msg << "\n";
+}

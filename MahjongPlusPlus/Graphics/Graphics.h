@@ -76,8 +76,13 @@ public:
 
 	void drawDiscardsHitboxes(const GameDiscardsLayout& layout) const;
 
+	void highlightLastDiscard(const PlayerDiscardsLayout layout) const;
+
+	DiscardTilesRenderer& getDiscardRenderer() const;
+
 
 private:
+	
 	Texture2D background;
 	Texture2D discardTiles;
 	std::unique_ptr<HandTilesRenderer> handTilesRenderer;

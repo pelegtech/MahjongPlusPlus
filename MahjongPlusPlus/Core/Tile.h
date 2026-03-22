@@ -40,6 +40,13 @@ public:
 		}
 	};
 
+	class EmptyTile: public std::exception {
+	public:
+		const char* what() const noexcept override {
+			return "cannot make operation on an empty tile (id = -1)";
+		}
+	};
+
 
 	//public constants ------------------------------------------
 	static constexpr int TOTAL_TILES_NUM = 136;
@@ -48,9 +55,10 @@ public:
 	static constexpr int AKA_MAN = 16;
 	static constexpr int AKA_PIN = 52;
 	static constexpr int AKA_SOU = 88;
+	static constexpr int EMPTY_TILE_ID = -1;
 
 	//c'tors ------------------------------------------
-	Tile() = default;
+	Tile();
 
 	/** @brief creates a tile based on id alone.
 	* @param id Integer in the range [0,135].

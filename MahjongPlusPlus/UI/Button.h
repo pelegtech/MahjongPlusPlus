@@ -5,9 +5,14 @@
 
 class Button {
 public:
-	Button(Vector2 position, std::string text, MoveType move);
 
-	Button(Rectangle rec, std::string text, MoveType move);
+	Button();
+
+	Button(std::string text, Vector2 position, MoveType move);
+
+	static Button InaccessibleButton();
+
+	explicit Button(std::string text, Rectangle rec, MoveType move) ;
 
 	const Rectangle& getRec() const;
 
@@ -24,8 +29,7 @@ public:
 	static constexpr float OUTLINE_THICKNESS = 2.0f;
 
 private:
-	
-	Rectangle rec;
 	std::string text;
 	MoveType move;
+	Rectangle rec;
 };

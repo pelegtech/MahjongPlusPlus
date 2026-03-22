@@ -3,10 +3,17 @@
 #include "Core/Meld.h"
 #include "Core/Kan.h"
 #include <iostream>
+#include "Tile.h"
+#include "Debug/Debug.h"
 
 
 void Player::Draw(Wall& wall) {
 	hand.drawTile(wall.draw());
+}
+
+void Player::addTileFromWall(Wall& wall)
+{
+	hand.addTile(wall.draw());
 }
 
 void Player::setWind(Wind wind) {
@@ -18,12 +25,17 @@ void Player::setScore(int score) {
 
 void Player::Discard(int index) {
 	
-	if (index == hand.freeTilesNum() - 1) {
+	if (index == hand.getHandTilesNum()) {
 		hand.discardDrawnTile(discards);
 	}
 	else {
-		hand.discardHandTile(discards,index);
-		hand.addDrawnTile();
+		if (hand.isHoldingDrawnTile()) {
+			hand.discardHandTile(discards, index);
+			hand.addDrawnTile();
+		}
+		else {
+			hand.discardHandTile(discards, index);
+		}
 	}
 }
 
@@ -35,12 +47,23 @@ const Hand& Player::getHand() const {
 	return hand;
 }
 
-const Discards& Player::getDiscards() const {
+Discards& Player::getDiscards() {
 	return discards;
 }
 
+const Discards& Player::getDiscards() const
+{
+	return discards;
+}
+
+
 const Wind& Player::getWind() const {
 	return wind;
+}
+
+const Tile& Player::getLastDiscard() const
+{
+	return discards.getLastDiscard();
 }
 
 TileMarker Player::relativePlace(Wind otherWind) {
@@ -54,14 +77,34 @@ TileMarker Player::relativePlace(Wind otherWind) {
 
 //options:
 
+void Player::executeOption(const MoveOption& option, Discards& discards ,const Wind& otherWind)
+{
+	switch (option.getType()) {
+	case(MoveType::PON):
+		executePon(option, discards, otherWind);
+		//log-------------
+		Log::add("p0 called pon, hand: ");
+		Log::add(hand.handToString());
+		//---------------
+		break;
+	case(MoveType::CHI):
+		executeChi(option, discards, otherWind);
+		//log-------------
+		Log::add("p0 called chi, hand: ");
+		Log::add(hand.handToString());
+		//---------------
+		break;
+	}
+}
+
 bool Player::ponOptions(const Tile& discard) {
 	int counter = 0;
 	Tile option[3];
 	//count the number of equal tiles
-	for (int i = 0; i < hand.freeTilesNum(); i++) {
+	for (int i = 0; i < hand.getHandTilesNum(); i++) {
 		if (counter < 3) {
-			if (Tile::isEqual(discard, hand[i])) {
-				option[counter++] = hand[i];
+			if (Tile::isEqual(discard, hand.getHandTile(i))) {
+				option[counter++] = hand.getHandTile(i);
 			}
 		}
 	}
@@ -89,7 +132,98 @@ void Player::executePon(const MoveOption& chosenOption,
 		chosenOption.tiles[1], relativePlace(otherWind));
 }
 
-void Player::updateOptionsDiscard(const Tile& tile)
+bool Player::chiOptions(const Tile& discard, const Wind& wind)
 {
-	ponOptions(tile);
+	if (getRelativePosition(wind) != RelativePosition::LEFT) {
+		return 0;
+	}
+
+	std::array<int, 4> foundId; //this will show the hand id of found 2 away adjacent tiles to the discard tile.
+	foundId.fill(-1);
+	bool akadoraCase = false;
+	bool flag = false;
+	int discardValue = discard.getValue();
+	Suit discardSuit = discard.getSuit();
+
+	//can't make a chi with an honor tile.
+	if (discardSuit == Suit::HONOR) {
+		return false;
+	}
+	
+	//go over hand tiles to find if they are 2 tile adjacent to the discarded tile.
+	for (int i = 0; i < hand.getHandTilesNum(); i++) {
+		Tile currentTile = hand.getHandTile(i);
+		if (currentTile.getSuit() != discardSuit) {
+			continue;
+		}
+		for (int j = -2; j <= 2; j++) {
+			if (j != 0) {
+				if (currentTile.getValue() == discardValue + j) {
+					int index = j + 2 - (j > 0); // maps the numbers {-2,-1,1,2} to {0,1,2,3} respectively for easy array insertion.
+
+					//checks if an akadora tile was overwritten by a non akadora so that both options will be accounted for.
+					if (foundId[index] != -1 && hand.getHandTile(foundId[index]).isAkadora()) {
+						akadoraCase = true; 
+					}
+					foundId[index] = i;
+				}
+			}
+		}
+	}
+
+	//this loop goes over the found 2 away adjacent tiles and if there are two adjacent ones they will be 
+	//counted as a chi along with  the discarded tile.
+	for (int i = 0; i < 3; i++) {
+		if (foundId[i] != -1 && foundId[i + 1] != -1) { 
+			options.push_back(MoveOption(MoveType::CHI, { hand.getHandTile(foundId[i]),hand.getHandTile(foundId[i + 1]) }));
+			flag = true;
+			if (akadoraCase) { //in case of akadora we make the same option with an akadora tile that was overwritten earlier.
+				if (hand.getHandTile(foundId[i]).getValue() == 5) {
+					options.push_back(
+						MoveOption(MoveType::CHI,{ Tile::tileFromSpecs(hand.getHandTile(foundId[i]).getSuit(),5,0),hand.getHandTile(foundId[i + 1]) }));
+				}
+				else if (hand.getHandTile(foundId[i + 1]).getValue() == 5) {
+					options.push_back(
+						MoveOption(MoveType::CHI, { hand.getHandTile(foundId[i]),Tile::tileFromSpecs(hand.getHandTile(foundId[i + 1]).getSuit(),5,0) }));
+				}
+			}
+
+		}
+	}
+
+	return flag;
 }
+
+void Player::executeChi(const MoveOption& chosenOption, Discards& discards, const Wind& otherWind)
+{
+	
+	Log::add("trying to chi with the tiles: " + chosenOption.tiles[0].getName() + ", " + chosenOption.tiles[1].getName());
+	Log::add("Current hand: " + hand.handToString());
+	hand.createTriplet<Chi>(discards, chosenOption.tiles[0],
+		chosenOption.tiles[1], relativePlace(otherWind));
+}
+
+RelativePosition Player::getRelativePosition( const Wind& other) const
+{
+	RelativePosition res = static_cast<RelativePosition>((static_cast<int>(wind)
+		- static_cast<int>(other) + Constants::PLAYERS_NUM) % Constants::PLAYERS_NUM);
+	return res;
+}
+
+void Player::updateOptionsDiscard(const Tile& tile, const Wind& otherWind)
+{
+	options.clear();
+	ponOptions(tile);
+	chiOptions(tile,otherWind);
+}
+
+void Player::resetOptions()
+{
+	options.clear();
+}
+
+const std::vector<MoveOption>& Player::getOptions() const
+{
+	return options;
+}
+

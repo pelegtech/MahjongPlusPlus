@@ -1,5 +1,9 @@
 #include "Core/Tile.h"
 #include <exception>
+Tile::Tile()
+{
+	id = EMPTY_TILE_ID;
+}
 //Ctor ----------------------------------------
 Tile::Tile(int id) : id(id){
 	if (id < 0 || id > TOTAL_TILES_NUM -1) {
@@ -54,10 +58,16 @@ int Tile::getId() const {
 }
 
 Suit Tile::getSuit() const {
+	if (id == -1) {
+		throw EmptyTile();
+	}
 	return static_cast<Suit>(id / TILES_IN_SUIT);
 }
 
 int Tile::getValue() const {
+	if (id == -1) {
+		throw EmptyTile();
+	}
 	return ((id % (VALUES_IN_SUIT * COPIES)) / COPIES) + 1;
 }
 

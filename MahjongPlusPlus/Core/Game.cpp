@@ -1,27 +1,26 @@
-#include "Core/Game.h"
+﻿#include "Core/Game.h"
 #include "Core/Player.h"
-#include "Core/Debug.h"
+#include "Debug/Debug.h"
 #include <utility>
 #include <array>
 #include <random>
 #include <algorithm>
 #include <iostream>
+#include <string>
 
 Game::Game(std::unique_ptr<Player> p1,
 	std::unique_ptr<Player> p2,
 	std::unique_ptr<Player> p3,
 	std::unique_ptr<Player> p4) :
 	players{ std::move(p1),std::move(p2),std::move(p3),std::move(p4) },
-	state(GameState::DRAW), currentTurn(Wind::EAST)
-{
-	playersDecisions.fill(MoveType::WAITING);
+	state(GameState::TURN_START), currentTurn(Wind::EAST), playersDecisions{} {
 }
+
 
 void Game::dealInitTiles() {
 	for (int i = 0; i < Hand::MAX_HAND_SIZE - 1; i++) {
 		for (int j = 0; j < PLAYERS_NUM; j++) {
-			players[j]->Draw(wall);
-			
+			players[j]->addTileFromWall(wall);
 		}
 	}	
 	for (int j = 0; j < PLAYERS_NUM; j++) {
@@ -34,38 +33,13 @@ const Player& Game::getPlayer(int index) const {
 	return *players[index];
 }
 
-void Game::update(){
-	switch (state) {
-	case GameState::DRAW:
-		if (wall.tilesLeft() == 0) {
-			state = GameState::GAME_END;
-			break;
-		}
-		currentPlayer().Draw(wall);
-		state = GameState::WAITING_FOR_DRAW_INPUT;
-		break;
-
-	case GameState::WAITING_FOR_DRAW_INPUT:
-		break;
-	}
-	
-
-}
 
 void Game::discardTile(int index)
 {
-	if (currentPlayer().getWind() == Wind::EAST) {
-		std::cout << "next round" << std::endl;
-	}
-	std::cout << Debug::windToStr(currentPlayer().getWind()) << " discarded: " << currentPlayer().getHand()[index] << std::endl;
 	currentPlayer().Discard(index);
-	nextTurn();
-	state = GameState::DRAW;
 }
 
-void Game::playerMoveFromInput(int index) {
-	
-}
+
 
 void Game::dictateWinds() {
 	std::random_device rd;
@@ -85,6 +59,7 @@ int Game::getTilesLeft() const {
 void Game::nextTurn()
 {
 	Wind nextWind = static_cast<Wind>((static_cast<int>(currentTurn) + 1) % 4);
+	Log::add("Changing wind to: " + Debug::windToStr(nextWind));
 	currentTurn = nextWind;
 }
 
@@ -116,6 +91,98 @@ const std::array<std::unique_ptr<Player>, Constants::PLAYERS_NUM>& Game::getPlay
 {
 	return players;
 }
+
+void Game::setState(GameState newState)
+{
+	state = newState;
+}
+
+bool Game::checkingPlayersDecisions()
+{
+	int currentPlayerId = getCurrentPlayerId();
+	for (int i = 0; i < Constants::PLAYERS_NUM; i++) {
+		if (i != currentPlayerId) {
+			if (playersDecisions[i].getType() == MoveType::WAITING) {
+				return false;
+			}
+		}
+	}
+	
+	return true;
+}
+
+int Game::executeDiscardDecision()
+{
+	int currentPlayerId = getCurrentPlayerId();
+	int skipCounter = 0;
+
+	for (int i = 0; i < Constants::PLAYERS_NUM; i++) {
+		if (i != currentPlayerId && playersDecisions[i].getType() == MoveType::SKIP) {
+			skipCounter++;
+		}
+	}
+
+	if (skipCounter == 3) {
+		return currentPlayerId;
+	}
+
+	else if (skipCounter == 2) {
+		for (int i = 0; i < Constants::PLAYERS_NUM; i++) {
+			if (playersDecisions[i].getType() != MoveType::SKIP) {
+				players[i]->executeOption(playersDecisions[i],currentPlayer().getDiscards(),currentPlayer().getWind());
+				return i;
+			}
+		}
+	}
+}
+
+void Game::draw()
+{
+	Log::add("Player num: " + std::to_string(getCurrentPlayerId()) + " Drew: ");
+	currentPlayer().Draw(wall);
+
+}
+
+void Game::setPlayerDecision(int playerIndex, MoveOption newOption)
+{
+	playersDecisions[playerIndex] = newOption;
+}
+
+void Game::resetPlayersDecisions()
+{
+	for (int i = 0; i < Constants::PLAYERS_NUM; i++) {
+		playersDecisions[i] = MoveOption(MoveType::WAITING);
+	}
+}
+
+void Game::resetPlayersOptions()
+{
+	for (int i = 0; i < Constants::PLAYERS_NUM; i++) {
+		players[i]->resetOptions();
+	}
+}
+
+void Game::setTurn(Wind turnPlayerWind)
+{
+	currentTurn = turnPlayerWind;
+}
+
+void Game::updatePlayersOptions()
+{
+	for (int i = 0; i < Constants::PLAYERS_NUM; i++) {
+		if (i != getCurrentPlayerId()) {
+			players[i]->updateOptionsDiscard(getCurrentPlayer().getLastDiscard(),currentTurn);
+		}
+	}
+}
+
+const MoveOption& Game::getPlayerDecision(int playerId) const
+{
+	return playersDecisions[playerId];
+}
+
+
+
 
 Player& Game::currentPlayer()
 {

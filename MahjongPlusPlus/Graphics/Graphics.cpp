@@ -60,6 +60,16 @@ void Graphics::drawDiscardsHitboxes(const GameDiscardsLayout& layout) const
 	layout.drawHitBoxes();
 }
 
+void Graphics::highlightLastDiscard(const PlayerDiscardsLayout layout) const
+{
+	discardTilesRenderer->highlightCurrentDiscard(layout);
+}
+
+DiscardTilesRenderer& Graphics::getDiscardRenderer() const
+{
+	return *discardTilesRenderer;
+}
+
 
 
 void Graphics::drawHand(const Hand& hand,

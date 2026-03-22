@@ -6,6 +6,8 @@
 #include <memory>
 #include <vector>
 #include <exception>
+#include <string>
+#include <array>
 
 
 
@@ -30,6 +32,13 @@ public:
 	public:
 		const char* what() const noexcept override {
 			return "cannot make this operation on a full hand";
+		}
+	};
+
+	class illegalHandSize : public std::exception {
+	public:
+		const char* what() const noexcept override {
+			return "hand holds illegal amount of tiles";
 		}
 	};
 
@@ -63,14 +72,23 @@ public:
 		}
 	};
 
+	class notHoldingDrawnTile : public std::exception {
+	public:
+		const char* what() const noexcept override {
+			return "tried to make operation on drawn tile while not holding any";
+		}
+	};
+
 
 	//public constants -----------------------------------------------------
 	static constexpr int MAX_HAND_SIZE = 14;
+	static constexpr int MAX_HAND_TILES_NUM = 13;
+	static constexpr int MAX_MELDS_NUM = 4;
 
 	//c'tors ---------------------------------------------------------------
 
 	/** @brief creates an empty hand with 0 tiles or melds.*/
-	Hand() = default;
+	Hand();
 
 	/** @brief creates a hand from existing vectors.
 	* @param tiles contains (0-14) tiles. 
@@ -80,15 +98,11 @@ public:
 
 	//operators--------------------------------------------------------------
 
-	/** @brief access the hand tiles. 
-	* @param index  - order of tiles in hand: 1. free tiles, 2. drawn tile, 3.meld tiles
-	* @return read only access to tile
-	*/
-	const Tile& operator[](int index) const; 
+	
 
 	/** @brief  prints the tiles in the hand for debug purposes*/
 	friend std::ostream& operator<<(std::ostream& os, const Hand& hand);
-
+	std::string handToString() const;
 
 	//other methods -------------------------------------------------------
 
@@ -131,29 +145,34 @@ public:
 	void createTriplet(Discards& discardsPile,
 		const Tile& t1,
 		const Tile& t2, TileMarker marker) {
-		std::vector<Tile>::iterator it1 = std::lower_bound(tiles.begin(), tiles.end(), t1);
-		std::vector<Tile>::iterator it2 = std::lower_bound(tiles.begin(), tiles.end(), t2);
-		if (it1 == tiles.end() || it1->getId() != t1.getId() ||
-			 it2 == tiles.end() || it2->getId() != t2.getId()) {
+		auto first = handTiles.begin();
+		auto last = handTiles.begin() + handTilesNum;
+		auto it1 = std::lower_bound(first, last, t1);
+		auto it2 = std::lower_bound(first, last, t2);
+
+		if (it1 == last || it1->getId() != t1.getId() ||
+			 it2 == last || it2->getId() != t2.getId()) {
 			throw tileNotFound();
 		}
+
 		Tile external = discardsPile.removeTile();
-		melds.push_back(std::make_unique<T>(external,
-			std::move(*it1), std::move(*it2), marker));
-		if (it1 < it2) {
-			tiles.erase(it2);
-			tiles.erase(it1);
-		}
-		else {
-			tiles.erase(it1);
-			tiles.erase(it2);
-		}
+		melds.push_back(std::make_unique<T>(external,t1,t2, marker));
+		
+		auto rightIt = std::max(it1, it2);
+		auto leftIt = std::min(it1, it2);
+
+		std::move(rightIt + 1, last, rightIt);
+		std::move(leftIt + 1, last - 1, leftIt);
+
+		handTilesNum -= 2;
 	}
 
 	/** @brief create ankan from 4 tiles in the hand.
 	* @param tile - hand tile to make kan with, MUST be the copy with the lowest tile id.
 	*/
-	void createAnkan(const Tile& tile);
+	void createAnkanDrawn();
+
+	void createAnkanHand(const Tile& tile);
 
 	/** @brief Create a Daiminkan (open kan) using a discarded tile.
 	* @param discardsPile - the pile from which the discarded tile belongs to.
@@ -167,11 +186,12 @@ public:
 	* @param tile - the added tile, from the hand.
 	* @param meldIndex index of the pon in the melds vector.
 	*/
-	void createShouminkan(const Tile& tile, int meldIndex);
+	void createShouminkanDrawn();
+	void createShouminkanHand(const Tile& tile);
 
 
 	//getters ------------------------------------------
-	/** @returns the number of free tiles in the hand*/
+	/** @returns the number of free tiles in the hand including drawn tile*/
 	int freeTilesNum() const; 
 
 	/** @returns the number of tiles counted towards a valid hand
@@ -184,15 +204,27 @@ public:
 	*/
 	int realHandSize() const; //counts kan as 4 tiles
 
-	/** returns the last tile in the free tiles, usually that's the drawn tile*/
-	const Tile& lastTile() const;
+	const Tile& getDrawnTile() const;
+
+	bool isHoldingDrawnTile() const;
+
+	const Tile& getHandTile(int index) const;
+
+	const std::array<Tile, MAX_HAND_TILES_NUM> getHandTiles() const;
+
+	int getHandTilesNum() const;
 
 	const std::vector<std::unique_ptr<Meld>>& getMelds() const;
 
+	void addTile(const Tile& tile);
+
 private:
 	/** @brief includes the free tiles, those can be discarded and be used for a meld*/
-	std::vector<Tile> tiles;
+	std::array<Tile, MAX_HAND_TILES_NUM> handTiles;
 	/** @brief includes the melds, those are locked and cannot be discarded or changed*/
 	std::vector<std::unique_ptr<Meld>> melds;
+	int handTilesNum;
+
+	Tile drawnTile;
 	
 };

@@ -40,8 +40,8 @@ enum class MoveType {
 	SHOUMINKAN,
 	RIICHI,
 	TSUMO,
-	RON
-	
+	RON,
+	COUNT
 };
 
 enum class MeldType {
@@ -53,11 +53,16 @@ enum class MeldType {
 };
 
 enum class GameState {
+	INIT_ROUND,
+	TURN_START,
+	TURN_END,
 	DRAW,
-	WAITING_FOR_DRAW_INPUT,
-	WAITING_FOR_PLAYERS_DISCARD_DCEISIONS,
-	EXECUTE_DISACRD_DECISION,
-	GAME_END
+	WAITING_FOR_TURN_ACTION,
+	EVALUATE_DISCARD,
+	WAITING_FOR_DISCARD_DECISIONS,
+	RESOLVE_CALLS,
+	ROUND_END,
+	GAME_OVER
 };
 
 enum class RelativePosition {
@@ -67,8 +72,16 @@ enum class RelativePosition {
 	RIGHT
 };
 
+enum class UIState {
+	HIDDEN,
+	SELECTING_TYPE,
+	SELECTING_MELD
+};
+
 namespace Constants {
 
 	constexpr int PLAYERS_NUM = 4;
+	constexpr int SCREEN_WIDTH = 1920;
+	constexpr int SCREEN_HEIGHT = 1080;
 }
 

@@ -34,12 +34,13 @@
     <Image Include="assets\discard_tiles_r.png" />
     <Image Include="assets\discard_tiles_u.png" />
     <Image Include="assets\meld_tiles.png" />
+    <Image Include="assets\meld_tiles_r.png" />
     <Image Include="assets\mjs_tiles - Copy.png" />
     <Image Include="assets\mjs_tiles.png" />
     <Image Include="assets\tsumo.png" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Core\Debug.cpp" />
+    <ClCompile Include="Debug\Debug.cpp" />
     <ClCompile Include="Core\Discards.cpp" />
     <ClCompile Include="Core\Game.cpp" />
     <ClCompile Include="Core\Hand.cpp" />
@@ -54,12 +55,14 @@
     <ClCompile Include="Graphics\TileGraphics.cpp" />
     <ClCompile Include="Input\Controller.cpp" />
     <ClCompile Include="Input\InputManager.cpp" />
-    <ClCompile Include="Layouts\Buttons.cpp" />
-    <ClCompile Include="Layouts\TileLayouts.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="UI\Button.cpp" />
+    <ClCompile Include="Layouts\TileLayouts.cpp" />
+    <ClCompile Include="UI\CallSelection.cpp" />
+    <ClCompile Include="UI\MeldSelection.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Core\Debug.h" />
+    <ClInclude Include="Debug\Debug.h" />
     <ClInclude Include="Core\Discards.h" />
     <ClInclude Include="Core\Game.h" />
     <ClInclude Include="Core\GameTypes.h" />
@@ -76,8 +79,13 @@
     <ClInclude Include="Graphics\TileGraphics.h" />
     <ClInclude Include="Input\Controller.h" />
     <ClInclude Include="Input\InputManager.h" />
-    <ClInclude Include="Layouts\Buttons.h" />
+    <ClInclude Include="UI\Button.h" />
     <ClInclude Include="Layouts\TileLayouts.h" />
+    <ClInclude Include="UI\CallSelection.h" />
+    <ClInclude Include="UI\MeldSelection.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="gamelog.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

@@ -62,6 +62,7 @@ void HandTilesRenderer::drawMeldTile(const Tile& tile, Rectangle layout) const{
 			MELD_TILE_WIDTH_SRC, MELD_TILE_HEIGHT_SRC };
 		DrawTexturePro(meldTileTextures, sourceRec, layout, { 0,0 }, 0.0f, WHITE);
 	}
+
 }
 
 void HandTilesRenderer::drawMeldTileBack(Rectangle layout) const
@@ -73,8 +74,9 @@ void HandTilesRenderer::drawMeldTileBack(Rectangle layout) const
 
 void HandTilesRenderer::drawMeldTileAkaRight(const Tile& tile, Rectangle layout) const
 {
-	Rectangle sourceRec = { static_cast<int>(tile.getSuit()) * MELD_TILE_HEIGHT_SRC
-		,(AKA_PLACE_IN_FILE - 1)* MELD_TILE_WIDTH_SRC,MELD_TILE_HEIGHT_SRC, MELD_TILE_WIDTH_SRC };
+	int suit = static_cast<int>(tile.getSuit());
+	Rectangle sourceRec = { (AKA_PLACE_IN_FILE - 1) * MELD_TILE_HEIGHT_SRC
+		,suit * MELD_TILE_WIDTH_SRC,MELD_TILE_HEIGHT_SRC, MELD_TILE_WIDTH_SRC };
 	DrawTexturePro(meldTileTexturesR, sourceRec, layout, { 0,0 }, 0.0f, WHITE);
 }
 
@@ -84,8 +86,9 @@ void HandTilesRenderer::drawMeldTileRight(const Tile& tile, Rectangle layout) co
 		drawMeldTileAkaRight(tile, layout);
 	}
 	else {
-		Rectangle sourceRec = { static_cast<int>(tile.getSuit()) * MELD_TILE_HEIGHT_SRC
-			,(tile.getValue() - 1)* MELD_TILE_WIDTH_SRC,MELD_TILE_HEIGHT_SRC, MELD_TILE_WIDTH_SRC };
+		int suit = static_cast<int>(tile.getSuit());
+		Rectangle sourceRec = { (tile.getValue() - 1) * MELD_TILE_HEIGHT_SRC
+			,suit * MELD_TILE_WIDTH_SRC,MELD_TILE_HEIGHT_SRC, MELD_TILE_WIDTH_SRC };
 		DrawTexturePro(meldTileTexturesR, sourceRec, layout, { 0,0 }, 0.0f, WHITE);
 	}
 }
@@ -164,10 +167,15 @@ void HandTilesRenderer::drawMeld(const Meld& meld,const MeldLayout& layout) cons
 void HandTilesRenderer::draw(const Hand& hand, const HandTilesLayout& handTilesLayout,
 	const MeldsLayout& meldsLayout) const {
 	//draw hand tiles
-	for (int i = 0; i < hand.freeTilesNum(); i++) {
-		drawTile(hand[i], handTilesLayout.recs[i]);
-			
+	
+	int i = 0;
+	for (i; i < hand.getHandTilesNum(); i++) {
+		drawTile(hand.getHandTile(i), handTilesLayout.recs[i]);
 	}
+	if (hand.isHoldingDrawnTile()) {
+		drawTile(hand.getDrawnTile(), handTilesLayout.recs[i]);
+	}
+	
 	//draw meld tiles
 	for (int i = 0; i < hand.getMelds().size(); i++) {
 		drawMeld(*(hand.getMelds()[i]),meldsLayout.layouts[i]);
@@ -215,6 +223,14 @@ void DiscardTilesRenderer::drawTileAka(const Tile& tile, Rectangle dest, Relativ
 	DrawTexturePro(textures[relativePosition], sourceRec, dest, { 0,0 }, 0, WHITE);
 }
 
+void DiscardTilesRenderer::drawTileAka(const Tile& tile, Rectangle dest) const
+{
+	int suit = static_cast<int>(tile.getSuit());
+	Rectangle sourceRec = { (AKA_PLACE_IN_FILE - 1) * TILE_WIDTH_SRC,
+	suit * TILE_HEIGHT_SRC,TILE_WIDTH_SRC,TILE_HEIGHT_SRC };
+	DrawTexturePro(textures[0], sourceRec, dest, { 0,0 }, 0, WHITE);
+}
+
 void DiscardTilesRenderer::drawTile(const Tile& tile, Rectangle dest, RelativePosition seat) const{
 	if (tile.isAkadora()) {
 		drawTileAka(tile, dest, seat);
@@ -229,11 +245,32 @@ void DiscardTilesRenderer::drawTile(const Tile& tile, Rectangle dest, RelativePo
 	}
 }
 
+void DiscardTilesRenderer::drawTile(const Tile& tile, Rectangle dest) const
+{
+	if (tile.isAkadora()) {
+		drawTileAka(tile, dest);
+	}
+	else {
+		int suit = static_cast<int>(tile.getSuit());
+		Rectangle sourceRec = { (tile.getValue() - 1) * TILE_WIDTH_SRC,
+		suit * TILE_HEIGHT_SRC,TILE_WIDTH_SRC,TILE_HEIGHT_SRC };
+		DrawTexturePro(textures[0], sourceRec, dest, { 0,0 }, 0, WHITE);
+	}
+}
+
 void DiscardTilesRenderer::draw(const Discards& discards,
 	const PlayerDiscardsLayout& layout) const{
 	int i = 0;
 	for (const auto& tile : discards) {
 		drawTile(tile, layout.recs[i++],layout.position);
+	}
+}
+
+void DiscardTilesRenderer::highlightCurrentDiscard(const PlayerDiscardsLayout& layout) const
+{
+	if (layout.size > 0) {
+		Color transparentRed = ColorAlpha(RED, 0.5f);
+		DrawRectangleRoundedLinesEx(layout.recs[layout.size - 1], 0.3f,0, 3.0f, transparentRed);
 	}
 }
 

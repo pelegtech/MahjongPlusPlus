@@ -64,6 +64,8 @@ public:
 
 	int getSize() const;
 
+	const Tile& getLastDiscard() const;
+
 
 
 

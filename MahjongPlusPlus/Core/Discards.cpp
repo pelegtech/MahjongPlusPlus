@@ -30,6 +30,11 @@ int Discards::getSize() const
 	return tiles.size();
 }
 
+const Tile& Discards::getLastDiscard() const
+{
+	return tiles.back();
+}
+
 Discards::ConstIterator::ConstIterator(const Tile* tile) : tile(tile) {}
 
 const Tile& Discards::ConstIterator::operator*() const {

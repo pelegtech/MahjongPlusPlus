@@ -256,9 +256,11 @@ struct GameDiscardsLayout {
 	 * @param other another player's wind
 	 * @return the relative position of the other player to the perspective player.
 	 */
-	RelativePosition getRelativePosition(Wind perspective, Wind other);
+	static RelativePosition getRelativePosition(Wind perspective, Wind other);
 
 	GameDiscardsLayout(const std::array<std::unique_ptr<Player>, Constants::PLAYERS_NUM>& players);
+
+	const PlayerDiscardsLayout& getPlayersLayout(int index) const;
 
 	/**
 	 * @brief draws rectangles for debug purposes.

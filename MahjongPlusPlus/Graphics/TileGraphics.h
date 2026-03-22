@@ -194,6 +194,7 @@ public:
 	 * @param seat to determine angle. 
 	 */
 	void drawTileAka(const Tile& tile,Rectangle dest,RelativePosition seat) const;
+	void drawTileAka(const Tile& tile, Rectangle dest) const;
 
 	/**
 	 * @brief draws discards tile.
@@ -202,6 +203,7 @@ public:
 	 * @param seat to determine angle.
 	 */
 	void drawTile(const Tile& tile, Rectangle dest, RelativePosition seat) const;
+	void drawTile(const Tile& tile, Rectangle dest) const;
 
 	/**
 	 * @brief draws one player's discards pile.
@@ -209,6 +211,8 @@ public:
 	 * @param layout of the player's discards pile.
 	 */
 	void draw(const Discards& discards, const PlayerDiscardsLayout& layout) const;
+
+	void highlightCurrentDiscard(const PlayerDiscardsLayout& layout) const;
 
 
 private:

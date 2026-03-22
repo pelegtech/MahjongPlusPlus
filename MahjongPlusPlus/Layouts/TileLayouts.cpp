@@ -4,8 +4,14 @@
 #include "Core/Discards.h"
 #include "Core/Player.h"
 
-HandTilesLayout::HandTilesLayout(const Hand& hand): size(hand.freeTilesNum())
+HandTilesLayout::HandTilesLayout(const Hand& hand) 
 {
+	if (hand.isHoldingDrawnTile()) {
+		size = hand.getHandTilesNum() + 1;
+	}
+	else {
+		size = hand.getHandTilesNum();
+	}
 	for (int i = 0; i < size; i++) {
 		recs[i] = getTileRec(hand,i);
 	}
@@ -13,10 +19,10 @@ HandTilesLayout::HandTilesLayout(const Hand& hand): size(hand.freeTilesNum())
 
 Rectangle HandTilesLayout::getTileRec(const Hand& hand, int index)
 {
-	if (index >= hand.freeTilesNum() || index < 0) {
+	if (index > hand.getHandTilesNum() || index < 0) {
 		throw Hand::illegalAcess();
 	}
-	if (index == (hand.freeTilesNum() - 1)) {
+	if (index == (hand.getHandTilesNum()) && hand.isHoldingDrawnTile()) {
 		Rectangle res = { POSITION.x + (index)* WIDTH + DRAW_TILE_OFFSET,
 			POSITION.y, WIDTH,HEIGHT };
 		return res;
@@ -226,6 +232,11 @@ GameDiscardsLayout::GameDiscardsLayout(const std::array<std::unique_ptr<Player>,
 				getRelativePosition(players[0]->getWind(), players[i]->getWind()));
 	}
 
+}
+
+const PlayerDiscardsLayout& GameDiscardsLayout::getPlayersLayout(int index) const
+{
+	return layouts[index];
 }
 
 void GameDiscardsLayout::drawHitBoxes() const

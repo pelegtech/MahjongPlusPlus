@@ -1,6 +1,13 @@
-#include "Layouts/Buttons.h"
+#include "UI/Button.h"
 
-Button::Button(Vector2 position, std::string text, MoveType move): text(text), move(move)
+Button::Button()
+{
+	move = MoveType::WAITING;
+	rec = { 0.0f,0.0f,-1.0f,-1.0f };
+
+}
+
+Button::Button(std::string text, Vector2 position, MoveType move) : text(text), move(move)
 {
 	rec.x = position.x;
 	rec.y = position.y;
@@ -8,7 +15,13 @@ Button::Button(Vector2 position, std::string text, MoveType move): text(text), m
 	rec.height = DEFAULT_HEIGHT;
 }
 
-Button::Button(Rectangle rec, std::string text, MoveType move) : rec(rec), text(text), move(move){}
+Button Button::InaccessibleButton()
+{
+	Rectangle res = { 0.0f,0.0f,-1.0f,-1.0f };
+	return Button("",res,MoveType::WAITING);
+}
+
+Button::Button(std::string text, Rectangle rec, MoveType move) : rec(rec), text(text), move(move) {}
 
 const Rectangle& Button::getRec() const
 {
