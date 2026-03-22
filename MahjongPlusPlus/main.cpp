@@ -29,10 +29,9 @@ int main() {
         Log::init();
         SetConfigFlags(FLAG_WINDOW_UNDECORATED);
         InitWindow(1920, 1080, "Mahjong Plus Plus debug main");
-        //SetTargetFPS(144);
+        SetTargetFPS(144);
 
         //initialize graphics
-
         Graphics graphics;
         graphics.init();
 
@@ -72,6 +71,7 @@ int main() {
         const float TURN_END_DELAY = 0.2F;
 
         while (!WindowShouldClose()) {
+
             GameState currentGameState = game.getState();
             const Player& humanPlayer = game.getPlayer(0);
 
@@ -84,6 +84,8 @@ int main() {
                 break;
 
             case GameState::TURN_START: {
+
+                //reset player state
                 pendingCallType = MoveType::WAITING;
                 game.resetPlayersDecisions();
                 game.resetPlayersOptions();
@@ -93,10 +95,11 @@ int main() {
                     game.setState(GameState::GAME_OVER);
                 }
                 else {
-
+                    //14 tiles (13 + 1 drawn tile)
                     if (currentPlayerTileCount == Hand::MAX_HAND_SIZE) {
                         game.setState(GameState::WAITING_FOR_TURN_ACTION);
                     }
+                    //13 tiles (no draw tile)
                     else if (currentPlayerTileCount == (Hand::MAX_HAND_SIZE - 1)) {
                         game.setState(GameState::DRAW);
                     }
@@ -111,6 +114,7 @@ int main() {
                 game.setState(GameState::WAITING_FOR_TURN_ACTION);
                 break;
             case GameState::WAITING_FOR_TURN_ACTION: {
+
                 int currentPlayerId = game.getCurrentPlayerId();
                 HandTilesLayout currentPlayerLayout(game.getCurrentPlayer().getHand());
                 int chosenDiscardId = controllers[currentPlayerId]->decideDiscard(currentPlayerLayout, inputManager);
@@ -130,6 +134,7 @@ int main() {
 
             case GameState::WAITING_FOR_DISCARD_DECISIONS:
             {
+                //using boolean to update call type menu only once, or skip entirely.
                 if (justEnteredState) {
                     if (humanPlayer.getOptions().empty()) {
                         game.setPlayerDecision(0, MoveOption(MoveType::SKIP));
@@ -140,6 +145,7 @@ int main() {
                     }
                 }
 
+                //call selection
                 if (currentUIState == UIState::SELECTING_TYPE) {
                     MoveType clickedType = controllers[0]->decideTypeAfterDiscard(inputManager, callSelection);
                     if (clickedType == MoveType::SKIP) {
@@ -152,6 +158,7 @@ int main() {
                         currentUIState = UIState::SELECTING_MELD;
                     }
                 }
+                //meld selection
                 else if (currentUIState == UIState::SELECTING_MELD) {
                     MoveOption clickedOption = controllers[0]->decideOptionAfterDiscard(inputManager, meldSelection);
                     if (clickedOption.getType() != MoveType::WAITING) {
@@ -159,16 +166,20 @@ int main() {
                         currentUIState = UIState::HIDDEN;
                     }
                 }
+                //update bot decisions
                 for (int i = 1; i < 4; i++) {
                     MoveOption botMove = controllers[i]->decideOptionAfterDiscard(inputManager, meldSelection);
                     game.setPlayerDecision(i, botMove);
                 }
+                //check if all players made up their minds
                 if (game.checkingPlayersDecisions()) {
                     int playerWhoMadeMoveId = game.executeDiscardDecision();
+                    //if id = currplayerid means that everyone skipped
                     if (playerWhoMadeMoveId == game.getCurrentPlayerId()) {
                         game.nextTurn();
                         game.setState(GameState::TURN_START);
                     }
+                    //otherwise we skip to another person's turn
                     else {
                         game.setTurn(game.getPlayer(playerWhoMadeMoveId).getWind());
                         game.setState(GameState::TURN_START);
@@ -216,12 +227,13 @@ int main() {
                 graphics.drawDiscards(game.getPlayers(), discardsLayout.layouts);
                 graphics.highlightLastDiscard(discardsLayout.getPlayersLayout(game.getCurrentPlayerId()));
 
+                //drawing hand tiles and meld tiles
                 HandTilesLayout humanHandLayout(humanPlayer.getHand());
                 MeldsLayout humanMeldsLayout(humanPlayer.getHand().getMelds());
                 graphics.drawHand(humanPlayer.getHand(), humanHandLayout, humanMeldsLayout);
 
 
-
+                //draw meld and call selection UI 
                 if (currentGameState == GameState::WAITING_FOR_DISCARD_DECISIONS) {
                     if (currentUIState == UIState::SELECTING_TYPE) {
                         callSelection.draw();
@@ -231,6 +243,7 @@ int main() {
                     }
                 }
 
+                //debug mode shows fps and hitboxes
                 if (IsKeyPressed(KEY_F3)) {
                     debugMode = !debugMode;
                 }
@@ -244,10 +257,11 @@ int main() {
             }
             EndDrawing();
         }
-
+        //unloading textures
         graphics.clean();
         CloseWindow();
     }
+    //print exceptions to log if found any
     catch (const std::exception& e) {
         Log::add("EXCEPTION FOUND: " + std::string(e.what()));
     }

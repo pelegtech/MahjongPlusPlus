@@ -66,9 +66,9 @@ const Tile& Player::getLastDiscard() const
 	return discards.getLastDiscard();
 }
 
-TileMarker Player::relativePlace(Wind otherWind) {
+TileMarker Player::relativePlace(Wind otherWind) const{
 	int relativePosition = (static_cast<int>(wind)
-		- static_cast<int>(otherWind) + PLAYERS_NUM) % PLAYERS_NUM;
+		- static_cast<int>(otherWind) + Constants::PLAYERS_NUM) % Constants::PLAYERS_NUM;
 	return static_cast<TileMarker>(relativePosition);
 }
 
