@@ -8,13 +8,15 @@
 
 class Player;
 class Hand;
+class Wall;
 struct HandTilesLayout;
 struct MeldsLayout;
 struct GameDiscardsLayout;
 class HandTilesRenderer;
 class DiscardTilesRenderer;
 struct PlayerDiscardsLayout;
-
+class DeadWallRenderer;
+struct DeadWallLayout;
 
 /**
 * @class Graphics
@@ -72,14 +74,28 @@ public:
 	 */
 	void drawTileHitBox(const HandTilesLayout& layout) const;
 
+	/**
+	 * @brief draw on screen the letters {E,S,W,N} each representing respective player wind. 
+	 * @param perspectiveWind wind of the perspective player.
+	 */
 	void drawWinds(Wind perspectiveWind) const;
 
+	/**
+	 * @brief draws the outlies for rectangles in discards pool
+	 * @param layout of discards to be drawn.
+	 */
 	void drawDiscardsHitboxes(const GameDiscardsLayout& layout) const;
 
+	/**
+	 * @brief marks the last tile discarded.
+	 * @param layout of the last player who discarded a tile.
+	 */
 	void highlightLastDiscard(const PlayerDiscardsLayout layout) const;
 
+	
 	DiscardTilesRenderer& getDiscardRenderer() const;
 
+	void drawDeadWall(const Wall& wall, const DeadWallLayout& layout) const;
 
 private:
 	
@@ -87,4 +103,8 @@ private:
 	Texture2D discardTiles;
 	std::unique_ptr<HandTilesRenderer> handTilesRenderer;
 	std::unique_ptr<DiscardTilesRenderer> discardTilesRenderer;
+	std::unique_ptr<DeadWallRenderer> deadWallRenderer;
+	
+
+
 };

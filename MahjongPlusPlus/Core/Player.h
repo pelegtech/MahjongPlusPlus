@@ -73,7 +73,7 @@ public:
 	 * @param otherWind 
 	 * @return 
 	 */
-	TileMarker relativePlace(Wind otherWind) const;
+	TileMarker relativeMarker(Wind otherWind) const;
 	RelativePosition getRelativePosition(const Wind& other) const;
 
 	
@@ -144,5 +144,7 @@ public:
 	 */
 	void executeChi(const MoveOption& chosenOption, Discards& discards, const Wind& Otherwind);
 
+	bool daiminkanOptions(const Tile& discard);
 
+	void executeDaiminkan(const MoveOption& chosenOption, Discards& discards, const Wind& otherWind);
 };

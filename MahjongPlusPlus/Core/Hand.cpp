@@ -148,10 +148,11 @@ void Hand::createAnkanDrawn() {
 void Hand::createAnkanHand(const Tile& tile)
 {
 	//create the following copies of the first tile
-	int id = tile.getId();
-	Tile t2((id + 1) % 4 + 4 * (id / 4));
-	Tile t3((id + 2) % 4 + 4 * (id / 4));
-	Tile t4((id + 3) % 4 + 4 * (id / 4));
+	Tile t2 = Tile::getDiffCopy(tile, 1);
+	Tile t3 = Tile::getDiffCopy(tile, 2);
+	Tile t4 = Tile::getDiffCopy(tile, 3);
+	
+	
 
 	//find the iterators of the tiles in the hand vector
 	auto first = handTiles.begin();

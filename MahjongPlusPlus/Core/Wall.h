@@ -89,19 +89,20 @@ public:
 	void addDora();
 
 	/**
-	 * @brief read only access to revealed dora tiles
-	 * @param index of desired dora tile index [0,doraNum - 1]
+	 * @brief read only access to revealed dora indicator tiles
+	 * @param index of desired dora indicator tile index [0,doraNum - 1]
 	 * @return dora tile data.
 	 */
-	const Tile& dora(int index) const;
+	const Tile& doraIndicator(int index) const;
 
 	/**
 	 * @brief read only access to revealed uradora tiles
 	 * @param index of desired uradora tile index [0,doraNum - 1]
 	 * @return uradora tile data.
 	 */
-	const Tile& uraDora(int index) const;
+	const Tile& uraDoraIndicator(int index) const;
 	
+	int getDoraNum() const;
 
 
 

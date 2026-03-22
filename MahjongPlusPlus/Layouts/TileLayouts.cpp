@@ -251,3 +251,10 @@ void GameDiscardsLayout::drawHitBoxes() const
 	DrawCircleV(PlayerDiscardsLayout::LEFT_PILE_POS, 5.0f, RED);
 	DrawCircleV(PlayerDiscardsLayout::TOP_PILE_POS, 5.0f, RED);
 }
+
+DeadWallLayout::DeadWallLayout(const Wall& wall){
+	for (int i = 0; i < TILES_NUM; i++) {
+		Rectangle res = { POSITION.x + i * TILE_WIDTH, POSITION.y, TILE_WIDTH, TILE_HEIGHT };
+		recs[i] = res;
+	}
+}

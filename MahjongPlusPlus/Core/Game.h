@@ -42,6 +42,7 @@ public:
 	const std::array<std::unique_ptr<Player>, PLAYERS_NUM>& getPlayers() const;
 	void setState(GameState newState);
 	bool checkingPlayersDecisions();
+	const Wall& getWall() const;
 
 	//returns the player id of the player  who made the move
 	int executeDiscardDecision();

@@ -35,6 +35,10 @@ struct MoveOption {
 	 */
 	MoveOption(MoveType moveType, std::initializer_list<Tile> inputTiles);
 
+	/**
+	 * @brief create a move option without any tiles. 
+	 * @param moveType types supported: SKIP, WAITING.
+	 */
 	MoveOption(MoveType moveType);
 	
 	
@@ -42,6 +46,9 @@ struct MoveOption {
 	/**	 * @brief the maximum amount of tiles needed to be passed for any option that exists	 */
 	static constexpr  int MAX_TILE_OPTIONS = 4;
 
+	/**
+	 * @brief for debug and button use. order fits move types enum order. 
+	 */
 	static constexpr std::array< const char*, static_cast<int>(MoveType::COUNT)> TYPE_NAMES = {
 		"WAITING","SKIP","PON","CHI","ANKAN","DAIMINKAN","SHOUMINKAN","RIICHI","TSUMO","RON"
 	};
@@ -58,16 +65,31 @@ struct MoveOption {
 	 */
 	int size() const;
 
+	
 	const MoveType& getType() const;
 
+	/**
+	 * @brief cout overloading for debug prposes.
+	 */
 	friend std::ostream& operator<<(std::ostream& os, const MoveOption& option);
 
+	/**
+	 * @brief convert an option description to a string for debug and log purposes.
+	 * @return string containing tiles and move type.
+	 */
 	std::string optionToString() const;
 
 
-	//fields: 
+	//-----------------------------------------------------------------------------
+	//PUBLIC FIELDS
+	//-----------------------------------------------------------------------------
 
 	MoveType type;
 
+	//contains the tiles that are required to make the move, but only those from the hand. 
+	//for example, if a chi is to be made from 3,4,5 and 3,4 are hand tiles while 5 is external
+	//this array will only contain 3 and 4. 
 	std::array<Tile, MAX_TILE_OPTIONS> tiles;
+
+
 };

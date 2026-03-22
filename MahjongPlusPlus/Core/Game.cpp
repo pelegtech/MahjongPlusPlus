@@ -111,6 +111,11 @@ bool Game::checkingPlayersDecisions()
 	return true;
 }
 
+const Wall& Game::getWall() const
+{
+	return wall;
+}
+
 int Game::executeDiscardDecision()
 {
 	int currentPlayerId = getCurrentPlayerId();
@@ -129,6 +134,11 @@ int Game::executeDiscardDecision()
 	else if (skipCounter == 2) {
 		for (int i = 0; i < Constants::PLAYERS_NUM; i++) {
 			if (playersDecisions[i].getType() != MoveType::SKIP) {
+				if (playersDecisions[i].getType() == MoveType::ANKAN ||
+					playersDecisions[i].getType() == MoveType::DAIMINKAN ||
+					playersDecisions[i].getType() == MoveType::SHOUMINKAN) {
+					wall.addDora();
+				}
 				players[i]->executeOption(playersDecisions[i],currentPlayer().getDiscards(),currentPlayer().getWind());
 				return i;
 			}

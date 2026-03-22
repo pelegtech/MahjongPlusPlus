@@ -232,6 +232,10 @@ int main() {
                 MeldsLayout humanMeldsLayout(humanPlayer.getHand().getMelds());
                 graphics.drawHand(humanPlayer.getHand(), humanHandLayout, humanMeldsLayout);
 
+                //draw dead wall
+                DeadWallLayout deadWallLayout(game.getWall());
+                graphics.drawDeadWall(game.getWall(), deadWallLayout);
+
 
                 //draw meld and call selection UI 
                 if (currentGameState == GameState::WAITING_FOR_DISCARD_DECISIONS) {

@@ -50,10 +50,10 @@ public:
 	void addTile(const Tile& tile);
 
 	/**
-	 * @brief removes tile from pile 
-	 * @return the tile removed
+	 * @brief removes last tile from a pile 
+	 * @return the last tile discarded to that pile
 	 */
-	Tile removeTile(); //returns the last tile in the pile
+	Tile removeTile(); 
 
 	/**
 	 * @brief sets riichi tile id to the last tile on the pile

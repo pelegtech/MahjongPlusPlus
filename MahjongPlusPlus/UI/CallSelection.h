@@ -27,7 +27,7 @@ public:
 			//ANKAN
 			{0,0},
 			//DAIMINKAN
-			{0,0},
+			{1500 + Button::DEFAULT_WIDTH,700 + Button::DEFAULT_HEIGHT},
 			//SHOUMINKAN
 			{0,0},
 			//RIICHI
@@ -38,7 +38,7 @@ public:
 			{0,0},
 		} };
 	static constexpr std::array< const char*, static_cast<int>(MoveType::COUNT)> TYPE_NAMES = { 
-		"WAITING","SKIP","PON","CHI","ANKAN","DAIMINKAN","SHOUMINKAN","RIICHI","TSUMO","RON"
+		"WAITING","SKIP","PON","CHI","KAN","KAN","KAN","RIICHI","TSUMO","RON"
 	};
 	
 	

@@ -6,6 +6,7 @@
 #include "Core/Meld.h"
 #include "Core/Kan.h"
 #include "Core/Triplet.h"
+#include "Core/Wall.h"
 
 //HandTilesRenderer------------------------------------------------------------
 
@@ -274,7 +275,59 @@ void DiscardTilesRenderer::highlightCurrentDiscard(const PlayerDiscardsLayout& l
 	}
 }
 
+DeadWallRenderer::DeadWallRenderer(const char* dead_Wall_tiles)
+{
+	deadWallTiles = LoadTexture(dead_Wall_tiles);
+}
 
+DeadWallRenderer::~DeadWallRenderer()
+{
+	UnloadTexture(deadWallTiles);
+}
 
+void DeadWallRenderer::drawTile(const Tile& tile, Rectangle rec) const
+{
+	if (tile.isAkadora()) {
+		drawTileAka(tile, rec);
+	}
+	else {
+		Rectangle sourceRec = { (tile.getValue() - 1) * TILE_WIDTH_SRC,
+			static_cast<int>(tile.getSuit()) * TILE_HEIGHT_SRC,
+			TILE_WIDTH_SRC,  TILE_HEIGHT_SRC };
+		DrawTexturePro(deadWallTiles, sourceRec, rec, { 0,0 }, 0.0f, WHITE);
+	}
+}
+
+void DeadWallRenderer::draw(const Wall& wall, const DeadWallLayout layout)
+{
+	Rectangle outerBox = { layout.POSITION.x - ((OUTER_BOX_WIDTH - 5 * TILE_WIDTH_SRC) / 2),
+	layout.POSITION.y - ((OUTER_BOX_HEIGHT - TILE_HEIGHT_SRC) / 2), OUTER_BOX_WIDTH,OUTER_BOX_HEIGHT };
+	DrawRectangleRec(outerBox, DARKGRAY);
+	DrawRectangleLinesEx(outerBox, OUTER_BOX_OUTLINE_THICKNESS, BLACK);
+	int doraNum = wall.getDoraNum();
+	for (int i = 0; i <doraNum; i++) {
+		drawTile(wall.doraIndicator(i), layout.recs[i]);
+	}
+	for (int i = doraNum; i < DeadWallLayout::TILES_NUM; i++) {
+		drawTileBack(layout.recs[i]);
+	}
+
+}
+
+void DeadWallRenderer::drawTileAka(const Tile& tile, Rectangle rec) const
+{
+	Rectangle sourceRec = { (AKA_PLACE_IN_FILE - 1) * TILE_WIDTH_SRC,
+		static_cast<int>(tile.getSuit()) * TILE_HEIGHT_SRC,
+		TILE_WIDTH_SRC, TILE_HEIGHT_SRC };
+	DrawTexturePro(deadWallTiles, sourceRec, rec, { 0,0 }, 0.0f, WHITE);
+}
+
+void DeadWallRenderer::drawTileBack(Rectangle rec)
+{
+	Rectangle sourceRec = { (BACK_PLACE_IN_FILE - 1) * TILE_WIDTH_SRC,
+		static_cast<int>(Suit::HONOR) * TILE_HEIGHT_SRC,
+		TILE_WIDTH_SRC, TILE_HEIGHT_SRC };
+	DrawTexturePro(deadWallTiles, sourceRec, rec, { 0,0 }, 0.0f, WHITE);
+}
 
 

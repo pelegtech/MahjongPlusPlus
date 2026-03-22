@@ -66,7 +66,7 @@ const Tile& Player::getLastDiscard() const
 	return discards.getLastDiscard();
 }
 
-TileMarker Player::relativePlace(Wind otherWind) const{
+TileMarker Player::relativeMarker(Wind otherWind) const{
 	int relativePosition = (static_cast<int>(wind)
 		- static_cast<int>(otherWind) + Constants::PLAYERS_NUM) % Constants::PLAYERS_NUM;
 	return static_cast<TileMarker>(relativePosition);
@@ -94,6 +94,12 @@ void Player::executeOption(const MoveOption& option, Discards& discards ,const W
 		Log::add(hand.handToString());
 		//---------------
 		break;
+	case(MoveType::DAIMINKAN):
+		executeDaiminkan(option, discards, otherWind);
+		//log-------------
+		Log::add("p0 called kan, hand: ");
+		Log::add(hand.handToString());
+		//---------------
 	}
 }
 
@@ -129,7 +135,7 @@ bool Player::ponOptions(const Tile& discard) {
 void Player::executePon(const MoveOption& chosenOption,
 	Discards& discards, const Wind& otherWind) {
 	hand.createTriplet<Pon>(discards, chosenOption.tiles[0],
-		chosenOption.tiles[1], relativePlace(otherWind));
+		chosenOption.tiles[1], relativeMarker(otherWind));
 }
 
 bool Player::chiOptions(const Tile& discard, const Wind& wind)
@@ -196,11 +202,33 @@ bool Player::chiOptions(const Tile& discard, const Wind& wind)
 
 void Player::executeChi(const MoveOption& chosenOption, Discards& discards, const Wind& otherWind)
 {
-	
-	Log::add("trying to chi with the tiles: " + chosenOption.tiles[0].getName() + ", " + chosenOption.tiles[1].getName());
-	Log::add("Current hand: " + hand.handToString());
-	hand.createTriplet<Chi>(discards, chosenOption.tiles[0],
-		chosenOption.tiles[1], relativePlace(otherWind));
+	hand.createTriplet<Chi>(discards, chosenOption.tiles[0],chosenOption.tiles[1], relativeMarker(otherWind));
+}
+
+bool Player::daiminkanOptions(const Tile& discard)
+{
+	int counter = 0;
+	for (int i = 0; i < hand.getHandTilesNum(); i++) {
+		if (Tile::isEqual(hand.getHandTile(i), discard))
+		{
+			counter++;
+		}
+	}
+	if (counter == 3) {
+		Tile t1 = Tile::getDiffCopy(discard, 1);
+		Tile t2 = Tile::getDiffCopy(discard, 2);
+		Tile t3 = Tile::getDiffCopy(discard, 3);
+		options.push_back(MoveOption(MoveType::DAIMINKAN, { t1,t2,t3 }));
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+void Player::executeDaiminkan(const MoveOption& chosenOption, Discards& discards, const Wind& otherWind)
+{
+	hand.createDaiminkan(discards, chosenOption.tiles[0], chosenOption.tiles[1], chosenOption.tiles[2], relativeMarker(otherWind));
 }
 
 RelativePosition Player::getRelativePosition( const Wind& other) const
@@ -215,6 +243,7 @@ void Player::updateOptionsDiscard(const Tile& tile, const Wind& otherWind)
 	options.clear();
 	ponOptions(tile);
 	chiOptions(tile,otherWind);
+	daiminkanOptions(tile);
 }
 
 void Player::resetOptions()

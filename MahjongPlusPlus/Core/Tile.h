@@ -125,6 +125,15 @@ public:
 	* @return true if tile is of specific dictated akadora id.
 	*/
 	bool isAkadora() const;
+
+	/**
+	 * @brief get the same tile in a different copy, by modulo. 
+	 * @param tile the tile you want to get another copy of.
+	 * @param index if your copy is the first putting 1 will give you second copy and 2 the third and so on.
+	 * if it's the last copy putting in 1 will give you the first and so on.
+	 * @return a different copy of the same tile.
+	 */
+	static Tile getDiffCopy(const Tile& tile, int index);
 	
 	
 private:

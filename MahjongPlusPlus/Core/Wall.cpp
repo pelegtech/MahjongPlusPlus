@@ -53,18 +53,23 @@ void Wall::addDora() {
 	doraNum++;
 }
 
-const Tile& Wall::dora(int index) const{
+const Tile& Wall::doraIndicator(int index) const{
 	if (index >= doraNum || index < 0) {
 		throw invalidDora();
 	}
 	return deadWall[DORA_ID + index];
 }
 
-const Tile& Wall::uraDora(int index) const{
+const Tile& Wall::uraDoraIndicator(int index) const{
 	if (index >= doraNum || index < 0) {
 		throw invalidUraDora();
 	}
 	return deadWall[URA_ID + index];
+}
+
+int Wall::getDoraNum() const
+{
+	return doraNum;
 }
 
 //ConstIterator class:

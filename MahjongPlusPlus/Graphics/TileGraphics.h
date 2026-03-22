@@ -12,6 +12,7 @@ class Tile;
 class Hand;
 class Discards;
 class Meld;
+class Wall;
 
 /** @class HandTilesRenderer
 * @brief in charge of drawing the hand tiles on screen.
@@ -224,4 +225,25 @@ private:
 	static constexpr int AKA_PLACE_IN_FILE = 10;
 	
 
+};
+
+class DeadWallRenderer {
+public:
+	DeadWallRenderer(const char* dead_Wall_tiles);
+	~DeadWallRenderer();
+
+	void drawTile(const Tile& tile, Rectangle rec) const;
+
+	void draw(const Wall& wall, const DeadWallLayout layout);
+private:
+	Texture2D deadWallTiles;
+	static constexpr int AKA_PLACE_IN_FILE = 10;
+	static constexpr float TILE_WIDTH_SRC = 60.0f;
+	static constexpr float TILE_HEIGHT_SRC = 97.0f;
+	static constexpr int BACK_PLACE_IN_FILE = 8;
+	static constexpr float OUTER_BOX_WIDTH = TILE_WIDTH_SRC * 5 + 40;
+	static constexpr float OUTER_BOX_HEIGHT = TILE_HEIGHT_SRC + 40;
+	static constexpr float OUTER_BOX_OUTLINE_THICKNESS = 5;
+	void drawTileAka(const Tile& tile, Rectangle rec) const;
+	void drawTileBack(Rectangle rec);
 };

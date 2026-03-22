@@ -110,6 +110,13 @@ bool Tile::isAkadora() const {
 	return (id == AKA_MAN || id == AKA_PIN || id == AKA_SOU);
 }
 
+Tile Tile::getDiffCopy(const Tile& tile, int index)
+{
+	int id = tile.getId();
+	Tile t2((id + index) % 4 + 4 * (id / 4));
+	return t2;
+}
+
 
 
 //private methods -------------------------------------------------

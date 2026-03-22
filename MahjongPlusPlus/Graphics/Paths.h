@@ -10,5 +10,6 @@ namespace AssetPaths {
 	static constexpr const char* buttons = "assets/buttons.png";
 	static constexpr const char* meldTiles = "assets/meld_tiles.png";
 	static constexpr const char* meldTilesR = "assets/meld_tiles_r.png";
+	static constexpr const char* deadWallTiles = "assets/dead_wall_tiles.png";
 }
 

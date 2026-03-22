@@ -10,6 +10,7 @@ class Player;
 class Hand;
 class Meld;
 class Discards;
+class Wall;
 
 /**
  * @brief provides dimensions and positions for 
@@ -266,4 +267,16 @@ struct GameDiscardsLayout {
 	 * @brief draws rectangles for debug purposes.
 	 */
 	void drawHitBoxes() const;
+};
+
+struct DeadWallLayout {
+
+	static constexpr Vector2 POSITION = { 50.0f, 50.0f };
+	static constexpr float TILE_WIDTH = 60.0f;
+	static constexpr float TILE_HEIGHT = 97.0f;
+	static constexpr int TILES_NUM = 5;
+
+	std::array<Rectangle, TILES_NUM> recs;
+
+	DeadWallLayout(const Wall& wall);
 };

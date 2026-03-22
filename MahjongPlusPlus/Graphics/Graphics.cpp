@@ -4,6 +4,7 @@
 #include "Core/Player.h"
 #include "Core/GameTypes.h"
 #include "Layouts\TileLayouts.h"
+#include "Core/Wall.h"
 
 Graphics::Graphics() = default;
 Graphics::~Graphics() = default;
@@ -18,6 +19,8 @@ void Graphics::init() {
 			AssetPaths::discardTilesL,
 			AssetPaths::discardTilesU,
 			AssetPaths::discardTilesR);
+	
+	deadWallRenderer = std::make_unique<DeadWallRenderer>(AssetPaths::deadWallTiles);
 }
 
 void Graphics::drawBackground() {
@@ -68,6 +71,11 @@ void Graphics::highlightLastDiscard(const PlayerDiscardsLayout layout) const
 DiscardTilesRenderer& Graphics::getDiscardRenderer() const
 {
 	return *discardTilesRenderer;
+}
+
+void Graphics::drawDeadWall(const Wall& wall, const DeadWallLayout& layout) const
+{
+	deadWallRenderer->draw(wall, layout);
 }
 
 
