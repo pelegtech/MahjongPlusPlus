@@ -78,6 +78,13 @@ void Graphics::drawDeadWall(const Wall& wall, const DeadWallLayout& layout) cons
 	deadWallRenderer->draw(wall, layout);
 }
 
+void Graphics::highlightDorasDiscards(const std::array<std::unique_ptr<Player>, Constants::PLAYERS_NUM>& players, std::array<PlayerDiscardsLayout, Constants::PLAYERS_NUM> layouts, const Wall& wall)
+{
+	for (int i = 0; i < Constants::PLAYERS_NUM; i++) {
+		discardTilesRenderer->highlightDora(players[i]->getDiscards(), layouts[i], wall);
+	}
+}
+
 
 
 void Graphics::drawHand(const Hand& hand,

@@ -203,6 +203,7 @@ public:
 	 * @param dest where to draw it. usually taken from a layout.
 	 * @param seat to determine angle.
 	 */
+	void drawTile(const Tile& tile, Rectangle dest, RelativePosition seat, Color COLOR) const;
 	void drawTile(const Tile& tile, Rectangle dest, RelativePosition seat) const;
 	void drawTile(const Tile& tile, Rectangle dest) const;
 
@@ -215,6 +216,7 @@ public:
 
 	void highlightCurrentDiscard(const PlayerDiscardsLayout& layout) const;
 
+	void highlightDora(const Discards& discards, const PlayerDiscardsLayout layout, const Wall& wall);
 
 private:
 

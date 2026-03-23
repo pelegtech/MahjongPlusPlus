@@ -232,6 +232,21 @@ void DiscardTilesRenderer::drawTileAka(const Tile& tile, Rectangle dest) const
 	DrawTexturePro(textures[0], sourceRec, dest, { 0,0 }, 0, WHITE);
 }
 
+void DiscardTilesRenderer::drawTile(const Tile& tile, Rectangle dest, RelativePosition seat, Color COLOR) const
+{
+	if (tile.isAkadora()) {
+		drawTileAka(tile, dest, seat);
+	}
+	else {
+		int relativePosition = static_cast<int>(seat);
+		int suit = static_cast<int>(tile.getSuit());
+		Rectangle sourceRec = { (tile.getValue() - 1) * SRC_DIMENSIONS[relativePosition].x,
+			suit * SRC_DIMENSIONS[relativePosition].y,
+			SRC_DIMENSIONS[relativePosition].x, SRC_DIMENSIONS[relativePosition].y };
+		DrawTexturePro(textures[relativePosition], sourceRec, dest, { 0,0 }, 0, COLOR);
+	}
+}
+
 void DiscardTilesRenderer::drawTile(const Tile& tile, Rectangle dest, RelativePosition seat) const{
 	if (tile.isAkadora()) {
 		drawTileAka(tile, dest, seat);
@@ -245,6 +260,7 @@ void DiscardTilesRenderer::drawTile(const Tile& tile, Rectangle dest, RelativePo
 		DrawTexturePro(textures[relativePosition], sourceRec, dest, { 0,0 }, 0, WHITE);
 	}
 }
+
 
 void DiscardTilesRenderer::drawTile(const Tile& tile, Rectangle dest) const
 {
@@ -272,6 +288,17 @@ void DiscardTilesRenderer::highlightCurrentDiscard(const PlayerDiscardsLayout& l
 	if (layout.size > 0) {
 		Color transparentRed = ColorAlpha(RED, 0.5f);
 		DrawRectangleRoundedLinesEx(layout.recs[layout.size - 1], 0.3f,0, 3.0f, transparentRed);
+	}
+}
+
+void DiscardTilesRenderer::highlightDora(const Discards& discards, const PlayerDiscardsLayout layout, const Wall& wall)
+{
+	int i = 0;
+	for (const auto& tile : discards) {
+		if (wall.isDora(tile)) {
+			drawTile(tile, layout.recs[i], layout.position, Fade(YELLOW, 0.8f));
+		}
+		i++;
 	}
 }
 

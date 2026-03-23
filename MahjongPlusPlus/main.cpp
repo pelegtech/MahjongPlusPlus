@@ -225,6 +225,7 @@ int main() {
                 //drawing discards:
                 GameDiscardsLayout discardsLayout(game.getPlayers());
                 graphics.drawDiscards(game.getPlayers(), discardsLayout.layouts);
+                graphics.highlightDorasDiscards(game.getPlayers(), discardsLayout.layouts, game.getWall());
                 graphics.highlightLastDiscard(discardsLayout.getPlayersLayout(game.getCurrentPlayerId()));
 
                 //drawing hand tiles and meld tiles

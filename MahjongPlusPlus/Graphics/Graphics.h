@@ -97,6 +97,9 @@ public:
 
 	void drawDeadWall(const Wall& wall, const DeadWallLayout& layout) const;
 
+	void highlightDorasDiscards(const std::array<std::unique_ptr<Player>, Constants::PLAYERS_NUM>& players
+		, std::array<PlayerDiscardsLayout, Constants::PLAYERS_NUM> layouts, const Wall& wall);
+
 private:
 	
 	Texture2D background;

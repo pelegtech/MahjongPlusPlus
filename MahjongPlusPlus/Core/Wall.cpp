@@ -20,6 +20,7 @@ Wall::Wall():doraNum(1), tail(Tile::TOTAL_TILES_NUM - 1), head(0){
 		deadWall.push_back(wall[head]);
 		head++;
 	}
+	doras[0] = calcDora(doraIndicator(0));
 }
 int Wall::tilesLeft() const{
 	return tail - head + 1;
@@ -50,6 +51,7 @@ Tile Wall::kanDraw() {
 }
 
 void Wall::addDora() {
+	doras[doraNum] = calcDora(doraIndicator(doraNum));
 	doraNum++;
 }
 
@@ -71,6 +73,48 @@ int Wall::getDoraNum() const
 {
 	return doraNum;
 }
+
+Tile Wall::calcDora(const Tile& indicator) const
+{	
+	if (indicator.getId() == Tile::EMPTY_TILE_ID) {
+		throw Tile::InvalidTileID();
+	}
+	Tile res;
+	//case of normal suit tile
+	if (indicator.getSuit() != Suit::HONOR) {
+		res = Tile::tileFromSpecs(indicator.getSuit(), ((((indicator.getValue() - 1) + 1) % 9) + 1), 0);
+	}
+	//case of dragon honor tile
+	else if (indicator.getValue() >= 1 && indicator.getValue() <= 3) {
+		res = Tile::tileFromSpecs(indicator.getSuit(), ((((indicator.getValue() - 1) + 1) % 3) + 1), 0);
+	}
+	//case of wind honor tile
+	else if (indicator.getValue() >= 4 && indicator.getValue() <= 7) {
+		res = Tile::tileFromSpecs(indicator.getSuit(), ((((indicator.getValue() - 4) + 1) % 4) + 4), 0);
+	}
+	return res;
+}
+
+const Tile& Wall::getDora(int index) const
+{
+	return doras[index];
+}
+
+bool Wall::isDora(const Tile& tile) const
+{
+	if (tile.isAkadora()) {
+		return true;
+	}
+	for (int i = 0; i < doraNum; i++) {
+		if (Tile::isEqual(tile, doras[i])) {
+			return true;
+		}
+	}
+	return false;
+}
+
+
+
 
 //ConstIterator class:
 Wall::ConstIterator::ConstIterator(const Tile* tile): tile(tile) {}

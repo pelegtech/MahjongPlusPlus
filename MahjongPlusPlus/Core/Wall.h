@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <random>
 #include <stdexcept>
+#include <array>
 
 /**
  * @brief wall class stores data of tiles yet to be drawn by the players.
@@ -104,9 +105,15 @@ public:
 	
 	int getDoraNum() const;
 
+	/**
+	 * @param indicator of the dora
+	 * @return a dora tile based on the indicator, copy is always 0.
+	 */
+	Tile calcDora(const Tile& indicator) const;
 
+	const Tile& getDora(int index) const;
 
-
+	bool isDora(const Tile& tile) const;
 
 
 
@@ -127,6 +134,8 @@ private:
 	int head;
 	/**	 * @brief index of the current backmost legal drawing tile  */
 	int tail;
+
+	std::array<Tile, 5> doras;
 
 	//constants:
 	static constexpr int KAN_DRAW_ID = 0;
