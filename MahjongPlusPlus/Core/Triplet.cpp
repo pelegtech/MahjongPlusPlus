@@ -1,5 +1,5 @@
 #include "Core/Triplet.h"
-
+#include "Core/Wall.h"
 
 //triplet functions:
 Triplet::Triplet(const Tile& externalTile, const Tile& tile2, const Tile& tile3,
@@ -15,6 +15,16 @@ const Tile& Triplet::operator[](int index) const {
 		throw std::invalid_argument("Triplet index out of bounds");
 	}
 	return tiles[index];
+}
+
+bool Triplet::containsDora(const Wall& wall) const
+{
+	for (int i = 0; i < TRIPLET_SIZE; i++) {
+		if (wall.isDora(tiles[i])) {
+			return true;
+		}
+	}
+	return false;
 }
 
 //pon functions:

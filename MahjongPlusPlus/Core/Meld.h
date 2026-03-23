@@ -6,7 +6,7 @@
 #include <array>
 
 
-
+class Wall;
 /**
 * @class Meld
 * @brief base abstract class representing a closed set of tiles in the forms:
@@ -46,6 +46,8 @@ public:
 
 	/**@return prints the string from getContents. */
 	friend std::ostream& operator<<(std::ostream& os, const Tile& tile);
+
+	virtual bool containsDora(const Wall& wall) const = 0;
 
 private:
 	TileMarker marker;

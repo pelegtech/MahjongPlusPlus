@@ -47,7 +47,7 @@ public:
 	 */
 	static bool isKan(const Tile& t1, const Tile& t2, const Tile& t3, const Tile& t4);
 
-
+	bool containsDora(const Wall& wall) const override;
 	
 
 private:

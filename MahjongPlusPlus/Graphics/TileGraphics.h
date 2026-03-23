@@ -58,6 +58,7 @@ public:
 	 * @param layout position and size of tile to be drawn.
 	 */
 	void drawTile(const Tile& tile, Rectangle layout) const;
+	void drawTile(const Tile& tile, Rectangle layout, Color COLOR) const;
 	
 	/**
 	 * @brief each of the functions below is used to draw the corresponding meld. 
@@ -65,14 +66,19 @@ public:
 	 * @param layout 
 	 */
 	void drawPon(const Meld& meld,const MeldLayout& layout) const;
+	void drawPonDora(const Meld& meld, const MeldLayout& layout, const Wall& wall, Color COLOR) const;
 
 	void drawChi(const Meld& meld, const MeldLayout& layout) const;
+	void drawChiDora(const Meld& meld, const MeldLayout& layout, const Wall& wall, Color COLOR) const;
 
 	void drawAnkan(const Meld& meld, const MeldLayout& layout) const;
+	void drawAnkanDora(const Meld& meld, const MeldLayout& layout, const Wall& wall, Color COLOR) const;
 	
 	void drawDaiminkan(const Meld& meld, const MeldLayout& layout) const;
+	void drawDaiminkanDora(const Meld& meld, const MeldLayout& layout, const Wall& wall, Color COLOR) const;
 	
 	void drawShouminkan(const Meld& meld, const MeldLayout& layout) const;
+	void drawShouminkanDora(const Meld& meld, const MeldLayout& layout, const Wall& wall, Color COLOR) const;
 	
 
 	/**
@@ -81,6 +87,7 @@ public:
 	 * @param layout positions and sizes of the meld tiles.
 	 */
 	void drawMeld(const Meld& meld, const MeldLayout& layout) const;
+	void drawMeldDora(const Meld& meld, const MeldLayout& layout, const Wall& wall, Color COLOR) const;
 
 	/**
 	 * @brief uses hand tile functions and meld functions to draw the entire hand.
@@ -95,8 +102,8 @@ public:
 	 */
 	void drawHitBoxes( const HandTilesLayout& handTilesLayout) const;
 
-
-	
+	void highlightDora(const Hand& hand, const HandTilesLayout& handTilesLayout,
+		const MeldsLayout& meldsLayout, const Wall& wall) const;
 	
 	
 
@@ -112,8 +119,11 @@ private:
 	 * @param layout position and dimension
 	 */
 	void drawTileAka(const Tile& tile, Rectangle layout) const;
+	void drawTileAka(const Tile& tile, Rectangle layout, Color COLOR) const;
 	void drawMeldTileAka(const Tile& tile, Rectangle layout) const;
+	void drawMeldTileAka(const Tile& tile, Rectangle layout, Color COLOR) const;
 	void drawMeldTileAkaRight(const Tile& tile, Rectangle layout) const;
+	void drawMeldTileAkaRight(const Tile& tile, Rectangle layout, Color COLOR) const;
 
 	/**
 	 * @brief draws one of the meld tiles, used for the meld drawing methodes.
@@ -121,6 +131,7 @@ private:
 	 * @param layout position and size of the tile to be drawn
 	 */
 	void drawMeldTile(const Tile& tile, Rectangle layout) const;
+	void drawMeldTile(const Tile& tile, Rectangle layout, Color COLOR) const;
 
 	/**
 	 * @brief draws the back of a tile, for ankan purposes.
@@ -134,6 +145,7 @@ private:
 	 * @param layout position and dimension of the tile on screen.
 	 */
 	void drawMeldTileRight(const Tile& tile, Rectangle layout) const;
+	void drawMeldTileRight(const Tile& tile, Rectangle layout, Color COLOR) const;
 
 
 	/** @brief akadora's texture relative position in the file*/
@@ -195,6 +207,7 @@ public:
 	 * @param seat to determine angle. 
 	 */
 	void drawTileAka(const Tile& tile,Rectangle dest,RelativePosition seat) const;
+	void drawTileAka(const Tile& tile, Rectangle dest, RelativePosition seat, Color COLOR) const;
 	void drawTileAka(const Tile& tile, Rectangle dest) const;
 
 	/**

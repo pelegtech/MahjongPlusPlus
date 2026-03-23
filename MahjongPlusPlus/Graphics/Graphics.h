@@ -52,8 +52,7 @@ public:
 	/** @brief uses handTilesRendered to draw the hand tiles
 	*	@param hand to be drawn in the middle of the screen
 	*/
-	void drawHand(const Hand& hand,
-		const HandTilesLayout& handTilesLayout, const MeldsLayout& meldsLayout) const;
+	void drawHand(const Hand& hand,	const HandTilesLayout& handTilesLayout, const MeldsLayout& meldsLayout) const;
 
 	/** @brief uses discardTilesRendered to draw the discard piles
 	*	@param hand to be drawn in the middle of the screen
@@ -99,6 +98,8 @@ public:
 
 	void highlightDorasDiscards(const std::array<std::unique_ptr<Player>, Constants::PLAYERS_NUM>& players
 		, std::array<PlayerDiscardsLayout, Constants::PLAYERS_NUM> layouts, const Wall& wall);
+
+	void highLightDoraHand(const Hand& hand, const HandTilesLayout& handTilesLayout, const MeldsLayout& meldsLayout, const Wall& wall) const;
 
 private:
 	

@@ -232,6 +232,7 @@ int main() {
                 HandTilesLayout humanHandLayout(humanPlayer.getHand());
                 MeldsLayout humanMeldsLayout(humanPlayer.getHand().getMelds());
                 graphics.drawHand(humanPlayer.getHand(), humanHandLayout, humanMeldsLayout);
+                graphics.highLightDoraHand(humanPlayer.getHand(), humanHandLayout, humanMeldsLayout, game.getWall());
 
                 //draw dead wall
                 DeadWallLayout deadWallLayout(game.getWall());

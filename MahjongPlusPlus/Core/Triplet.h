@@ -29,6 +29,8 @@ public:
 	const Tile& operator[](int index) const override;
 
 	virtual ~Triplet() = default;
+
+	bool containsDora(const Wall& wall) const override;
 };
 
 /**

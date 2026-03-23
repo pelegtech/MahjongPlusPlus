@@ -1,5 +1,6 @@
 #include "Core/Kan.h"
 #include "Core/Triplet.h"
+#include "Core/Wall.h"
 
 // kan functions:
 Kan::Kan(const Tile& t1, const Tile& t2, const Tile& t3, const Tile& t4, 
@@ -21,6 +22,16 @@ const Tile& Kan::operator[](int index) const {
 bool Kan::isKan(const Tile& t1, const Tile& t2, const Tile& t3, const Tile& t4) {
 	if (Tile::isEqual(t1, t2) && Tile::isEqual(t1, t3) && Tile::isEqual(t1, t4)) {
 		return true;
+	}
+	return false;
+}
+
+bool Kan::containsDora(const Wall& wall) const
+{
+	for (int i = 0; i < KAN_SIZE; i++) {
+		if (wall.isDora(tiles[i])){
+			return true;
+		}
 	}
 	return false;
 }

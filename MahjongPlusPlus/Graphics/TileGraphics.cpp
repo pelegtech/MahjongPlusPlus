@@ -31,6 +31,14 @@ void HandTilesRenderer::drawTileAka(const Tile& tile,Rectangle layout) const {
 	DrawTexturePro(handTileTextures, sourceRec, layout, { 0,0 }, 0.0f, WHITE);
 }
 
+void HandTilesRenderer::drawTileAka(const Tile& tile, Rectangle layout, Color COLOR) const
+{
+	Rectangle sourceRec = { (AKA_PLACE_IN_FILE - 1) * TILE_WIDTH_SRC,
+		static_cast<int>(tile.getSuit()) * TILE_HEIGHT_SRC,
+		TILE_WIDTH_SRC, TILE_HEIGHT_SRC };
+	DrawTexturePro(handTileTextures, sourceRec, layout, { 0,0 }, 0.0f, COLOR);
+}
+
 void HandTilesRenderer::drawTile(const Tile& tile,Rectangle layout) const{
 	if (tile.isAkadora()) {
 		drawTileAka(tile,layout);
@@ -40,6 +48,19 @@ void HandTilesRenderer::drawTile(const Tile& tile,Rectangle layout) const{
 			static_cast<int>(tile.getSuit()) * TILE_HEIGHT_SRC,
 			TILE_WIDTH_SRC,  TILE_HEIGHT_SRC };
 		DrawTexturePro(handTileTextures, sourceRec, layout, { 0,0 }, 0.0f, WHITE);
+	}
+}
+
+void HandTilesRenderer::drawTile(const Tile& tile, Rectangle layout, Color COLOR) const
+{
+	if (tile.isAkadora()) {
+		drawTileAka(tile, layout, COLOR);
+	}
+	else {
+		Rectangle sourceRec = { (tile.getValue() - 1) * TILE_WIDTH_SRC,
+			static_cast<int>(tile.getSuit()) * TILE_HEIGHT_SRC,
+			TILE_WIDTH_SRC,  TILE_HEIGHT_SRC };
+		DrawTexturePro(handTileTextures, sourceRec, layout, { 0,0 }, 0.0f, COLOR);
 	}
 }
 
@@ -53,6 +74,14 @@ void HandTilesRenderer::drawMeldTileAka(const Tile& tile, Rectangle layout) cons
 	DrawTexturePro(meldTileTextures, sourceRec, layout, { 0,0 }, 0.0f, WHITE);
 }
 
+void HandTilesRenderer::drawMeldTileAka(const Tile& tile, Rectangle layout, Color COLOR) const
+{
+	Rectangle sourceRec = { (AKA_PLACE_IN_FILE - 1) * MELD_TILE_WIDTH_SRC,
+			static_cast<int>(tile.getSuit()) * MELD_TILE_HEIGHT_SRC,
+			MELD_TILE_WIDTH_SRC,MELD_TILE_HEIGHT_SRC };
+	DrawTexturePro(meldTileTextures, sourceRec, layout, { 0,0 }, 0.0f, COLOR);
+}
+
 void HandTilesRenderer::drawMeldTile(const Tile& tile, Rectangle layout) const{
 	if (tile.isAkadora()) {
 		drawMeldTileAka(tile,layout);
@@ -64,6 +93,19 @@ void HandTilesRenderer::drawMeldTile(const Tile& tile, Rectangle layout) const{
 		DrawTexturePro(meldTileTextures, sourceRec, layout, { 0,0 }, 0.0f, WHITE);
 	}
 
+}
+
+void HandTilesRenderer::drawMeldTile(const Tile& tile, Rectangle layout, Color COLOR) const
+{
+	if (tile.isAkadora()) {
+		drawMeldTileAka(tile, layout, COLOR);
+	}
+	else {
+		Rectangle sourceRec = { (tile.getValue() - 1) * MELD_TILE_WIDTH_SRC,
+			static_cast<int>(tile.getSuit()) * MELD_TILE_HEIGHT_SRC,
+			MELD_TILE_WIDTH_SRC, MELD_TILE_HEIGHT_SRC };
+		DrawTexturePro(meldTileTextures, sourceRec, layout, { 0,0 }, 0.0f, COLOR);
+	}
 }
 
 void HandTilesRenderer::drawMeldTileBack(Rectangle layout) const
@@ -81,6 +123,14 @@ void HandTilesRenderer::drawMeldTileAkaRight(const Tile& tile, Rectangle layout)
 	DrawTexturePro(meldTileTexturesR, sourceRec, layout, { 0,0 }, 0.0f, WHITE);
 }
 
+void HandTilesRenderer::drawMeldTileAkaRight(const Tile& tile, Rectangle layout, Color COLOR) const
+{
+	int suit = static_cast<int>(tile.getSuit());
+	Rectangle sourceRec = { (AKA_PLACE_IN_FILE - 1) * MELD_TILE_HEIGHT_SRC
+		,suit * MELD_TILE_WIDTH_SRC,MELD_TILE_HEIGHT_SRC, MELD_TILE_WIDTH_SRC };
+	DrawTexturePro(meldTileTexturesR, sourceRec, layout, { 0,0 }, 0.0f, COLOR);
+}
+
 void HandTilesRenderer::drawMeldTileRight(const Tile& tile, Rectangle layout) const
 {
 	if (tile.isAkadora()) {
@@ -91,6 +141,19 @@ void HandTilesRenderer::drawMeldTileRight(const Tile& tile, Rectangle layout) co
 		Rectangle sourceRec = { (tile.getValue() - 1) * MELD_TILE_HEIGHT_SRC
 			,suit * MELD_TILE_WIDTH_SRC,MELD_TILE_HEIGHT_SRC, MELD_TILE_WIDTH_SRC };
 		DrawTexturePro(meldTileTexturesR, sourceRec, layout, { 0,0 }, 0.0f, WHITE);
+	}
+}
+
+void HandTilesRenderer::drawMeldTileRight(const Tile& tile, Rectangle layout, Color COLOR) const
+{
+	if (tile.isAkadora()) {
+		drawMeldTileAkaRight(tile, layout, COLOR);
+	}
+	else {
+		int suit = static_cast<int>(tile.getSuit());
+		Rectangle sourceRec = { (tile.getValue() - 1) * MELD_TILE_HEIGHT_SRC
+			,suit * MELD_TILE_WIDTH_SRC,MELD_TILE_HEIGHT_SRC, MELD_TILE_WIDTH_SRC };
+		DrawTexturePro(meldTileTexturesR, sourceRec, layout, { 0,0 }, 0.0f, COLOR);
 	}
 }
 
@@ -114,9 +177,53 @@ void HandTilesRenderer::drawPon(const Meld& meld,const MeldLayout& layout) const
 	}
 }
 
+void HandTilesRenderer::drawPonDora(const Meld& meld, const MeldLayout& layout, const Wall& wall, Color COLOR) const
+{
+	switch (meld.getTileMarker()) {
+	case (TileMarker::LEFT):
+		if (wall.isDora(meld[0])) {
+			drawMeldTileRight(meld[0], layout.recs[0], COLOR);
+		}
+		if (wall.isDora(meld[1])) {
+			drawMeldTile(meld[1], layout.recs[1], COLOR);
+		}
+		if (wall.isDora(meld[2])) {
+			drawMeldTile(meld[2], layout.recs[2], COLOR);
+		}
+		break;
+	case (TileMarker::MIDDLE):
+		if (wall.isDora(meld[1])) {
+			drawMeldTile(meld[1], layout.recs[0], COLOR);
+		}
+		if (wall.isDora(meld[0])) {
+			drawMeldTileRight(meld[0], layout.recs[1], COLOR);
+		}
+		if (wall.isDora(meld[2])) {
+			drawMeldTile(meld[2], layout.recs[2], COLOR);
+		}
+		break;
+	case (TileMarker::RIGHT):
+		if (wall.isDora(meld[1])) {
+			drawMeldTile(meld[1], layout.recs[0], COLOR);
+		}
+		if (wall.isDora(meld[2])) {
+			drawMeldTile(meld[2], layout.recs[1], COLOR);
+		}
+		if (wall.isDora(meld[0])) {
+			drawMeldTileRight(meld[0], layout.recs[2], COLOR);
+		}
+		break;
+	}
+}
+
 void HandTilesRenderer::drawChi(const Meld& meld, const MeldLayout& layout) const
 {
 	drawPon(meld, layout);
+}
+
+void HandTilesRenderer::drawChiDora(const Meld& meld, const MeldLayout& layout, const Wall& wall, Color COLOR) const
+{
+	drawPonDora(meld, layout, wall, COLOR);
 }
 
 void HandTilesRenderer::drawAnkan(const Meld& meld, const MeldLayout& layout) const
@@ -127,6 +234,18 @@ void HandTilesRenderer::drawAnkan(const Meld& meld, const MeldLayout& layout) co
 	drawMeldTileBack(layout.recs[3]);
 }
 
+void HandTilesRenderer::drawAnkanDora(const Meld& meld, const MeldLayout& layout, const Wall& wall, Color COLOR) const
+{
+	drawMeldTileBack(layout.recs[0]);
+	if (wall.isDora(meld[0])) {
+		drawMeldTile(meld[0], layout.recs[1], COLOR);
+	}
+	if (wall.isDora(meld[1])) {
+		drawMeldTile(meld[1], layout.recs[2], COLOR);
+	}
+	drawMeldTileBack(layout.recs[3]);
+}
+
 void HandTilesRenderer::drawDaiminkan(const Meld& meld, const MeldLayout& layout) const
 {
 	Pon newPon(meld[0], meld[1], meld[2], meld.getTileMarker());
@@ -134,11 +253,29 @@ void HandTilesRenderer::drawDaiminkan(const Meld& meld, const MeldLayout& layout
 	drawMeldTile(meld[3], layout.recs[3]);
 }
 
+void HandTilesRenderer::drawDaiminkanDora(const Meld& meld, const MeldLayout& layout, const Wall& wall, Color COLOR) const
+{
+	Pon newPon(meld[0], meld[1], meld[2], meld.getTileMarker());
+	drawPonDora(newPon, layout,wall, COLOR);
+	if (wall.isDora(meld[3])) {
+		drawMeldTile(meld[3], layout.recs[3], COLOR);
+	}
+}
+
 void HandTilesRenderer::drawShouminkan(const Meld& meld,const MeldLayout& layout) const
 {
 	Pon newPon(meld[0], meld[1], meld[2], meld.getTileMarker());
 	drawPon(newPon, layout);
 	drawMeldTileRight(meld[3], layout.recs[3]);
+}
+
+void HandTilesRenderer::drawShouminkanDora(const Meld& meld, const MeldLayout& layout, const Wall& wall, Color COLOR) const
+{
+	Pon newPon(meld[0], meld[1], meld[2], meld.getTileMarker());
+	drawPonDora(newPon, layout,wall, COLOR);
+	if (wall.isDora(meld[3])) {
+		drawMeldTileRight(meld[3], layout.recs[3], COLOR);
+	}
 }
 
 void HandTilesRenderer::drawMeld(const Meld& meld,const MeldLayout& layout) const
@@ -158,6 +295,27 @@ void HandTilesRenderer::drawMeld(const Meld& meld,const MeldLayout& layout) cons
 		break;
 	case(MeldType::SHOUMINKAN):
 		drawShouminkan(meld, layout);
+		break;
+	}
+}
+
+void HandTilesRenderer::drawMeldDora(const Meld& meld, const MeldLayout& layout,const Wall& wall, Color COLOR) const
+{
+	switch (meld.getMeldType()) {
+	case(MeldType::PON):
+		drawPonDora(meld, layout, wall, COLOR);
+		break;
+	case(MeldType::CHI):
+		drawChiDora(meld, layout, wall, COLOR);
+		break;
+	case(MeldType::ANKAN):
+		drawAnkanDora(meld, layout, wall,  COLOR);
+		break;
+	case(MeldType::DAIMINKAN):
+		drawDaiminkanDora(meld, layout, wall, COLOR);
+		break;
+	case(MeldType::SHOUMINKAN):
+		drawShouminkanDora(meld, layout, wall, COLOR);
 		break;
 	}
 }
@@ -188,6 +346,28 @@ void HandTilesRenderer::drawHitBoxes(const HandTilesLayout& handTilesLayout) con
 	for (int i = 0; i < handTilesLayout.size ;i++) {
 		DrawRectangleLinesEx(handTilesLayout.recs[i], 4.0f, GOLD);
 	}
+}
+
+void HandTilesRenderer::highlightDora(const Hand& hand, const HandTilesLayout& handTilesLayout, const MeldsLayout& meldsLayout, const Wall& wall) const
+{
+
+	int i = 0;
+	for (i; i < hand.getHandTilesNum(); i++) {
+		if (wall.isDora(hand.getHandTile(i))) {
+			drawTile(hand.getHandTile(i), handTilesLayout.recs[i], Fade(YELLOW, 0.8f));
+		}
+	}
+	if (hand.isHoldingDrawnTile() && wall.isDora(hand.getDrawnTile())) {
+		drawTile(hand.getDrawnTile(), handTilesLayout.recs[i], Fade(YELLOW, 0.8f));
+	}
+
+	for (int i = 0; i < hand.getMelds().size(); i++) {
+		if (hand.getMelds()[i]->containsDora(wall)) {
+			drawMeldDora(*(hand.getMelds()[i]), meldsLayout.layouts[i],wall, Fade(YELLOW, 0.8f));
+		}
+	}
+
+	
 }
 
 
@@ -224,6 +404,16 @@ void DiscardTilesRenderer::drawTileAka(const Tile& tile, Rectangle dest, Relativ
 	DrawTexturePro(textures[relativePosition], sourceRec, dest, { 0,0 }, 0, WHITE);
 }
 
+void DiscardTilesRenderer::drawTileAka(const Tile& tile, Rectangle dest, RelativePosition seat, Color COLOR) const
+{
+	int relativePosition = static_cast<int>(seat);
+	int suit = static_cast<int>(tile.getSuit());
+	Rectangle sourceRec = { (AKA_PLACE_IN_FILE - 1) * SRC_DIMENSIONS[relativePosition].x,
+	suit * SRC_DIMENSIONS[relativePosition].y,
+		SRC_DIMENSIONS[relativePosition].x,SRC_DIMENSIONS[relativePosition].y };
+	DrawTexturePro(textures[relativePosition], sourceRec, dest, { 0,0 }, 0, COLOR);
+}
+
 void DiscardTilesRenderer::drawTileAka(const Tile& tile, Rectangle dest) const
 {
 	int suit = static_cast<int>(tile.getSuit());
@@ -235,7 +425,7 @@ void DiscardTilesRenderer::drawTileAka(const Tile& tile, Rectangle dest) const
 void DiscardTilesRenderer::drawTile(const Tile& tile, Rectangle dest, RelativePosition seat, Color COLOR) const
 {
 	if (tile.isAkadora()) {
-		drawTileAka(tile, dest, seat);
+		drawTileAka(tile, dest, seat,COLOR);
 	}
 	else {
 		int relativePosition = static_cast<int>(seat);

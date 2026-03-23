@@ -85,6 +85,11 @@ void Graphics::highlightDorasDiscards(const std::array<std::unique_ptr<Player>, 
 	}
 }
 
+void Graphics::highLightDoraHand(const Hand& hand, const HandTilesLayout& handTilesLayout, const MeldsLayout& meldsLayout, const Wall& wall) const
+{
+	handTilesRenderer->highlightDora(hand, handTilesLayout, meldsLayout, wall);
+}
+
 
 
 void Graphics::drawHand(const Hand& hand,
