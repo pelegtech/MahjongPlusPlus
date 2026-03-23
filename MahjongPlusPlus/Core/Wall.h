@@ -115,6 +115,13 @@ public:
 
 	bool isDora(const Tile& tile) const;
 
+	const std::vector<Tile>& getWallVector() const;
+
+	const std::vector<Tile> getDeadWallVector() const;
+
+	const int getHead() const;
+
+	const int getTail() const;
 
 
 

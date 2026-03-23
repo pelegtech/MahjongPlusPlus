@@ -90,6 +90,11 @@ void Graphics::highLightDoraHand(const Hand& hand, const HandTilesLayout& handTi
 	handTilesRenderer->highlightDora(hand, handTilesLayout, meldsLayout, wall);
 }
 
+void Graphics::drawWallDebug(const Wall& wall) const
+{
+	discardTilesRenderer->drawWallDebug(wall);
+}
+
 
 
 void Graphics::drawHand(const Hand& hand,

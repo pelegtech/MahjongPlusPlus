@@ -113,6 +113,26 @@ bool Wall::isDora(const Tile& tile) const
 	return false;
 }
 
+const std::vector<Tile>& Wall::getWallVector() const
+{
+	return wall;
+}
+
+const std::vector<Tile> Wall::getDeadWallVector() const
+{
+	return deadWall;
+}
+
+const int Wall::getHead() const
+{
+	return head;
+}
+
+const int Wall::getTail() const
+{
+	return tail;
+}
+
 
 
 

@@ -249,16 +249,23 @@ int main() {
                     }
                 }
 
-                //debug mode shows fps and hitboxes
+                //debug mode
                 if (IsKeyPressed(KEY_F3)) {
                     debugMode = !debugMode;
                 }
                 if (debugMode) {
-                    Vector2 mousePos(GetMousePosition());
-                    graphics.drawTileHitBox(humanHandLayout);
-                    graphics.drawDiscardsHitboxes(discardsLayout);
-                    DrawText(TextFormat("%.0f,%.0f", mousePos.x, mousePos.y), mousePos.x + 15, mousePos.y, 20, RED);
                     DrawFPS(10, 10);
+                    DrawText("F4 - show wall", 130, 10, 20, GREEN);
+                    DrawText("F5 - show hitboxes", 300, 10, 20, GREEN);
+                    if (IsKeyDown(KEY_F5)) {
+                        Vector2 mousePos(GetMousePosition());
+                        graphics.drawTileHitBox(humanHandLayout);
+                        graphics.drawDiscardsHitboxes(discardsLayout);
+                        DrawText(TextFormat("%.0f,%.0f", mousePos.x, mousePos.y), mousePos.x + 15, mousePos.y, 20, RED);
+                    }
+                    if (IsKeyDown(KEY_F4)) {
+                        graphics.drawWallDebug(game.getWall());
+                    }
                 }
             }
             EndDrawing();

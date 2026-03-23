@@ -83,5 +83,6 @@ namespace Constants {
 	constexpr int PLAYERS_NUM = 4;
 	constexpr int SCREEN_WIDTH = 1920;
 	constexpr int SCREEN_HEIGHT = 1080;
+	constexpr int TOTAL_TILES_NUM = 136;
 }
 

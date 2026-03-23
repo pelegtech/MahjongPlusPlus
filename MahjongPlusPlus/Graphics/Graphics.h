@@ -101,6 +101,8 @@ public:
 
 	void highLightDoraHand(const Hand& hand, const HandTilesLayout& handTilesLayout, const MeldsLayout& meldsLayout, const Wall& wall) const;
 
+	void drawWallDebug(const Wall& wall) const;
+
 private:
 	
 	Texture2D background;

@@ -23,10 +23,6 @@ void Game::dealInitTiles() {
 			players[j]->addTileFromWall(wall);
 		}
 	}	
-	for (int j = 0; j < PLAYERS_NUM; j++) {
-		players[j]->sortHand();
-
-	}
 }
 
 const Player& Game::getPlayer(int index) const {
