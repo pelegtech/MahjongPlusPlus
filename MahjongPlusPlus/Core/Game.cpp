@@ -25,35 +25,10 @@ Game::Game(std::unique_ptr<Player> p1,
 	state(GameState::TURN_START), currentTurn(Wind::EAST), playersDecisions{} {
 }
 
-
-void Game::dealInitTiles() {
-	const int tilesNum = Hand::MAX_HAND_TILES_NUM;
-	for (int i = 0; i < Constants::PLAYERS_NUM; i++) {
-		std::array<Tile, tilesNum> tiles;
-		for (int j = 0; j < tilesNum; j++) {
-			tiles[j] = wall.draw();
-		}
-		Hand newHand(tiles);
-		players[i]->initHand(std::move(newHand));
-	}
-}
-
-const Player& Game::getPlayer(int index) const {
-	return *players[index];
-}
-
-
-void Game::discardTile(int index)
-{
-	currentPlayer().Discard(index);
-}
-
-
-
 void Game::dictateWinds() {
 	std::random_device rd;
 	std::mt19937 g(rd());
-	std::array<int, 4> order = {0,1,2,3};
+	std::array<int, 4> order = { 0,1,2,3 };
 	std::shuffle(order.begin(), order.end(), g);
 	players[order[0]]->setWind(Wind::EAST);
 	players[order[1]]->setWind(Wind::SOUTH);
@@ -69,8 +44,21 @@ void Game::dictateWindsChoice(Wind w1, Wind w2, Wind w3, Wind w4)
 	players[3]->setWind(w4);
 }
 
-int Game::getTilesLeft() const {
-	return wall.tilesLeft();
+void Game::dealInitTiles() {
+	const int tilesNum = Hand::MAX_HAND_TILES_NUM;
+	for (int i = 0; i < Constants::PLAYERS_NUM; i++) {
+		std::array<Tile, tilesNum> tiles;
+		for (int j = 0; j < tilesNum; j++) {
+			tiles[j] = wall.draw();
+		}
+		Hand newHand(tiles);
+		players[i]->initHand(std::move(newHand));
+	}
+}
+
+void Game::discardTile(int index)
+{
+	currentPlayer().Discard(index);
 }
 
 void Game::nextTurn()
@@ -80,41 +68,7 @@ void Game::nextTurn()
 	currentTurn = nextWind;
 }
 
-const Player& Game::getCurrentPlayer()
-{
-	return currentPlayer();
-}
-
-GameState Game::getState() const
-{
-	return state;
-}
-
-int Game::getPlayerIdFromWind(Wind wind) const
-{
-	for (int i = 0; i < PLAYERS_NUM; i++) {
-		if (players[i]->getWind() == wind) {
-			return i;
-		}
-	}
-}
-
-int Game::getCurrentPlayerId() const
-{
-	return getPlayerIdFromWind(currentTurn);
-}
-
-const std::array<std::unique_ptr<Player>, Constants::PLAYERS_NUM>& Game::getPlayers() const
-{
-	return players;
-}
-
-void Game::setState(GameState newState)
-{
-	state = newState;
-}
-
-bool Game::checkingPlayersDecisions()
+bool Game::haveAllPlayersDecided() const
 {
 	int currentPlayerId = getCurrentPlayerId();
 	for (int i = 0; i < Constants::PLAYERS_NUM; i++) {
@@ -124,13 +78,8 @@ bool Game::checkingPlayersDecisions()
 			}
 		}
 	}
-	
-	return true;
-}
 
-const Wall& Game::getWall() const
-{
-	return wall;
+	return true;
 }
 
 int Game::executeDiscardDecision()
@@ -151,7 +100,7 @@ int Game::executeDiscardDecision()
 	else if (skipCounter == 2) {
 		for (int i = 0; i < Constants::PLAYERS_NUM; i++) {
 			if (playersDecisions[i].getType() != MoveType::SKIP) {
-				players[i]->executeOption(playersDecisions[i],currentPlayer().getDiscards(),currentPlayer().getWind());
+				players[i]->executeOption(playersDecisions[i], currentPlayer().getDiscards(), currentPlayer().getWind());
 				return i;
 			}
 		}
@@ -170,11 +119,6 @@ void Game::kanDraw()
 	currentPlayer().kanDraw(wall);
 }
 
-void Game::setPlayerDecision(int playerIndex, MoveOption newOption)
-{
-	playersDecisions[playerIndex] = newOption;
-}
-
 void Game::resetPlayersDecisions()
 {
 	for (int i = 0; i < Constants::PLAYERS_NUM; i++) {
@@ -189,11 +133,6 @@ void Game::resetPlayersOptions()
 	}
 }
 
-void Game::setTurn(Wind turnPlayerWind)
-{
-	currentTurn = turnPlayerWind;
-}
-
 void Game::addDora()
 {
 	wall.addDora();
@@ -203,9 +142,46 @@ void Game::updatePlayersOptions()
 {
 	for (int i = 0; i < Constants::PLAYERS_NUM; i++) {
 		if (i != getCurrentPlayerId()) {
-			players[i]->updateOptionsDiscard(getCurrentPlayer().getLastDiscard(),currentTurn);
+			players[i]->updateOptionsDiscard(getCurrentPlayer().getLastDiscard(), currentTurn);
 		}
 	}
+}
+
+const Player& Game::getPlayer(int index) const {
+	return *players[index];
+}
+
+int Game::getTilesLeft() const {
+	return wall.tilesLeft();
+}
+
+const Player& Game::getCurrentPlayer() const
+{
+	return currentPlayer();
+}
+
+GameState Game::getState() const
+{
+	return state;
+}
+
+int Game::getPlayerIdFromWind(Wind wind) const
+{
+	for (int i = 0; i < Constants::PLAYERS_NUM; i++) {
+		if (players[i]->getWind() == wind) {
+			return i;
+		}
+	}
+}
+
+int Game::getCurrentPlayerId() const
+{
+	return getPlayerIdFromWind(currentTurn);
+}
+
+const std::array<std::unique_ptr<Player>, Constants::PLAYERS_NUM>& Game::getPlayers() const
+{
+	return players;
 }
 
 const MoveOption& Game::getPlayerDecision(int playerId) const
@@ -213,15 +189,47 @@ const MoveOption& Game::getPlayerDecision(int playerId) const
 	return playersDecisions[playerId];
 }
 
+const Wall& Game::getWall() const
+{
+	return wall;
+}
 
+void Game::setState(GameState newState)
+{
+	state = newState;
+}
 
+void Game::setPlayerDecision(int playerIndex, MoveOption newOption)
+{
+	playersDecisions[playerIndex] = newOption;
+}
 
+void Game::setTurn(Wind turnPlayerWind)
+{
+	currentTurn = turnPlayerWind;
+}
+
+//private methodes
 Player& Game::currentPlayer()
 {
 	return playerFromWind(currentTurn);
 }
 
+const Player& Game::currentPlayer() const
+{
+	return playerFromWind(currentTurn);
+}
+
 Player& Game::playerFromWind(Wind wind)
+{
+	for (const auto& player : players) {
+		if (player->getWind() == wind) {
+			return *player;
+		}
+	}
+}
+
+const Player& Game::playerFromWind(Wind wind) const
 {
 	for (const auto& player : players) {
 		if (player->getWind() == wind) {

@@ -65,6 +65,8 @@ int main() {
         game.dictateWinds();
         game.setState(GameState::INIT_ROUND);
         bool daiminkanDraw = false;
+        bool shouminkanDraw = false;
+        bool ankan = false;
 
 
 
@@ -192,7 +194,7 @@ int main() {
                     game.setPlayerDecision(i, botMove);
                 }
                 //check if all players made up their minds
-                if (game.checkingPlayersDecisions()) {
+                if (game.haveAllPlayersDecided()) {
                     int playerWhoMadeMoveId = game.executeDiscardDecision();
                     //if id = currplayerid means that everyone skipped
                     if (playerWhoMadeMoveId == game.getCurrentPlayerId()) {
