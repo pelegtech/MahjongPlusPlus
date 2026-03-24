@@ -151,11 +151,6 @@ int Game::executeDiscardDecision()
 	else if (skipCounter == 2) {
 		for (int i = 0; i < Constants::PLAYERS_NUM; i++) {
 			if (playersDecisions[i].getType() != MoveType::SKIP) {
-				if (playersDecisions[i].getType() == MoveType::ANKAN ||
-					playersDecisions[i].getType() == MoveType::DAIMINKAN ||
-					playersDecisions[i].getType() == MoveType::SHOUMINKAN) {
-					wall.addDora();
-				}
 				players[i]->executeOption(playersDecisions[i],currentPlayer().getDiscards(),currentPlayer().getWind());
 				return i;
 			}
@@ -168,6 +163,11 @@ void Game::draw()
 	Log::add("Player num: " + std::to_string(getCurrentPlayerId()) + " Drew: ");
 	currentPlayer().Draw(wall);
 
+}
+
+void Game::kanDraw()
+{
+	currentPlayer().kanDraw(wall);
 }
 
 void Game::setPlayerDecision(int playerIndex, MoveOption newOption)
@@ -192,6 +192,11 @@ void Game::resetPlayersOptions()
 void Game::setTurn(Wind turnPlayerWind)
 {
 	currentTurn = turnPlayerWind;
+}
+
+void Game::addDora()
+{
+	wall.addDora();
 }
 
 void Game::updatePlayersOptions()

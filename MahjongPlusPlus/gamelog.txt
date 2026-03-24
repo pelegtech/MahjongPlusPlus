@@ -12,225 +12,71 @@
 4 pin
 4 pin
 Red 5 pin
-8 sou
-3 sou
 West wind
-1 man
-9 pin
 8 sou
-5 man
-4 man
-1 sou
-8 man
-9 pin
-1 pin
-West wind
-7 man
-7 man
-3 sou
 9 man
+2 man
+1 sou
 8 pin
-7 pin
+White dragon
+5 man
+8 man
 South wind
-4 man
-7 pin
+West wind
+9 pin
+1 man
 Red dragon
-3 sou
 2 sou
-White dragon
-2 man
+9 sou
 East wind
-1 sou
-5 pin
-8 man
-5 sou
-1 sou
-4 pin
 2 man
 4 sou
+6 pin
+2 man
+West wind
 7 pin
-Red dragon
-7 man
-Player num: 2 Drew: 
-7 man
-Changing wind to: South
-Player num: 0 Drew: 
-North wind
-Changing wind to: West
-Player num: 1 Drew: 
-East wind
-Changing wind to: North
-Player num: 3 Drew: 
-9 sou
-Changing wind to: East
-Player num: 2 Drew: 
-3 sou
-Changing wind to: South
-Player num: 0 Drew: 
-1 sou
-Changing wind to: West
-Player num: 1 Drew: 
-8 man
-Changing wind to: North
-Player num: 3 Drew: 
-Red 5 sou
-Changing wind to: East
-Player num: 2 Drew: 
-North wind
-Changing wind to: South
-Player num: 0 Drew: 
-Red dragon
-Changing wind to: West
-Player num: 1 Drew: 
-2 man
-Changing wind to: North
-Player num: 3 Drew: 
-5 man
-Changing wind to: East
-Player num: 2 Drew: 
-2 man
-Changing wind to: South
-Player num: 0 Drew: 
-Green dragon
-Changing wind to: West
-Player num: 1 Drew: 
-West wind
-Changing wind to: North
-Player num: 3 Drew: 
-4 sou
-Changing wind to: East
-Player num: 2 Drew: 
-9 pin
-Changing wind to: South
-Player num: 0 Drew: 
-Red dragon
-Changing wind to: West
-Player num: 1 Drew: 
-9 man
-Changing wind to: North
-Player num: 3 Drew: 
-5 pin
-Changing wind to: East
-Player num: 2 Drew: 
-6 pin
-Changing wind to: South
-Player num: 0 Drew: 
-6 man
-Changing wind to: West
-Player num: 1 Drew: 
-4 sou
-Changing wind to: North
-Player num: 3 Drew: 
-6 man
-Changing wind to: East
-Player num: 2 Drew: 
-6 man
-Changing wind to: South
-Player num: 0 Drew: 
-5 man
-Changing wind to: West
-Player num: 1 Drew: 
-North wind
-Changing wind to: North
-Player num: 3 Drew: 
-6 sou
-Changing wind to: East
-Player num: 2 Drew: 
-6 sou
-Changing wind to: South
-Player num: 0 Drew: 
-9 sou
-Changing wind to: West
-Player num: 1 Drew: 
 1 man
-Changing wind to: North
-Player num: 3 Drew: 
-8 sou
-Changing wind to: East
-Player num: 2 Drew: 
-7 sou
-Changing wind to: South
-Player num: 0 Drew: 
-Green dragon
-Changing wind to: West
-Player num: 1 Drew: 
-Green dragon
-Changing wind to: North
-Player num: 3 Drew: 
-South wind
-Changing wind to: East
-Player num: 2 Drew: 
-North wind
-Changing wind to: South
-Player num: 0 Drew: 
-8 sou
-Changing wind to: West
-Player num: 1 Drew: 
-South wind
-Changing wind to: North
-Player num: 3 Drew: 
-West wind
-Changing wind to: East
-Player num: 2 Drew: 
-6 sou
-Changing wind to: South
-Player num: 0 Drew: 
-6 pin
-Changing wind to: West
-Player num: 1 Drew: 
-5 sou
-Changing wind to: North
-Player num: 3 Drew: 
-8 man
-Changing wind to: East
-Player num: 2 Drew: 
-8 pin
-Changing wind to: South
-Player num: 0 Drew: 
-3 man
-Changing wind to: West
-Player num: 1 Drew: 
 9 man
-Changing wind to: North
-Player num: 3 Drew: 
-5 sou
-Changing wind to: East
-Player num: 2 Drew: 
-9 man
-Changing wind to: South
-Player num: 0 Drew: 
-3 pin
-Changing wind to: West
-Player num: 1 Drew: 
-3 man
-Changing wind to: North
-Player num: 3 Drew: 
-5 pin
-Changing wind to: East
-Player num: 2 Drew: 
-3 man
-Changing wind to: South
-Player num: 0 Drew: 
-Green dragon
-Changing wind to: West
-Player num: 1 Drew: 
-4 man
-Changing wind to: North
-Player num: 3 Drew: 
-6 pin
-Changing wind to: East
-Player num: 2 Drew: 
 Red 5 man
-Changing wind to: South
+4 sou
+1 sou
+2 pin
+6 man
+3 man
+6 pin
+4 man
+4 sou
+5 sou
+3 man
+9 pin
+Green dragon
+Red dragon
 Player num: 0 Drew: 
-7 sou
+8 man
+Changing wind to: South
+Player num: 3 Drew: 
+5 sou
 Changing wind to: West
 Player num: 1 Drew: 
-8 pin
+South wind
 Changing wind to: North
+Player num: 2 Drew: 
+9 man
+Changing wind to: East
+Player num: 0 Drew: 
+5 pin
+Changing wind to: South
 Player num: 3 Drew: 
 White dragon
-Changing wind to: East
+Changing wind to: West
+Player num: 1 Drew: 
+8 pin
+Changing wind to: North
 Player num: 2 Drew: 
-2 pin
-EXCEPTION FOUND: cannot make operation on an unrevealed dora
+4 pin
+p0 called kan, hand: 
+free tiles: 
+[1 pin] [1 pin] [1 pin] [2 pin] [2 pin] [2 pin] [3 pin] [3 pin] [3 pin] [Red 5 pin] 
+melds:
+Daiminkan: /[4 pin]/, [4 pin], [4 pin], [4 pin]
+

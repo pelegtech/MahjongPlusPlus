@@ -76,7 +76,7 @@ public:
 	 * @brief draw a tile from the wall, decrease tail index.
 	 * @return the drawn tile
 	 */
-	const Tile& draw();
+	Tile draw();
 
 	/**
 	 * @return number of kans made in the game 

@@ -41,7 +41,7 @@ int Wall::tilesLeft() const{
 	return tail - head + 1;
 }
 
-const Tile& Wall::draw() {
+Tile Wall::draw() {
 	if (tilesLeft() <= 0) {
  		throw emptyWall();
 	}
@@ -66,8 +66,9 @@ Tile Wall::kanDraw() {
 }
 
 void Wall::addDora() {
-	doras[doraNum] = calcDora(doraIndicator(doraNum));
 	doraNum++;
+	doras[doraNum - 1] = calcDora(doraIndicator(doraNum - 1));
+	
 }
 
 const Tile& Wall::doraIndicator(int index) const{

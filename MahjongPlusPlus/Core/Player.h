@@ -55,6 +55,8 @@ public:
 	 * @param wall to take the tile from.
 	 */
 	void Draw(Wall& wall);
+	
+	void kanDraw(Wall& wall);
 
 	/**
 	 * @brief add a tile directly to the hand in a sorted manner. used in game initialization.
@@ -160,4 +162,6 @@ public:
 
 	//we use rvalue reference because we definitely will steal the input hand and replace the player's hand with it.
 	void initHand(Hand&& inputHand);
+
+
 };

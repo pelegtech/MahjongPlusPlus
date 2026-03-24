@@ -11,6 +11,11 @@ void Player::Draw(Wall& wall) {
 	hand.drawTile(wall.draw());
 }
 
+void Player::kanDraw(Wall& wall)
+{
+	hand.drawTile(wall.kanDraw());
+}
+
 void Player::addTileFromWall(Wall& wall)
 {
 	hand.addTile(wall.draw());

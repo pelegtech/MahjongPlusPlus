@@ -51,13 +51,16 @@ public:
 	bool checkingPlayersDecisions();
 	const Wall& getWall() const;
 
+
 	//returns the player id of the player  who made the move
 	int executeDiscardDecision();
 	void draw();
+	void kanDraw();
 	void setPlayerDecision(int playerIndex, MoveOption newOption);
 	void resetPlayersDecisions();
 	void resetPlayersOptions();
 	void setTurn(Wind turnPlayerWind);
+	void addDora();
 
 	//updates every players options besides current player
 	void updatePlayersOptions();

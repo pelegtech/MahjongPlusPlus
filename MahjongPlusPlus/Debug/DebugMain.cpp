@@ -64,6 +64,9 @@ int main() {
         //game init
         game.dictateWinds();
         game.setState(GameState::INIT_ROUND);
+        bool daiminkanDraw = false;
+
+
 
         //debug mode 
         bool debugMode = false;
@@ -100,7 +103,7 @@ int main() {
                     game.setState(GameState::GAME_OVER);
                 }
                 else {
-                    //14 tiles (13 + 1 drawn tile)
+                    //14 tiles
                     if (currentPlayerTileCount == Hand::MAX_HAND_SIZE) {
                         game.setState(GameState::WAITING_FOR_TURN_ACTION);
                     }
@@ -118,6 +121,13 @@ int main() {
                 game.draw();
                 game.setState(GameState::WAITING_FOR_TURN_ACTION);
                 break;
+            case GameState::KAN_DRAW:
+                pendingCallType = MoveType::WAITING;
+                game.resetPlayersDecisions();
+                game.resetPlayersOptions();
+                game.kanDraw();
+                game.setState(GameState::WAITING_FOR_TURN_ACTION);
+                break;
             case GameState::WAITING_FOR_TURN_ACTION: {
 
                 int currentPlayerId = game.getCurrentPlayerId();
@@ -126,12 +136,17 @@ int main() {
 
                 if (chosenDiscardId != -1) {
                     game.discardTile(chosenDiscardId);
+                    if (daiminkanDraw) {
+                        daiminkanDraw = false;
+                        game.addDora();
+                    }
                     for (int i = 0; i < Constants::PLAYERS_NUM; i++) {
                         if (i != currentPlayerId) {
                             game.updatePlayersOptions();
                         }
                     }
                     game.setState(GameState::WAITING_FOR_DISCARD_DECISIONS);
+
                 }
 
                 break;
@@ -181,13 +196,21 @@ int main() {
                     int playerWhoMadeMoveId = game.executeDiscardDecision();
                     //if id = currplayerid means that everyone skipped
                     if (playerWhoMadeMoveId == game.getCurrentPlayerId()) {
+
                         game.nextTurn();
                         game.setState(GameState::TURN_START);
                     }
                     //otherwise we skip to another person's turn
                     else {
-                        game.setTurn(game.getPlayer(playerWhoMadeMoveId).getWind());
-                        game.setState(GameState::TURN_START);
+                        if (game.getPlayerDecision(playerWhoMadeMoveId).getType() == MoveType::DAIMINKAN) {
+                            game.setTurn(game.getPlayer(playerWhoMadeMoveId).getWind());
+                            game.setState(GameState::KAN_DRAW);
+                            daiminkanDraw = true;
+                        }
+                        else {
+                            game.setTurn(game.getPlayer(playerWhoMadeMoveId).getWind());
+                            game.setState(GameState::TURN_START);
+                        }
                     }
                 }
             }
@@ -279,6 +302,7 @@ int main() {
                     if (showWall) {
                         DrawText("F4 - show wall", 130, 10, 20, RED);
                         Debug::drawWallDebug(graphics.getDiscardRenderer(), game.getWall());
+                        Debug::drawDeadWallDebug(graphics.getDiscardRenderer(), game.getWall());
                     }
                 }
             }
