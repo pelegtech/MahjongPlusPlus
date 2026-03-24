@@ -131,7 +131,7 @@
     <ClCompile Include="UI\CallSelection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="Debug\DebugMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -231,6 +231,17 @@ void Player::executeDaiminkan(const MoveOption& chosenOption, Discards& discards
 	hand.createDaiminkan(discards, chosenOption.tiles[0], chosenOption.tiles[1], chosenOption.tiles[2], relativeMarker(otherWind));
 }
 
+void Player::initHand(Hand&& inputHand)
+{
+	if (hand.isEmpty() != true) {
+		throw handAlreadyInitiated();
+	}
+	hand = std::move(inputHand);
+	hand.sortHand();
+}
+
+
+
 RelativePosition Player::getRelativePosition( const Wind& other) const
 {
 	RelativePosition res = static_cast<RelativePosition>((static_cast<int>(wind)

@@ -37,6 +37,12 @@ public:
 			return "cannot make operation on an unrevealed uraDora";
 		}
 	};
+	class invalidWallSize : public std::exception {
+	public:
+		const char* what() const noexcept override {
+			return "cannot initiate wall with a wall size different to 136";
+		}
+	};
 
 	//constIterator class:
 	class ConstIterator {
@@ -58,6 +64,7 @@ public:
 
 
 	Wall();
+	Wall(const std::vector<Tile>& tiles);
 	
 	/**
 	 * @return the number of tiles yet to be drawn in the wall.

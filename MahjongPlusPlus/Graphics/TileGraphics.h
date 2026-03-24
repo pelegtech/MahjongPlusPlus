@@ -96,11 +96,7 @@ public:
 	void draw(const Hand& hand,const HandTilesLayout& handTilesLayout,
 		const MeldsLayout& meldsLayout) const;
 
-	/**
-	 * @brief draws the tile hitboxes for debugging purposes.
-	 * @param hand to be described.
-	 */
-	void drawHitBoxes( const HandTilesLayout& handTilesLayout) const;
+	
 
 	void highlightDora(const Hand& hand, const HandTilesLayout& handTilesLayout,
 		const MeldsLayout& meldsLayout, const Wall& wall) const;
@@ -231,12 +227,7 @@ public:
 	void highlightDora(const Discards& discards, const PlayerDiscardsLayout layout, const Wall& wall);
 
 
-	static constexpr int TILES_IN_WALL_ROW = 17;
-	static constexpr int TILES_IN_WALL_COL = 8;
-	static constexpr int SPACE_TILE_BOX_SIDE = 20;
-	static constexpr int SPACE_BETWEEN_ROWS = 10;
-	static constexpr Vector2 WALL_BOX_POS = { 50,50 };
-	void drawWallDebug(const Wall& wall) const;
+	
 
 private:
 
@@ -269,4 +260,5 @@ private:
 	void drawTileAka(const Tile& tile, Rectangle rec) const;
 	void drawTileBack(Rectangle rec);
 };
+
 

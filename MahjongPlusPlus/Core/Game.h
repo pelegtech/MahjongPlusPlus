@@ -25,12 +25,19 @@ private:
 
 public:
 	
+	Game(const Wall& wall,
+		std::unique_ptr<Player> p1,
+		std::unique_ptr<Player> p2,
+		std::unique_ptr<Player> p3,
+		std::unique_ptr<Player> p4);
+
 	Game(std::unique_ptr<Player> p1,
 		std::unique_ptr<Player> p2,
 		std::unique_ptr<Player> p3,
 		std::unique_ptr<Player> p4);
 	const Player& getPlayer(int index) const;
 	void dictateWinds();
+	void dictateWindsChoice(Wind w1, Wind w2, Wind w3, Wind w4);
 	void dealInitTiles();
 	void discardTile(int index);
 	int getTilesLeft() const;

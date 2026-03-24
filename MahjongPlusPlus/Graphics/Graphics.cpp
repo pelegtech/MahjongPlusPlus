@@ -41,12 +41,6 @@ void Graphics::drawTilesLeft(int tilesLeft) {
 		TILES_COUNTER_SIZE, RED);
 }
 
-void Graphics::drawTileHitBox(const HandTilesLayout& layout) const
-{
-	handTilesRenderer->drawHitBoxes(layout);
-	Vector2 mousePos = GetMousePosition();
-	DrawCircleV(mousePos, 5.0f, RED);
-}
 
 void Graphics::drawWinds(Wind perspectiveWind) const
 {
@@ -58,10 +52,6 @@ void Graphics::drawWinds(Wind perspectiveWind) const
 	}
 }
 
-void Graphics::drawDiscardsHitboxes(const GameDiscardsLayout& layout) const
-{
-	layout.drawHitBoxes();
-}
 
 void Graphics::highlightLastDiscard(const PlayerDiscardsLayout layout) const
 {
@@ -90,10 +80,6 @@ void Graphics::highLightDoraHand(const Hand& hand, const HandTilesLayout& handTi
 	handTilesRenderer->highlightDora(hand, handTilesLayout, meldsLayout, wall);
 }
 
-void Graphics::drawWallDebug(const Wall& wall) const
-{
-	discardTilesRenderer->drawWallDebug(wall);
-}
 
 
 

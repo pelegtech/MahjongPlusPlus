@@ -87,8 +87,19 @@ public:
 
 	//c'tors ---------------------------------------------------------------
 
+	//because of the unique_ptrs in melds vector
+	Hand(const Hand&) = delete;
+	Hand& operator=(const Hand&) = delete;
+
+	//because vectors can handle themselves
+	Hand(Hand&&) noexcept = default;
+	Hand& operator=(Hand&&) noexcept = default;
+
+
 	/** @brief creates an empty hand with 0 tiles or melds.*/
 	Hand();
+
+	Hand(std::array<Tile, MAX_HAND_TILES_NUM> handTiles);
 
 	/** @brief creates a hand from existing vectors.
 	* @param tiles contains (0-14) tiles. 
@@ -217,6 +228,11 @@ public:
 	const std::vector<std::unique_ptr<Meld>>& getMelds() const;
 
 	void addTile(const Tile& tile);
+
+	bool isEmpty() const;
+
+	bool isTileInHandTiles(const Tile& tile) const;
+
 
 private:
 	/** @brief includes the free tiles, those can be discarded and be used for a meld*/

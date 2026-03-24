@@ -39,8 +39,7 @@ namespace Debug {
 		const std::string& s10,
 		const std::string& s11,
 		const std::string& s12,
-		const std::string& s13,
-		const std::string& s14);
+		const std::string& s13);
 
 	std::unique_ptr<Meld> pon(const std::string& s);
 
@@ -55,7 +54,21 @@ namespace Debug {
 
 	std::string windToStr(const Wind& wind);
 
+	static constexpr int TILES_IN_WALL_ROW = 17;
+	static constexpr int TILES_IN_WALL_COL = 8;
+	static constexpr int SPACE_TILE_BOX_SIDE = 20;
+	static constexpr int SPACE_BETWEEN_ROWS = 10;
+	static constexpr Vector2 WALL_BOX_POS = { 50,50 };
+
+	void drawHitBoxes(const HandTilesLayout& handTilesLayout, const GameDiscardsLayout& gameDiscardsLayout);
+
+	void drawWallDebug(const DiscardTilesRenderer& renderer, const Wall& wall);
+
+	Wall presetHandWall(const Hand& hand);
+
+
 }
+
 
 
 

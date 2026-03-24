@@ -51,11 +51,11 @@
     <ClCompile Include="Core\Tile.cpp" />
     <ClCompile Include="Core\Triplet.cpp" />
     <ClCompile Include="Core\Wall.cpp" />
+    <ClCompile Include="Debug\DebugMain.cpp" />
     <ClCompile Include="Graphics\Graphics.cpp" />
     <ClCompile Include="Graphics\TileGraphics.cpp" />
     <ClCompile Include="Input\Controller.cpp" />
     <ClCompile Include="Input\InputManager.cpp" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="UI\Button.cpp" />
     <ClCompile Include="Layouts\TileLayouts.cpp" />
     <ClCompile Include="UI\CallSelection.cpp" />

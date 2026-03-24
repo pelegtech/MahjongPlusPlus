@@ -12,6 +12,11 @@ Hand::Hand()
 	handTilesNum = 0;
 }
 
+Hand::Hand(std::array<Tile, MAX_HAND_TILES_NUM> handTiles): handTiles(handTiles)
+{
+	handTilesNum = MAX_HAND_TILES_NUM;
+}
+
 //c'tor -----------------------------------------------------------------------
 Hand::Hand(std::vector<Tile> tiles, std::vector<std::unique_ptr<Meld>> melds) : melds(std::move(melds))
 {
@@ -375,6 +380,31 @@ void Hand::addTile(const Tile& tile)
 	*(res) = tile;
 	handTilesNum++;
 }
+
+bool Hand::isEmpty() const
+{
+	if (handTilesNum != 0) {
+		return false;
+	}
+	if (melds.size() != 0) {
+		return false;
+	}
+	return true;
+}
+
+bool Hand::isTileInHandTiles(const Tile& tile) const
+{
+	for (int i = 0; i < handTilesNum; i++) {
+		if (tile.getId() == handTiles[i].getId()) {
+			return true;
+		}
+	}
+	return false;
+}
+
+
+
+
 
 
 

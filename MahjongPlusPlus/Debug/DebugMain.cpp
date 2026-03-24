@@ -29,10 +29,9 @@ int main() {
         Log::init();
         SetConfigFlags(FLAG_WINDOW_UNDECORATED);
         InitWindow(1920, 1080, "Mahjong Plus Plus debug main");
-        //SetTargetFPS(144);
+        SetTargetFPS(144);
 
         //initialize graphics
-
         Graphics graphics;
         graphics.init();
 
@@ -44,7 +43,10 @@ int main() {
         controllers[3] = std::make_unique<BotController>();
 
         //initialize game players. player 0 is the perspective human player.
-        Game game(
+        Hand testHand = Debug::handFromCodes("1p", "1p", "1p", "2p", "2p", "2p", "3p", "3p", "3p", "4p", "4p", "4p", "5p");
+        std::cout << testHand;
+        Wall testWall = Debug::presetHandWall(testHand);
+        Game game(testWall,
             std::make_unique<Player>(),
             std::make_unique<Player>(),
             std::make_unique<Player>(),
@@ -65,6 +67,8 @@ int main() {
 
         //debug mode 
         bool debugMode = false;
+        bool showHitboxes = false;
+        bool showWall = false;
 
         //delday between turns
         float delayTime = 0.0f;
@@ -72,6 +76,7 @@ int main() {
         const float TURN_END_DELAY = 0.2F;
 
         while (!WindowShouldClose()) {
+
             GameState currentGameState = game.getState();
             const Player& humanPlayer = game.getPlayer(0);
 
@@ -84,6 +89,8 @@ int main() {
                 break;
 
             case GameState::TURN_START: {
+
+                //reset player state
                 pendingCallType = MoveType::WAITING;
                 game.resetPlayersDecisions();
                 game.resetPlayersOptions();
@@ -93,10 +100,11 @@ int main() {
                     game.setState(GameState::GAME_OVER);
                 }
                 else {
-
+                    //14 tiles (13 + 1 drawn tile)
                     if (currentPlayerTileCount == Hand::MAX_HAND_SIZE) {
                         game.setState(GameState::WAITING_FOR_TURN_ACTION);
                     }
+                    //13 tiles (no draw tile)
                     else if (currentPlayerTileCount == (Hand::MAX_HAND_SIZE - 1)) {
                         game.setState(GameState::DRAW);
                     }
@@ -111,6 +119,7 @@ int main() {
                 game.setState(GameState::WAITING_FOR_TURN_ACTION);
                 break;
             case GameState::WAITING_FOR_TURN_ACTION: {
+
                 int currentPlayerId = game.getCurrentPlayerId();
                 HandTilesLayout currentPlayerLayout(game.getCurrentPlayer().getHand());
                 int chosenDiscardId = controllers[currentPlayerId]->decideDiscard(currentPlayerLayout, inputManager);
@@ -130,6 +139,7 @@ int main() {
 
             case GameState::WAITING_FOR_DISCARD_DECISIONS:
             {
+                //using boolean to update call type menu only once, or skip entirely.
                 if (justEnteredState) {
                     if (humanPlayer.getOptions().empty()) {
                         game.setPlayerDecision(0, MoveOption(MoveType::SKIP));
@@ -139,7 +149,8 @@ int main() {
                         currentUIState = UIState::SELECTING_TYPE;
                     }
                 }
-               
+
+                //call selection
                 if (currentUIState == UIState::SELECTING_TYPE) {
                     MoveType clickedType = controllers[0]->decideTypeAfterDiscard(inputManager, callSelection);
                     if (clickedType == MoveType::SKIP) {
@@ -152,6 +163,7 @@ int main() {
                         currentUIState = UIState::SELECTING_MELD;
                     }
                 }
+                //meld selection
                 else if (currentUIState == UIState::SELECTING_MELD) {
                     MoveOption clickedOption = controllers[0]->decideOptionAfterDiscard(inputManager, meldSelection);
                     if (clickedOption.getType() != MoveType::WAITING) {
@@ -159,16 +171,20 @@ int main() {
                         currentUIState = UIState::HIDDEN;
                     }
                 }
+                //update bot decisions
                 for (int i = 1; i < 4; i++) {
                     MoveOption botMove = controllers[i]->decideOptionAfterDiscard(inputManager, meldSelection);
                     game.setPlayerDecision(i, botMove);
                 }
+                //check if all players made up their minds
                 if (game.checkingPlayersDecisions()) {
                     int playerWhoMadeMoveId = game.executeDiscardDecision();
+                    //if id = currplayerid means that everyone skipped
                     if (playerWhoMadeMoveId == game.getCurrentPlayerId()) {
                         game.nextTurn();
                         game.setState(GameState::TURN_START);
                     }
+                    //otherwise we skip to another person's turn
                     else {
                         game.setTurn(game.getPlayer(playerWhoMadeMoveId).getWind());
                         game.setState(GameState::TURN_START);
@@ -214,14 +230,21 @@ int main() {
                 //drawing discards:
                 GameDiscardsLayout discardsLayout(game.getPlayers());
                 graphics.drawDiscards(game.getPlayers(), discardsLayout.layouts);
+                graphics.highlightDorasDiscards(game.getPlayers(), discardsLayout.layouts, game.getWall());
                 graphics.highlightLastDiscard(discardsLayout.getPlayersLayout(game.getCurrentPlayerId()));
 
+                //drawing hand tiles and meld tiles
                 HandTilesLayout humanHandLayout(humanPlayer.getHand());
                 MeldsLayout humanMeldsLayout(humanPlayer.getHand().getMelds());
                 graphics.drawHand(humanPlayer.getHand(), humanHandLayout, humanMeldsLayout);
+                graphics.highLightDoraHand(humanPlayer.getHand(), humanHandLayout, humanMeldsLayout, game.getWall());
 
-               
+                //draw dead wall
+                DeadWallLayout deadWallLayout(game.getWall());
+                graphics.drawDeadWall(game.getWall(), deadWallLayout);
 
+
+                //draw meld and call selection UI 
                 if (currentGameState == GameState::WAITING_FOR_DISCARD_DECISIONS) {
                     if (currentUIState == UIState::SELECTING_TYPE) {
                         callSelection.draw();
@@ -231,23 +254,41 @@ int main() {
                     }
                 }
 
+                //debug mode
                 if (IsKeyPressed(KEY_F3)) {
                     debugMode = !debugMode;
                 }
                 if (debugMode) {
-                    Vector2 mousePos(GetMousePosition());
-                    graphics.drawTileHitBox(humanHandLayout);
-                    graphics.drawDiscardsHitboxes(discardsLayout);
-                    DrawText(TextFormat("%.0f,%.0f", mousePos.x, mousePos.y), mousePos.x + 15, mousePos.y, 20, RED);
                     DrawFPS(10, 10);
+                    DrawText("F4 - show wall", 130, 10, 20, GREEN);
+                    DrawText("F5 - show hitboxes", 300, 10, 20, GREEN);
+                    if (IsKeyPressed(KEY_F4)) {
+
+                        showWall = !showWall;
+                    }
+                    if (IsKeyPressed(KEY_F5)) {
+                        showHitboxes = !showHitboxes;
+                    }
+                    if (showHitboxes) {
+                        DrawText("F5 - show hitboxes", 300, 10, 20, RED);
+                        Vector2 mousePos(GetMousePosition());
+                        DrawCircle(mousePos.x, mousePos.y, 5, RED);
+                        Debug::drawHitBoxes(humanHandLayout, discardsLayout);
+                        DrawText(TextFormat("%.0f,%.0f", mousePos.x, mousePos.y), mousePos.x + 15, mousePos.y, 20, RED);
+                    }
+                    if (showWall) {
+                        DrawText("F4 - show wall", 130, 10, 20, RED);
+                        Debug::drawWallDebug(graphics.getDiscardRenderer(), game.getWall());
+                    }
                 }
             }
             EndDrawing();
         }
-
+        //unloading textures
         graphics.clean();
         CloseWindow();
     }
+    //print exceptions to log if found any
     catch (const std::exception& e) {
         Log::add("EXCEPTION FOUND: " + std::string(e.what()));
     }

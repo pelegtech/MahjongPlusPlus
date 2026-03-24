@@ -64,6 +64,8 @@ int main() {
 
         //debug mode 
         bool debugMode = false;
+        bool showHitboxes = false;
+        bool showWall = false;
 
         //delday between turns
         float delayTime = 0.0f;
@@ -257,14 +259,23 @@ int main() {
                     DrawFPS(10, 10);
                     DrawText("F4 - show wall", 130, 10, 20, GREEN);
                     DrawText("F5 - show hitboxes", 300, 10, 20, GREEN);
-                    if (IsKeyDown(KEY_F5)) {
+                    if (IsKeyPressed(KEY_F4)) {
+                        
+                        showWall = !showWall;
+                    }
+                    if (IsKeyPressed(KEY_F5)) {
+                        showHitboxes = !showHitboxes;
+                    }
+                    if (showHitboxes) {
+                        DrawText("F5 - show hitboxes", 300, 10, 20, RED);
                         Vector2 mousePos(GetMousePosition());
-                        graphics.drawTileHitBox(humanHandLayout);
-                        graphics.drawDiscardsHitboxes(discardsLayout);
+                        DrawCircle(mousePos.x, mousePos.y, 5, RED);
+                        Debug::drawHitBoxes(humanHandLayout, discardsLayout);
                         DrawText(TextFormat("%.0f,%.0f", mousePos.x, mousePos.y), mousePos.x + 15, mousePos.y, 20, RED);
                     }
-                    if (IsKeyDown(KEY_F4)) {
-                        graphics.drawWallDebug(game.getWall());
+                    if (showWall) {
+                        DrawText("F4 - show wall", 130, 10, 20, RED);
+                        Debug::drawWallDebug(graphics.getDiscardRenderer(),game.getWall());
                     }
                 }
             }

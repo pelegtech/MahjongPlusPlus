@@ -22,6 +22,21 @@ Wall::Wall():doraNum(1), tail(Tile::TOTAL_TILES_NUM - 1), head(0){
 	}
 	doras[0] = calcDora(doraIndicator(0));
 }
+
+Wall::Wall(const std::vector<Tile>& tiles) :doraNum(1), tail(Tile::TOTAL_TILES_NUM - 1), head(0), wall(tiles)
+{
+	if (tiles.size() != Constants::TOTAL_TILES_NUM) {
+		throw invalidWallSize();
+	}
+	deadWall.reserve(DEAD_WALL_SIZE);
+	for (int i = 0; i < DEAD_WALL_SIZE; i++) {
+		deadWall.push_back(wall[head]);
+		head++;
+	}
+	doras[0] = calcDora(doraIndicator(0));
+
+}
+
 int Wall::tilesLeft() const{
 	return tail - head + 1;
 }

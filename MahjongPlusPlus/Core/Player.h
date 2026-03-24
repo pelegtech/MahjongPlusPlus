@@ -34,6 +34,16 @@ private:
 
 
 public:
+	class handAlreadyInitiated : public std::exception {
+	public:
+		const char* what() const noexcept override {
+			return "trying to initiate an hand that's already been initiated";
+		}
+	};
+
+
+
+
 	//---------------------------------------------------------------------------
 	//PUBLIC METHODES
 	//--------------------------------------------------------------------------
@@ -147,4 +157,7 @@ public:
 	bool daiminkanOptions(const Tile& discard);
 
 	void executeDaiminkan(const MoveOption& chosenOption, Discards& discards, const Wind& otherWind);
+
+	//we use rvalue reference because we definitely will steal the input hand and replace the player's hand with it.
+	void initHand(Hand&& inputHand);
 };

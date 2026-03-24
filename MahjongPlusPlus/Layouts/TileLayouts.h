@@ -263,10 +263,7 @@ struct GameDiscardsLayout {
 
 	const PlayerDiscardsLayout& getPlayersLayout(int index) const;
 
-	/**
-	 * @brief draws rectangles for debug purposes.
-	 */
-	void drawHitBoxes() const;
+	
 };
 
 struct DeadWallLayout {

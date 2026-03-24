@@ -8,6 +8,15 @@
 #include <iostream>
 #include <string>
 
+Game::Game(const Wall& wall,
+	std::unique_ptr<Player> p1,
+	std::unique_ptr<Player> p2,
+	std::unique_ptr<Player> p3,
+	std::unique_ptr<Player> p4) :
+	players{ std::move(p1),std::move(p2),std::move(p3),std::move(p4) }, wall(wall),
+	state(GameState::TURN_START), currentTurn(Wind::EAST), playersDecisions{} {
+}
+
 Game::Game(std::unique_ptr<Player> p1,
 	std::unique_ptr<Player> p2,
 	std::unique_ptr<Player> p3,
@@ -18,11 +27,15 @@ Game::Game(std::unique_ptr<Player> p1,
 
 
 void Game::dealInitTiles() {
-	for (int i = 0; i < Hand::MAX_HAND_SIZE - 1; i++) {
-		for (int j = 0; j < PLAYERS_NUM; j++) {
-			players[j]->addTileFromWall(wall);
+	const int tilesNum = Hand::MAX_HAND_TILES_NUM;
+	for (int i = 0; i < Constants::PLAYERS_NUM; i++) {
+		std::array<Tile, tilesNum> tiles;
+		for (int j = 0; j < tilesNum; j++) {
+			tiles[j] = wall.draw();
 		}
-	}	
+		Hand newHand(tiles);
+		players[i]->initHand(std::move(newHand));
+	}
 }
 
 const Player& Game::getPlayer(int index) const {
@@ -46,6 +59,14 @@ void Game::dictateWinds() {
 	players[order[1]]->setWind(Wind::SOUTH);
 	players[order[2]]->setWind(Wind::WEST);
 	players[order[3]]->setWind(Wind::NORTH);
+}
+
+void Game::dictateWindsChoice(Wind w1, Wind w2, Wind w3, Wind w4)
+{
+	players[0]->setWind(w1);
+	players[1]->setWind(w2);
+	players[2]->setWind(w3);
+	players[3]->setWind(w4);
 }
 
 int Game::getTilesLeft() const {

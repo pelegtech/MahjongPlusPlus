@@ -1,4 +1,5 @@
 ﻿#include "Graphics/TileGraphics.h"
+#include "Layouts\TileLayouts.h"
 #include "Core/Tile.h"
 #include "Core/Hand.h"
 #include "Core/Discards.h"
@@ -341,12 +342,7 @@ void HandTilesRenderer::draw(const Hand& hand, const HandTilesLayout& handTilesL
 	}
 }
 
-void HandTilesRenderer::drawHitBoxes(const HandTilesLayout& handTilesLayout) const
-{
-	for (int i = 0; i < handTilesLayout.size ;i++) {
-		DrawRectangleLinesEx(handTilesLayout.recs[i], 4.0f, GOLD);
-	}
-}
+
 
 void HandTilesRenderer::highlightDora(const Hand& hand, const HandTilesLayout& handTilesLayout, const MeldsLayout& meldsLayout, const Wall& wall) const
 {
@@ -493,23 +489,7 @@ void DiscardTilesRenderer::highlightDora(const Discards& discards, const PlayerD
 	}
 }
 
-void DiscardTilesRenderer::drawWallDebug(const Wall& wall) const
-{
-	Rectangle box = { WALL_BOX_POS.x,WALL_BOX_POS.y, TILES_IN_WALL_ROW * TILE_WIDTH_SRC + (2 * SPACE_TILE_BOX_SIDE),
-		(TILES_IN_WALL_COL * TILE_HEIGHT_SRC) + ((TILES_IN_WALL_COL - 1) * SPACE_BETWEEN_ROWS) + (2 * SPACE_TILE_BOX_SIDE) };
-	DrawRectangleRec(box, DARKGRAY);
-	DrawRectangleLinesEx(box, 5, BLACK);
-	for (int i = 0; i < Constants::TOTAL_TILES_NUM; i++) {
-		Rectangle dest = { WALL_BOX_POS.x + SPACE_TILE_BOX_SIDE + (i % TILES_IN_WALL_ROW) * TILE_WIDTH_SRC,
-		WALL_BOX_POS.y + SPACE_TILE_BOX_SIDE + ((i / (TILES_IN_WALL_ROW)) * (SPACE_BETWEEN_ROWS + TILE_HEIGHT_SRC)), TILE_WIDTH_SRC, TILE_HEIGHT_SRC };
-		if (i > wall.getTail() || i < wall.getHead()){
-			drawTile(wall.getWallVector()[i], dest, RelativePosition::SELF, GRAY);
-		}
-		else {
-			drawTile(wall.getWallVector()[i], dest, RelativePosition::SELF, WHITE);
-		}
-	}
-}
+
 
 
 DeadWallRenderer::DeadWallRenderer(const char* dead_Wall_tiles)

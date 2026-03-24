@@ -239,18 +239,9 @@ const PlayerDiscardsLayout& GameDiscardsLayout::getPlayersLayout(int index) cons
 	return layouts[index];
 }
 
-void GameDiscardsLayout::drawHitBoxes() const
-{	
-	for (const auto& layout : layouts) {
-		for (int i = 0; i < layout.size; i++) {
-			DrawRectangleLinesEx(layout.recs[i], 4.0f, GOLD);
-		}
-	}
-	DrawCircleV(PlayerDiscardsLayout::MY_PILE_POS, 5.0f, RED);
-	DrawCircleV(PlayerDiscardsLayout::RIGHT_PILE_POS, 5.0f, GREEN);
-	DrawCircleV(PlayerDiscardsLayout::LEFT_PILE_POS, 5.0f, RED);
-	DrawCircleV(PlayerDiscardsLayout::TOP_PILE_POS, 5.0f, RED);
-}
+
+
+
 
 DeadWallLayout::DeadWallLayout(const Wall& wall){
 	for (int i = 0; i < TILES_NUM; i++) {
