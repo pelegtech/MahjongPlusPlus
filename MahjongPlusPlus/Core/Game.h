@@ -249,6 +249,4 @@ public:
 	 */
 	void setTurn(Wind turnPlayerWind);
 	
-	
-
 };

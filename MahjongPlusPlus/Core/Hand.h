@@ -99,6 +99,10 @@ public:
 	/** @brief creates an empty hand with 0 tiles or melds.*/
 	Hand();
 
+	/**
+	 * @brief create a hand using a pre existing 13 tiles array. (only sets the hand tiles array, rest are defaulted).
+	 * @param handTiles an array with 13 tiles in it.
+	 */
 	Hand(std::array<Tile, MAX_HAND_TILES_NUM> handTiles);
 
 	/** @brief creates a hand from existing vectors.
@@ -113,6 +117,8 @@ public:
 
 	/** @brief  prints the tiles in the hand for debug purposes*/
 	friend std::ostream& operator<<(std::ostream& os, const Hand& hand);
+
+	//same thing but to a string
 	std::string handToString() const;
 
 	//other methods -------------------------------------------------------
@@ -183,6 +189,7 @@ public:
 	*/
 	void createAnkanDrawn();
 
+	//another version if the kan is made from a hand tile.
 	void createAnkanHand(const Tile& tile);
 
 	/** @brief Create a Daiminkan (open kan) using a discarded tile.
@@ -198,6 +205,8 @@ public:
 	* @param meldIndex index of the pon in the melds vector.
 	*/
 	void createShouminkanDrawn();
+	
+	//another version for the case of the kan being made from a hand tile.
 	void createShouminkanHand(const Tile& tile);
 
 
@@ -213,34 +222,76 @@ public:
 	/** @returns the combined number of free tiles and meld tiles.
 	* @note kan counts as 4 tiles.
 	*/
-	int realHandSize() const; //counts kan as 4 tiles
+	int realHandSize() const; 
 
+	/**
+	 * @return read only acces to drawn tile field. 
+	 */
 	const Tile& getDrawnTile() const;
 
+	/**
+	 * @brief checks if drawn tile field has a default tile (id = - 1) or an actual tile (id != -1).
+	 * @return true if id != -1.
+	 */
 	bool isHoldingDrawnTile() const;
 
+	/**
+	 * @param index [0,handTilesNum - 1]
+	 * @return read only access to hand tiles (the free tiles that aren't the drawn tile or a meld tile).
+	 */
 	const Tile& getHandTile(int index) const;
 
-	const std::array<Tile, MAX_HAND_TILES_NUM> getHandTiles() const;
+	/**
+	 * @return read only access to hand tiles array.
+	 */
+	const std::array<Tile, MAX_HAND_TILES_NUM>& getHandTiles() const;
 
+	/**
+	 * @return the number of tiles in the hand tiles array that aren't set to a default tile (id = -1).
+	 */
 	int getHandTilesNum() const;
 
+	/**
+	 * @return read only access to a meld. 
+	 */
 	const std::vector<std::unique_ptr<Meld>>& getMelds() const;
 
+	/**
+	 * @brief add a tile directly to the handTiles array in a sorted manner (using binary search).
+	 * @param tile to be added.
+	 */
 	void addTile(const Tile& tile);
 
+	/**
+	 * @brief checks if a hand's handTiles array is all set to default (id = -1) meaning the hand tiles array is "empty".
+	 * also checks if the melds vector is empty.
+	 * @return true if both are empty.
+	 */
 	bool isEmpty() const;
 
+	/**
+	 * @brief inneficiently (O(N)) checks if a tile exists in the hand tiles array.
+	 * @param tile to be checked.
+	 * @return true if exists in the hand tiles array.
+	 */
 	bool isTileInHandTiles(const Tile& tile) const;
 
 
 private:
+
 	/** @brief includes the free tiles, those can be discarded and be used for a meld*/
 	std::array<Tile, MAX_HAND_TILES_NUM> handTiles;
+
 	/** @brief includes the melds, those are locked and cannot be discarded or changed*/
 	std::vector<std::unique_ptr<Meld>> melds;
+
+	/**
+	 * @brief the amount of hand tiles (not inclduing drawn tile or meld tiles) that are not set to default (id = -1),
+	 * meaning the tiles the hand is actually containing. 
+	 */
 	int handTilesNum;
 
+	/**	 * @brief the tile the hand is "holding" at the current moment. 	 */
 	Tile drawnTile;
 	
 };

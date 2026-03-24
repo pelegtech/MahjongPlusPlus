@@ -344,13 +344,13 @@ bool Hand::isHoldingDrawnTile() const
 
 const Tile& Hand::getHandTile(int index) const
 {
-	if (index < 0 || index > handTilesNum) {
+	if (index < 0 || index >= handTilesNum) {
 		throw illegalAcess();
 	}
 	return handTiles[index];
 }
 
-const std::array<Tile, Hand::MAX_HAND_TILES_NUM> Hand::getHandTiles() const
+const std::array<Tile, Hand::MAX_HAND_TILES_NUM>& Hand::getHandTiles() const
 {
 	return handTiles;
 }
