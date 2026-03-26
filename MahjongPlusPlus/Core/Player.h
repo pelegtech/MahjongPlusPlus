@@ -160,6 +160,14 @@ public:
 
 	void executeDaiminkan(const MoveOption& chosenOption, Discards& discards, const Wind& otherWind);
 
+	bool ankanOptions();
+
+	void executeAnkan(const MoveOption& chosenOption);
+
+	bool shouminkanOptions();
+
+	void executeShouminkan(const MoveOption& chosenOption);
+
 	//we use rvalue reference because we definitely will steal the input hand and replace the player's hand with it.
 	void initHand(Hand&& inputHand);
 

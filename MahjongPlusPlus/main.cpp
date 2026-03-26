@@ -62,6 +62,10 @@ int main() {
         game.dictateWinds();
         game.setState(GameState::INIT_ROUND);
         bool daiminkanDraw = false;
+        bool shouminkanDraw = false;
+        bool ankan = false;
+
+
 
         //debug mode 
         bool debugMode = false;
@@ -131,6 +135,7 @@ int main() {
 
                 if (chosenDiscardId != -1) {
                     game.discardTile(chosenDiscardId);
+                    //in case of a daiminkan being made, reveal dora after discard.
                     if (daiminkanDraw) {
                         daiminkanDraw = false;
                         game.addDora();
@@ -187,7 +192,7 @@ int main() {
                     game.setPlayerDecision(i, botMove);
                 }
                 //check if all players made up their minds
-                if (game.checkingPlayersDecisions()) {
+                if (game.haveAllPlayersDecided()) {
                     int playerWhoMadeMoveId = game.executeDiscardDecision();
                     //if id = currplayerid means that everyone skipped
                     if (playerWhoMadeMoveId == game.getCurrentPlayerId()) {
@@ -197,11 +202,14 @@ int main() {
                     }
                     //otherwise we skip to another person's turn
                     else {
+                        //kan case
                         if (game.getPlayerDecision(playerWhoMadeMoveId).getType() == MoveType::DAIMINKAN) {
                             game.setTurn(game.getPlayer(playerWhoMadeMoveId).getWind());
                             game.setState(GameState::KAN_DRAW);
+                            //to reveal kan tile after discard
                             daiminkanDraw = true;
                         }
+                        //otherwise
                         else {
                             game.setTurn(game.getPlayer(playerWhoMadeMoveId).getWind());
                             game.setState(GameState::TURN_START);
@@ -312,5 +320,4 @@ int main() {
         Log::add("EXCEPTION FOUND: " + std::string(e.what()));
     }
     return 0;
-}
 }

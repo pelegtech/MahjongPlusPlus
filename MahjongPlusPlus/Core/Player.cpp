@@ -236,6 +236,83 @@ void Player::executeDaiminkan(const MoveOption& chosenOption, Discards& discards
 	hand.createDaiminkan(discards, chosenOption.tiles[0], chosenOption.tiles[1], chosenOption.tiles[2], relativeMarker(otherWind));
 }
 
+bool Player::ankanOptions()
+{
+	bool flag = false;
+	std::array<int, Constants::TILE_KINDS> hist;
+	hist.fill(0);
+	for (int i = 0; i < hand.getHandTilesNum(); i++) {
+		hist[hand.getHandTile(i).getId() / Constants::TILE_COPIES]++;
+	}
+
+	//you can never ankan without a drawn hand tile
+	if (!hand.isHoldingDrawnTile()) {
+		return false;
+	}
+	hist[hand.getDrawnTile().getId() / Constants::TILE_COPIES]++;
+
+	for (int i = 0; i < Constants::TILE_KINDS; i++) {
+		if (hist[i] == 4) {
+			int tileId = i * Constants::TILE_COPIES;
+			Tile t1 = Tile(tileId);
+			Tile t2 = Tile(tileId + 1);
+			Tile t3 = Tile(tileId + 2);
+			Tile t4 = Tile(tileId + 3);
+			options.push_back(MoveOption(MoveType::ANKAN, { t1,t2,t3,t4 }));
+			flag = true;
+		}
+	}
+	return flag;
+}
+
+void Player::executeAnkan(const MoveOption& chosenOption)
+{
+	if (Tile::isEqual(hand.getDrawnTile(), chosenOption.tiles[0])) {
+		hand.createAnkanDrawn();
+	}
+	else {
+		hand.createAnkanHand(chosenOption.tiles[0]);
+	}
+}
+
+bool Player::shouminkanOptions()
+{
+	bool flag = false;
+	if (!hand.isHoldingDrawnTile()) {
+		return false;
+	}
+	for (const auto& meld : hand.getMelds()) {
+		if (meld->getMeldType() == MeldType::PON) {
+			if (Tile::isEqual(hand.getDrawnTile(), (*meld)[0])) {
+				options.push_back(MoveOption(MoveType::SHOUMINKAN, { hand.getDrawnTile() }));
+				flag = true;
+				continue;
+			}
+			for (int i = 0; i < hand.getHandTilesNum(); i++) {
+				if (Tile::isEqual(hand.getHandTile(i), (*meld)[0])) {
+					options.push_back(MoveOption(MoveType::SHOUMINKAN, { hand.getHandTile(i) }));
+					flag = true;
+					break;
+				}
+			}
+			
+		}
+	}
+	return flag;
+}
+
+void Player::executeShouminkan(const MoveOption& chosenOption)
+{
+	if (Tile::isEqual(hand.getDrawnTile(), chosenOption.tiles[0])) {
+		hand.createShouminkanDrawn();
+	}
+	else {
+		hand.createShouminkanHand(chosenOption.tiles[0]);
+	}
+}
+
+
+
 void Player::initHand(Hand&& inputHand)
 {
 	if (hand.isEmpty() != true) {
