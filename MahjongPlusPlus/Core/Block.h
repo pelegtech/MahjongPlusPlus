@@ -1,6 +1,7 @@
 #pragma once
 #include <array>
 #include "GameTypes.h"
+#include "Tile.h"
 class Tile;
 
 class Block {

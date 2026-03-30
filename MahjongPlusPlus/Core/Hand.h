@@ -276,8 +276,6 @@ public:
 	 */
 	bool isTileInHandTiles(const Tile& tile) const;
 
-	static constexpr int MAX_MELDS_NUM = 4;
-
 	std::vector<std::unique_ptr<HandShape>> getValidHands() const;
 
 private:

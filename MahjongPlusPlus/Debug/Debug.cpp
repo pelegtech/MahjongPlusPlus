@@ -154,56 +154,6 @@ std::string Debug::windToStr(const Wind& wind)
 }
 
 
-void Debug::drawHitBoxes(const HandTilesLayout & handTilesLayout, const GameDiscardsLayout & gameDiscardsLayout)
-{
-	for (int i = 0; i < handTilesLayout.size;i++) {
-		DrawRectangleLinesEx(handTilesLayout.recs[i], 4.0f, GOLD);
-	}
-	for (const auto& layout : gameDiscardsLayout.layouts) {
-		for (int i = 0; i < layout.size; i++) {
-			DrawRectangleLinesEx(layout.recs[i], 4.0f, GOLD);
-		}
-	}
-	DrawCircleV(PlayerDiscardsLayout::MY_PILE_POS, 5.0f, RED);
-	DrawCircleV(PlayerDiscardsLayout::RIGHT_PILE_POS, 5.0f, GREEN);
-	DrawCircleV(PlayerDiscardsLayout::LEFT_PILE_POS, 5.0f, RED);
-	DrawCircleV(PlayerDiscardsLayout::TOP_PILE_POS, 5.0f, RED);
-}
-
-void Debug::drawWallDebug(const DiscardTilesRenderer & renderer, const Wall & wall)
-{
-	
-	DrawRectangleRec(WALL_BOX, DARKGRAY);
-	DrawRectangleLinesEx(WALL_BOX, 5, BLACK);
-	for (int i = 0; i < Constants::TOTAL_TILES_NUM; i++) {
-		Rectangle dest = { WALL_BOX_POS.x + SPACE_TILE_BOX_SIDE + (i % TILES_IN_WALL_ROW) * DiscardTilesRenderer::TILE_WIDTH_SRC,
-		WALL_BOX_POS.y + SPACE_TILE_BOX_SIDE + ((i / (TILES_IN_WALL_ROW)) * (SPACE_BETWEEN_ROWS + DiscardTilesRenderer::TILE_HEIGHT_SRC))
-			, DiscardTilesRenderer::TILE_WIDTH_SRC, DiscardTilesRenderer::TILE_HEIGHT_SRC };
-		if (i > wall.getTail() || i < wall.getHead()) {
-			renderer.drawTile(wall.getWallVector()[i], dest, RelativePosition::SELF, GRAY);
-		}
-		else {
-			renderer.drawTile(wall.getWallVector()[i], dest, RelativePosition::SELF, WHITE);
-		}
-		if (i % 4 == 0) {
-			Vector2 start = { dest.x, dest.y };
-			Vector2 end = { dest.x, dest.y + DiscardTilesRenderer::TILE_HEIGHT_SRC };
-			DrawLineEx(start, end, 5, RED);
-		}
-	}
-}
-
-void Debug::drawDeadWallDebug(const DiscardTilesRenderer& renderer, const Wall& wall)
-{
-	DrawRectangleRec(DEAD_WALL_BOX, DARKGRAY);
-	DrawRectangleLinesEx(DEAD_WALL_BOX, 5, BLACK);
-	for (int i = 0; i < wall.getDeadWallVector().size(); i++) {
-		Rectangle dest = { DEAD_WALL_BOX.x + SPACE_TILE_BOX_SIDE + (i % TILES_IN_DEAD_WALL_ROW) * DiscardTilesRenderer::TILE_WIDTH_SRC,
-		DEAD_WALL_BOX.y + SPACE_TILE_BOX_SIDE + ((i / (TILES_IN_DEAD_WALL_ROW)) * (SPACE_BETWEEN_ROWS + DiscardTilesRenderer::TILE_HEIGHT_SRC))
-			, DiscardTilesRenderer::TILE_WIDTH_SRC, DiscardTilesRenderer::TILE_HEIGHT_SRC };
-		renderer.drawTile(wall.getDeadWallVector()[i], dest, RelativePosition::SELF, WHITE);
-	}
-}
 
 Wall Debug::presetHandWall(const Hand& hand)
 {

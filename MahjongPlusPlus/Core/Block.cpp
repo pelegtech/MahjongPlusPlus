@@ -32,6 +32,8 @@ bool Block::isTriplet(const Tile& t1, const Tile& t2, const Tile& t3)
 
 bool Block::isSequence(const Tile& t1, const Tile& t2, const Tile& t3)
 {
+	if (t1.getSuit() == Suit::HONOR) return false;
+
 	if (t1.getSuit() == t2.getSuit() && t1.getSuit() == t3.getSuit()) {
 		if (t1.getValue() + 1 == t2.getValue() && t2.getValue() + 1 == t3.getValue()) {
 			return true;

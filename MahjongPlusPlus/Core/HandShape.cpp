@@ -1,4 +1,5 @@
-#include "Hand.h"
+#include "HandShape.h"
+
 
 bool standardShape::getHasPair()
 {

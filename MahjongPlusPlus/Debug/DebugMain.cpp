@@ -22,6 +22,7 @@
 #include "UI/MeldSelection.h"
 #include "Debug/Debug.h"
 #include <exception>
+#include "Debug/GraphicsDebug.h"
 
 int main() {
     try {
@@ -43,10 +44,10 @@ int main() {
         controllers[3] = std::make_unique<BotController>();
 
         //initialize game players. player 0 is the perspective human player.
-        Hand testHand = Debug::handFromCodes("1p", "1p", "1p", "2p", "2p", "2p", "3p", "3p", "3p", "4p", "4p", "4p", "5p");
+       /* Hand testHand = Debug::handFromCodes("1p", "1p", "1p", "2p", "2p", "2p", "3p", "3p", "3p", "4p", "4p", "4p", "5p");
         std::cout << testHand;
-        Wall testWall = Debug::presetHandWall(testHand);
-        Game game(testWall,
+        Wall testWall = Debug::presetHandWall(testHand);*/
+        Game game(//testWall,
             std::make_unique<Player>(),
             std::make_unique<Player>(),
             std::make_unique<Player>(),
@@ -222,10 +223,17 @@ int main() {
                 break;
 
             }
+            
 
+
+
+
+           
 
 
             //drawing
+            
+
 
             BeginDrawing();
 
@@ -298,13 +306,22 @@ int main() {
                         DrawText("F5 - show hitboxes", 300, 10, 20, RED);
                         Vector2 mousePos(GetMousePosition());
                         DrawCircle(mousePos.x, mousePos.y, 5, RED);
-                        Debug::drawHitBoxes(humanHandLayout, discardsLayout);
+                        GraphicsDebug::drawHitBoxes(humanHandLayout, discardsLayout);
                         DrawText(TextFormat("%.0f,%.0f", mousePos.x, mousePos.y), mousePos.x + 15, mousePos.y, 20, RED);
                     }
                     if (showWall) {
                         DrawText("F4 - show wall", 130, 10, 20, RED);
-                        Debug::drawWallDebug(graphics.getDiscardRenderer(), game.getWall());
-                        Debug::drawDeadWallDebug(graphics.getDiscardRenderer(), game.getWall());
+                        GraphicsDebug::drawWallDebug(graphics.getDiscardRenderer(), game.getWall());
+                        GraphicsDebug::drawDeadWallDebug(graphics.getDiscardRenderer(), game.getWall());
+                    }
+                }
+
+                if (game.getPlayer(0).getHand().isHoldingDrawnTile()) {
+                    if (game.getPlayer(0).getHand().getValidHands().size() > 0) {
+                        DrawText("WIN", 500, 500, 40, GREEN);
+                    }
+                    else {
+                        DrawText("NO WIN", 500, 500, 40, GREEN);
                     }
                 }
             }

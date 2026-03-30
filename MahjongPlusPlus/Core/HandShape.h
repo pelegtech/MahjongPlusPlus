@@ -9,7 +9,8 @@
 class HandShape {
 private:
 public:
-	HandShape();
+	HandShape() = default;
+	virtual ~HandShape() = default;
 };
 
 class standardShape : public HandShape {

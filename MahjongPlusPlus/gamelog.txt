@@ -1,320 +1,58 @@
 ----Game Start----
-1 pin
-1 pin
-1 pin
-2 pin
-2 pin
-2 pin
-3 pin
-3 pin
-3 pin
 4 pin
-4 pin
-4 pin
-Red 5 pin
+Green dragon
+6 pin
+East wind
+2 sou
+6 man
 3 pin
-8 sou
+White dragon
 9 sou
-5 man
-West wind
+7 man
+6 man
+Red dragon
+Red dragon
+8 pin
+7 sou
+East wind
+North wind
+7 pin
 9 pin
+Red 5 pin
+Green dragon
+5 sou
+8 sou
+North wind
+South wind
+2 man
+7 pin
+3 man
+5 man
+6 sou
+9 man
+4 pin
+7 man
+6 pin
+2 man
+4 man
+1 pin
+9 man
+Red dragon
+1 pin
+7 man
+1 sou
 Red 5 sou
-9 man
-7 pin
-1 man
-4 man
-3 man
-9 man
-9 sou
-6 sou
-2 sou
-West wind
-2 sou
-1 pin
-1 sou
-9 pin
-3 sou
-4 man
-9 man
-1 pin
 White dragon
 5 sou
-South wind
-3 man
-7 sou
-7 pin
-8 pin
-7 sou
-8 man
-4 sou
-West wind
-9 man
-5 man
-Green dragon
-West wind
-1 man
-7 sou
-1 man
-9 pin
-2 pin
-8 man
-4 sou
-Red dragon
-South wind
-2 man
-8 pin
-3 pin
-East wind
-East wind
-3 pin
-9 man
-7 sou
-3 sou
-2 man
-West wind
-4 pin
 1 sou
-White dragon
+1 sou
+6 pin
+South wind
+1 man
+1 man
 9 man
-5 pin
-4 man
-4 sou
-White dragon
-Green dragon
-9 pin
-East wind
-3 man
-West wind
-4 man
-9 sou
-Green dragon
-5 sou
-3 man
-5 man
-8 pin
-1 pin
-4 pin
-Player num: 1 Drew: 
-6 pin
-Changing wind to: South
-Player num: 0 Drew: 
-8 man
-Changing wind to: West
-Player num: 3 Drew: 
-3 man
-Changing wind to: North
-Player num: 2 Drew: 
-2 sou
-p0 called pon, hand: 
-free tiles: 
-[3 man] [4 man] [4 man] [8 man] [9 man] [1 pin] [9 pin] [1 sou] [3 sou] [6 sou] [9 sou] 
-melds:
-Pon: [2 sou], /[2 sou]/, [2 sou]
-
-Changing wind to: West
-Player num: 3 Drew: 
-1 sou
-Changing wind to: North
-Player num: 2 Drew: 
-9 sou
-Changing wind to: East
-Player num: 1 Drew: 
-East wind
-Changing wind to: South
-Player num: 0 Drew: 
-1 sou
-Changing wind to: West
-Player num: 3 Drew: 
-7 man
-Changing wind to: North
-Player num: 2 Drew: 
-1 man
-Changing wind to: East
-Player num: 1 Drew: 
-South wind
-Changing wind to: South
-Player num: 0 Drew: 
-4 pin
-Changing wind to: West
-Player num: 3 Drew: 
-7 man
-Changing wind to: North
-Player num: 2 Drew: 
-4 man
-p0 called pon, hand: 
-free tiles: 
-[3 man] [8 man] [9 man] [4 pin] [1 sou] [1 sou] [3 sou] [6 sou] 
-melds:
-Pon: [2 sou], /[2 sou]/, [2 sou]
-Pon: [4 man], /[4 man]/, [4 man]
-
-Changing wind to: West
-Player num: 3 Drew: 
-4 sou
-Changing wind to: North
-Player num: 2 Drew: 
-2 man
-Changing wind to: East
-Player num: 1 Drew: 
-2 pin
-Changing wind to: South
-Player num: 0 Drew: 
-7 pin
-Changing wind to: West
-Player num: 3 Drew: 
-3 man
-Changing wind to: North
-Player num: 2 Drew: 
-6 pin
-Changing wind to: East
-Player num: 1 Drew: 
-8 pin
-Changing wind to: South
-Player num: 0 Drew: 
-8 sou
-Changing wind to: West
-Player num: 3 Drew: 
-6 pin
-Changing wind to: North
-Player num: 2 Drew: 
-White dragon
-Changing wind to: East
-Player num: 1 Drew: 
-Red dragon
-Changing wind to: South
-Player num: 0 Drew: 
-Red dragon
-Changing wind to: West
-Player num: 3 Drew: 
-6 man
-Changing wind to: North
-Player num: 2 Drew: 
-West wind
-Changing wind to: East
-Player num: 1 Drew: 
-White dragon
-Changing wind to: South
-Player num: 0 Drew: 
-2 pin
-Changing wind to: West
-Player num: 3 Drew: 
-7 pin
-Changing wind to: North
-Player num: 2 Drew: 
-3 pin
-Changing wind to: East
-Player num: 1 Drew: 
-Green dragon
-Changing wind to: South
-Player num: 0 Drew: 
-5 man
-Changing wind to: West
-Player num: 3 Drew: 
-3 pin
-Changing wind to: North
-Player num: 2 Drew: 
-8 man
-Changing wind to: East
-Player num: 1 Drew: 
-2 man
-Changing wind to: South
-Player num: 0 Drew: 
-9 sou
-Changing wind to: West
-Player num: 3 Drew: 
-South wind
-Changing wind to: North
-Player num: 2 Drew: 
-6 man
-Changing wind to: East
 Player num: 1 Drew: 
 4 sou
 Changing wind to: South
 Player num: 0 Drew: 
-Red 5 man
-Changing wind to: West
-Player num: 3 Drew: 
-2 sou
-Changing wind to: North
-Player num: 2 Drew: 
-6 man
-Changing wind to: East
-Player num: 1 Drew: 
-2 man
-Changing wind to: South
-Player num: 0 Drew: 
-North wind
-Changing wind to: West
-Player num: 3 Drew: 
-1 pin
-Changing wind to: North
-Player num: 2 Drew: 
-Green dragon
-Changing wind to: East
-Player num: 1 Drew: 
-Green dragon
-Changing wind to: South
-Player num: 0 Drew: 
-4 pin
-Changing wind to: West
-Player num: 3 Drew: 
-3 sou
-Changing wind to: North
-Player num: 2 Drew: 
-East wind
-Changing wind to: East
-Player num: 1 Drew: 
-8 sou
-Changing wind to: South
-Player num: 0 Drew: 
-7 man
-Changing wind to: West
-Player num: 3 Drew: 
-Red 5 pin
-Changing wind to: North
-Player num: 2 Drew: 
-1 man
-Changing wind to: East
-Player num: 1 Drew: 
-6 man
-8 sou
-Player num: 2 Drew: 
-5 pin
-p0 called chi, hand: 
-free tiles: 
-[1 pin] [1 pin] [1 pin] [2 pin] [2 pin] [2 pin] [3 pin] [3 pin] [4 pin] [4 pin] [Red 5 pin] 
-melds:
-Chi: /[5 pin]/, [3 pin], [4 pin]
-
-p0 called chi, hand: 
-free tiles: 
-[3 man] [Red 5 man] [9 man] [4 pin] [1 sou] 
-melds:
-Pon: [2 sou], /[2 sou]/, [2 sou]
-Pon: [4 man], /[4 man]/, [4 man]
-Chi: /[6 man]/, [7 man], [8 man]
-
-Changing wind to: West
-Player num: 3 Drew: 
-6 sou
-Changing wind to: North
-Player num: 2 Drew: 
-8 sou
-Changing wind to: East
-Player num: 1 Drew: 
-8 sou
-Changing wind to: South
-Player num: 0 Drew: 
-6 sou
-Changing wind to: West
-Player num: 3 Drew: 
-7 pin
-Changing wind to: North
-Player num: 2 Drew: 
-North wind
-Changing wind to: East
-Player num: 1 Drew: 
-5 pin
-Changing wind to: South
-Player num: 0 Drew: 
-3 sou
+9 man

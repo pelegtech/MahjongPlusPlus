@@ -402,61 +402,12 @@ bool Hand::isTileInHandTiles(const Tile& tile) const
 	return false;
 }
 
-std::vector<std::unique_ptr<HandShape>> Hand::getValidHands() const
-{	
-	std::vector<Tile> remainingTiles;
-	bool flag = false;
-	for (int i = 0; i < handTilesNum; i++) {
-		if (handTiles[i].getId() > drawnTile.getId() && flag == false) {
-			remainingTiles.push_back(drawnTile);
-			flag = true;
-		}
-		remainingTiles.push_back(handTiles[i]);
-	}
-	if (flag == false) {
-		remainingTiles.push_back(drawnTile);
-	}
-	std::vector<std::unique_ptr<HandShape>> shapes;
-	standardShape currShape;
-	if (!melds.empty()) {
-		for (const auto& meld : melds) {
-			MeldType type = meld->getMeldType();
-			switch (type) {
-			case MeldType::ANKAN: {
-				BlockTriplet block((*meld)[0], (*meld)[1], (*meld)[2], (*meld)[3], BlockType::CLOSED_KAN);
-				currShape.addTriplet(block);
-				break;
-			}
-			case MeldType::DAIMINKAN:
-			case MeldType::SHOUMINKAN: {
-				BlockTriplet block((*meld)[0], (*meld)[1], (*meld)[2], (*meld)[3], BlockType::OPEN_KAN);
-				currShape.addTriplet(block);
-				break;
-			}
-			case MeldType::CHI: {
-				BlockTriplet block((*meld)[0], (*meld)[1], (*meld)[2], (*meld)[3], BlockType::OPEN_SEQUENCE);
-				currShape.addTriplet(block);
-				break;
-			}
-			case MeldType::PON: {
-				BlockTriplet block((*meld)[0], (*meld)[1], (*meld)[2], (*meld)[3], BlockType::OPEN_TRIPLET);
-				currShape.addTriplet(block);
-				break;
-			}
-			}
-		}
-	}
-	else {
-		sevenPairsShape currSevenPairsShape;
-		validSevenPairs(shapes, currSevenPairsShape, remainingTiles);
-		//same but for thirteen orphans
-	} 
-	validStandardHand(shapes, currShape, remainingTiles);
-}
+
 
 void validSevenPairs(std::vector<std::unique_ptr<HandShape>>& shapes,
 	sevenPairsShape currShape, std::vector<Tile> remainingTiles) {
 	int lastTileId = remainingTiles.size() - 1;
+	//edge case of there being a triplet or a quad with the same tile 
 	if (remainingTiles.size() > 2) {
 		if (Tile::isEqual(remainingTiles[lastTileId], remainingTiles[lastTileId - 2])) {
 			return;
@@ -481,14 +432,14 @@ void validStandardHand(std::vector<std::unique_ptr<HandShape>>& shapes,
 		if (Tile::isEqual(remainingTiles[0], remainingTiles[1])) {
 			currShape.addPair(BlockPair(remainingTiles[0], remainingTiles[1]));
 			shapes.push_back(std::make_unique<HandShape>(std::move(currShape)));
-		} 
+		}
 		return;
 	}
 	if (remainingTiles.size() == 3) {
 		Tile t1 = remainingTiles[0];
 		Tile t2 = remainingTiles[1];
 		Tile t3 = remainingTiles[2];
-		if (Block::isTriplet(t1,t2,t3)) {
+		if (Block::isTriplet(t1, t2, t3)) {
 			currShape.addTriplet(BlockTriplet(t1, t2, t3, BlockType::CLOSED_TRIPLET));
 			shapes.push_back(std::make_unique<HandShape>(std::move(currShape)));
 		}
@@ -503,9 +454,9 @@ void validStandardHand(std::vector<std::unique_ptr<HandShape>>& shapes,
 	if (Block::isTriplet(remainingTiles[lastTileId - 2], remainingTiles[lastTileId - 1], lastTile)) {
 		BlockTriplet block(remainingTiles[lastTileId - 2], remainingTiles[lastTileId - 1], lastTile, BlockType::CLOSED_TRIPLET);
 		currShape.addTriplet(std::move(block));
-		validStandardHand(shapes,currShape, std::vector<Tile>(remainingTiles.begin(), remainingTiles.end() - 3));
+		validStandardHand(shapes, currShape, std::vector<Tile>(remainingTiles.begin(), remainingTiles.end() - 3));
 		currShape.popTriplet();
-	} 
+	}
 	if (lastTile.getSuit() != Suit::HONOR) {
 		int currIndex = lastTileId - 1;
 		int id1 = -1;
@@ -538,7 +489,7 @@ void validStandardHand(std::vector<std::unique_ptr<HandShape>>& shapes,
 			newRemainingTiles.pop_back();
 			newRemainingTiles.erase(newRemainingTiles.begin() + id1);
 			newRemainingTiles.erase(newRemainingTiles.begin() + id2);
-			validStandardHand(shapes, currShape,std::move(newRemainingTiles));
+			validStandardHand(shapes, currShape, std::move(newRemainingTiles));
 			currShape.popTriplet();
 		}
 	}
@@ -549,6 +500,66 @@ void validStandardHand(std::vector<std::unique_ptr<HandShape>>& shapes,
 	}
 	return;
 }
+
+std::vector<std::unique_ptr<HandShape>> Hand::getValidHands() const
+{	
+	//insert the drawn tile into the hand tiles in a sorted manner.
+	//uses a flag instead of a sorting algorithm for efficiency. 
+	std::vector<Tile> remainingTiles;
+	bool flag = false;
+	for (int i = 0; i < handTilesNum; i++) {
+		if (handTiles[i].getId() > drawnTile.getId() && flag == false) {
+			remainingTiles.push_back(drawnTile);
+			flag = true;
+		}
+		remainingTiles.push_back(handTiles[i]);
+	}
+	if (flag == false) {
+		remainingTiles.push_back(drawnTile);
+	}
+
+	//in the case of a hand including open melds, add them into the current shape as blocks. 
+	std::vector<std::unique_ptr<HandShape>> shapes;
+	standardShape currShape;
+	if (!melds.empty()) {
+		for (const auto& meld : melds) {
+			MeldType type = meld->getMeldType();
+			switch (type) {
+			case MeldType::ANKAN: {
+				BlockTriplet block((*meld)[0], (*meld)[1], (*meld)[2], (*meld)[3], BlockType::CLOSED_KAN);
+				currShape.addTriplet(block);
+				break;
+			}
+			case MeldType::DAIMINKAN:
+			case MeldType::SHOUMINKAN: {
+				BlockTriplet block((*meld)[0], (*meld)[1], (*meld)[2], (*meld)[3], BlockType::OPEN_KAN);
+				currShape.addTriplet(block);
+				break;
+			}
+			case MeldType::CHI: {
+				BlockTriplet block((*meld)[0], (*meld)[1], (*meld)[2], BlockType::OPEN_SEQUENCE);
+				currShape.addTriplet(block);
+				break;
+			}
+			case MeldType::PON: {
+				BlockTriplet block((*meld)[0], (*meld)[1], (*meld)[2], BlockType::OPEN_TRIPLET);
+				currShape.addTriplet(block);
+				break;
+			}
+			}
+		}
+	}
+	//in the case of the hand including 0 melds, check if this hand qualifies for seven pairs or 13 orphans.
+	else {
+		sevenPairsShape currSevenPairsShape;
+		validSevenPairs(shapes, currSevenPairsShape, remainingTiles);
+		//same but for thirteen orphans
+	} 
+	//check valid hand formation with the rest of the hand tiles.
+	validStandardHand(shapes, currShape, remainingTiles);
+	return shapes;
+}
+
 
 
 

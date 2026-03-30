@@ -55,26 +55,10 @@ namespace Debug {
 
 	std::string windToStr(const Wind& wind);
 
-	static constexpr int TILES_IN_WALL_ROW = 17;
-	static constexpr int TILES_IN_WALL_COL = 8;
-	static constexpr int SPACE_TILE_BOX_SIDE = 20;
-	static constexpr int SPACE_BETWEEN_ROWS = 10;
-	static constexpr Vector2 WALL_BOX_POS = { 50,50 };
-	static constexpr Rectangle WALL_BOX = { WALL_BOX_POS.x,WALL_BOX_POS.y, TILES_IN_WALL_ROW * DiscardTilesRenderer::TILE_WIDTH_SRC + (2 * SPACE_TILE_BOX_SIDE),
-		(TILES_IN_WALL_COL * DiscardTilesRenderer::TILE_HEIGHT_SRC) + ((TILES_IN_WALL_COL - 1) * SPACE_BETWEEN_ROWS) + (2 * SPACE_TILE_BOX_SIDE) };
-	static constexpr int TILES_IN_DEAD_WALL_ROW = 7;
-	static constexpr int TILES_IN_DEAD_WALL_COL = 2;
-	static constexpr float SPACE_BETWEEN_BOXES = 20;
-	static constexpr Rectangle DEAD_WALL_BOX = { WALL_BOX.x + WALL_BOX.width + SPACE_BETWEEN_BOXES , WALL_BOX.y,
-		TILES_IN_DEAD_WALL_ROW * DiscardTilesRenderer::TILE_WIDTH_SRC + (2 * SPACE_TILE_BOX_SIDE),
-	(TILES_IN_DEAD_WALL_COL * DiscardTilesRenderer::TILE_HEIGHT_SRC) + (TILES_IN_DEAD_WALL_COL - 1) * SPACE_BETWEEN_ROWS + (2 * SPACE_TILE_BOX_SIDE) };
+	
 
 
-	void drawHitBoxes(const HandTilesLayout& handTilesLayout, const GameDiscardsLayout& gameDiscardsLayout);
 
-	void drawWallDebug(const DiscardTilesRenderer& renderer, const Wall& wall);
-
-	void drawDeadWallDebug(const DiscardTilesRenderer& renderer, const Wall& wall);
 
 	Wall presetHandWall(const Hand& hand);
 

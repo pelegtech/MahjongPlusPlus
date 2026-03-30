@@ -54,6 +54,7 @@
     <ClCompile Include="Core\Triplet.cpp" />
     <ClCompile Include="Core\Wall.cpp" />
     <ClCompile Include="Debug\DebugMain.cpp" />
+    <ClCompile Include="Debug\GraphicsDebug.cpp" />
     <ClCompile Include="Graphics\Graphics.cpp" />
     <ClCompile Include="Graphics\TileGraphics.cpp" />
     <ClCompile Include="Input\Controller.cpp" />
@@ -78,6 +79,7 @@
     <ClInclude Include="Core\Tile.h" />
     <ClInclude Include="Core\Triplet.h" />
     <ClInclude Include="Core\Wall.h" />
+    <ClInclude Include="Debug\GraphicsDebug.h" />
     <ClInclude Include="Graphics\Graphics.h" />
     <ClInclude Include="Graphics\Paths.h" />
     <ClInclude Include="Graphics\TileGraphics.h" />
@@ -115,13 +117,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v145</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v145</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>

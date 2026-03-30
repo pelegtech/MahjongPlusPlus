@@ -5,6 +5,8 @@ VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MahjongPlusPlus", "MahjongPlusPlus\MahjongPlusPlus.vcxproj", "{477CCCA4-025A-44AA-AE45-7CA75FF21F07}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MahjongTest", "MahjongTest\MahjongTest.vcxproj", "{AE3F63AE-9D2B-44D2-9F1F-4FB0CD242A58}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,8 +23,19 @@ Global
 		{477CCCA4-025A-44AA-AE45-7CA75FF21F07}.Release|x64.Build.0 = Release|x64
 		{477CCCA4-025A-44AA-AE45-7CA75FF21F07}.Release|x86.ActiveCfg = Release|Win32
 		{477CCCA4-025A-44AA-AE45-7CA75FF21F07}.Release|x86.Build.0 = Release|Win32
+		{AE3F63AE-9D2B-44D2-9F1F-4FB0CD242A58}.Debug|x64.ActiveCfg = Debug|x64
+		{AE3F63AE-9D2B-44D2-9F1F-4FB0CD242A58}.Debug|x64.Build.0 = Debug|x64
+		{AE3F63AE-9D2B-44D2-9F1F-4FB0CD242A58}.Debug|x86.ActiveCfg = Debug|Win32
+		{AE3F63AE-9D2B-44D2-9F1F-4FB0CD242A58}.Debug|x86.Build.0 = Debug|Win32
+		{AE3F63AE-9D2B-44D2-9F1F-4FB0CD242A58}.Release|x64.ActiveCfg = Release|x64
+		{AE3F63AE-9D2B-44D2-9F1F-4FB0CD242A58}.Release|x64.Build.0 = Release|x64
+		{AE3F63AE-9D2B-44D2-9F1F-4FB0CD242A58}.Release|x86.ActiveCfg = Release|Win32
+		{AE3F63AE-9D2B-44D2-9F1F-4FB0CD242A58}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D53ACF16-6F07-45C9-97DA-DDEF27CEA2AC}
 	EndGlobalSection
 EndGlobal
