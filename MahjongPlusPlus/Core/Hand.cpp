@@ -402,6 +402,153 @@ bool Hand::isTileInHandTiles(const Tile& tile) const
 	return false;
 }
 
+std::vector<std::unique_ptr<HandShape>> Hand::getValidHands() const
+{	
+	std::vector<Tile> remainingTiles;
+	bool flag = false;
+	for (int i = 0; i < handTilesNum; i++) {
+		if (handTiles[i].getId() > drawnTile.getId() && flag == false) {
+			remainingTiles.push_back(drawnTile);
+			flag = true;
+		}
+		remainingTiles.push_back(handTiles[i]);
+	}
+	if (flag == false) {
+		remainingTiles.push_back(drawnTile);
+	}
+	std::vector<std::unique_ptr<HandShape>> shapes;
+	standardShape currShape;
+	if (!melds.empty()) {
+		for (const auto& meld : melds) {
+			MeldType type = meld->getMeldType();
+			switch (type) {
+			case MeldType::ANKAN: {
+				BlockTriplet block((*meld)[0], (*meld)[1], (*meld)[2], (*meld)[3], BlockType::CLOSED_KAN);
+				currShape.addTriplet(block);
+				break;
+			}
+			case MeldType::DAIMINKAN:
+			case MeldType::SHOUMINKAN: {
+				BlockTriplet block((*meld)[0], (*meld)[1], (*meld)[2], (*meld)[3], BlockType::OPEN_KAN);
+				currShape.addTriplet(block);
+				break;
+			}
+			case MeldType::CHI: {
+				BlockTriplet block((*meld)[0], (*meld)[1], (*meld)[2], (*meld)[3], BlockType::OPEN_SEQUENCE);
+				currShape.addTriplet(block);
+				break;
+			}
+			case MeldType::PON: {
+				BlockTriplet block((*meld)[0], (*meld)[1], (*meld)[2], (*meld)[3], BlockType::OPEN_TRIPLET);
+				currShape.addTriplet(block);
+				break;
+			}
+			}
+		}
+	}
+	else {
+		sevenPairsShape currSevenPairsShape;
+		validSevenPairs(shapes, currSevenPairsShape, remainingTiles);
+		//same but for thirteen orphans
+	} 
+	validStandardHand(shapes, currShape, remainingTiles);
+}
+
+void validSevenPairs(std::vector<std::unique_ptr<HandShape>>& shapes,
+	sevenPairsShape currShape, std::vector<Tile> remainingTiles) {
+	int lastTileId = remainingTiles.size() - 1;
+	if (remainingTiles.size() > 2) {
+		if (Tile::isEqual(remainingTiles[lastTileId], remainingTiles[lastTileId - 2])) {
+			return;
+		}
+	}
+	if (Tile::isEqual(remainingTiles[lastTileId], remainingTiles[lastTileId - 1])) {
+		currShape.addPair(BlockPair(remainingTiles[lastTileId - 1], remainingTiles[lastTileId]));
+		remainingTiles.pop_back();
+		remainingTiles.pop_back();
+		if (remainingTiles.size() == 0) {
+			shapes.push_back(std::make_unique<HandShape>(std::move(currShape)));
+		}
+		else {
+			validSevenPairs(shapes, std::move(currShape), std::move(remainingTiles));
+		}
+	}
+}
+
+void validStandardHand(std::vector<std::unique_ptr<HandShape>>& shapes,
+	standardShape currShape, std::vector<Tile> remainingTiles) {
+	if (remainingTiles.size() == 2) {
+		if (Tile::isEqual(remainingTiles[0], remainingTiles[1])) {
+			currShape.addPair(BlockPair(remainingTiles[0], remainingTiles[1]));
+			shapes.push_back(std::make_unique<HandShape>(std::move(currShape)));
+		} 
+		return;
+	}
+	if (remainingTiles.size() == 3) {
+		Tile t1 = remainingTiles[0];
+		Tile t2 = remainingTiles[1];
+		Tile t3 = remainingTiles[2];
+		if (Block::isTriplet(t1,t2,t3)) {
+			currShape.addTriplet(BlockTriplet(t1, t2, t3, BlockType::CLOSED_TRIPLET));
+			shapes.push_back(std::make_unique<HandShape>(std::move(currShape)));
+		}
+		else if (Block::isSequence(t1, t2, t3)) {
+			currShape.addTriplet(BlockTriplet(t1, t2, t3, BlockType::CLOSED_SEQUENCE));
+			shapes.push_back(std::make_unique<HandShape>(std::move(currShape)));
+		}
+		return;
+	}
+	int lastTileId = remainingTiles.size() - 1;
+	Tile lastTile = remainingTiles[lastTileId];
+	if (Block::isTriplet(remainingTiles[lastTileId - 2], remainingTiles[lastTileId - 1], lastTile)) {
+		BlockTriplet block(remainingTiles[lastTileId - 2], remainingTiles[lastTileId - 1], lastTile, BlockType::CLOSED_TRIPLET);
+		currShape.addTriplet(std::move(block));
+		validStandardHand(shapes,currShape, std::vector<Tile>(remainingTiles.begin(), remainingTiles.end() - 3));
+		currShape.popTriplet();
+	} 
+	if (lastTile.getSuit() != Suit::HONOR) {
+		int currIndex = lastTileId - 1;
+		int id1 = -1;
+		int id2 = -1;
+
+		while (currIndex >= 0) {
+			if (remainingTiles[currIndex].getSuit() != lastTile.getSuit()) {
+				break;
+			}
+			if (remainingTiles[currIndex].getValue() < lastTile.getValue() - 2) {
+				break;
+			}
+			if (remainingTiles[currIndex].getValue() == lastTile.getValue()) {
+				currIndex--;
+				continue;
+			}
+			if (remainingTiles[currIndex].getValue() == lastTile.getValue() - 1) {
+				id1 = currIndex--;
+				continue;
+			}
+			if (remainingTiles[currIndex].getValue() == lastTile.getValue() - 2) {
+				id2 = currIndex;
+				break;
+			}
+		}
+		if (id1 != -1 && id2 != -1) {
+			BlockTriplet block(remainingTiles[id2], remainingTiles[id1], lastTile, BlockType::CLOSED_SEQUENCE);
+			currShape.addTriplet(std::move(block));
+			std::vector<Tile> newRemainingTiles(remainingTiles);
+			newRemainingTiles.pop_back();
+			newRemainingTiles.erase(newRemainingTiles.begin() + id1);
+			newRemainingTiles.erase(newRemainingTiles.begin() + id2);
+			validStandardHand(shapes, currShape,std::move(newRemainingTiles));
+			currShape.popTriplet();
+		}
+	}
+	if (Tile::isEqual(lastTile, remainingTiles[lastTileId - 1]) && currShape.getHasPair() == false) {
+		currShape.addPair(BlockPair(lastTile, remainingTiles[lastTileId - 1]));
+		validStandardHand(shapes, currShape, std::vector<Tile>(remainingTiles.begin(), remainingTiles.end() - 2));
+		currShape.popPair();
+	}
+	return;
+}
 
 
 
@@ -409,17 +556,48 @@ bool Hand::isTileInHandTiles(const Tile& tile) const
 
 
 
+bool standardShape::getHasPair()
+{
+	return hasPair;
+}
 
+standardShape::standardShape() : tripletNum(0), hasPair(false)
+{
+}
 
+void standardShape::popTriplet()
+{
+	triplets[--tripletNum] = BlockTriplet();
+}
 
+void standardShape::popPair()
+{
+	hasPair = false;
+	pair = BlockPair();
+}
 
+void standardShape::addTriplet(const BlockTriplet& triplet)
+{
+	triplets[tripletNum++] = triplet;
+}
 
+void standardShape::addPair(const BlockPair& inputPair)
+{
+	if (hasPair) {
+		throw alreadyHasPair();
+	}
+	hasPair = true;
+	pair = inputPair;
+}
 
+sevenPairsShape::sevenPairsShape(): pairNum(0)
+{
+}
 
-
-
-
-
+void sevenPairsShape::addPair(const BlockPair& pair)
+{
+	pairs[pairNum++] = pair;
+}
 
 
 

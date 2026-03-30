@@ -3,7 +3,7 @@ enum class Suit {
 	MAN,
 	PIN,
 	SOU,
-	HONOR
+	HONOR,
 };
 
 enum class HonorType {
@@ -20,14 +20,14 @@ enum class Wind {
 	EAST,
 	SOUTH,
 	WEST,
-	NORTH
+	NORTH,
 };
 
 enum class TileMarker {
 	SELF,
 	LEFT,
 	MIDDLE,
-	RIGHT
+	RIGHT,
 };
 
 enum class MoveType {
@@ -41,7 +41,7 @@ enum class MoveType {
 	RIICHI,
 	TSUMO,
 	RON,
-	COUNT
+	COUNT,
 };
 
 enum class MeldType {
@@ -49,7 +49,7 @@ enum class MeldType {
 	CHI,
 	ANKAN,
 	DAIMINKAN,
-	SHOUMINKAN
+	SHOUMINKAN,
 };
 
 enum class GameState {
@@ -63,20 +63,20 @@ enum class GameState {
 	WAITING_FOR_DISCARD_DECISIONS,
 	RESOLVE_CALLS,
 	ROUND_END,
-	GAME_OVER
+	GAME_OVER,
 };
 
 enum class RelativePosition {
 	SELF,
 	LEFT,
 	TOP,
-	RIGHT
+	RIGHT,
 };
 
 enum class UIState {
 	HIDDEN,
 	SELECTING_TYPE,
-	SELECTING_MELD
+	SELECTING_MELD,
 };
 
 namespace Constants {
@@ -90,3 +90,18 @@ namespace Constants {
 
 }
 
+enum class handType {
+	STANDARD,
+	SEVEN_PAIRS,
+	THIRTEEN_ORPHANS,
+};
+
+enum class BlockType {
+	UNSET,
+	OPEN_SEQUENCE,
+	CLOSED_SEQUENCE,
+	OPEN_TRIPLET,
+	CLOSED_TRIPLET,
+	OPEN_KAN,
+	CLOSED_KAN,
+};

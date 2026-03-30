@@ -1,4 +1,27 @@
 ----Game Start----
+1 pin
+1 pin
+1 pin
+2 pin
+2 pin
+2 pin
+3 pin
+3 pin
+3 pin
+4 pin
+4 pin
+4 pin
+Red 5 pin
+3 pin
+8 sou
+9 sou
+5 man
+West wind
+9 pin
+Red 5 sou
+9 man
+7 pin
+1 man
 4 man
 3 man
 9 man
@@ -47,6 +70,26 @@ East wind
 9 man
 7 sou
 3 sou
+2 man
+West wind
+4 pin
+1 sou
+White dragon
+9 man
+5 pin
+4 man
+4 sou
+White dragon
+Green dragon
+9 pin
+East wind
+3 man
+West wind
+4 man
+9 sou
+Green dragon
+5 sou
+3 man
 5 man
 8 pin
 1 pin
@@ -234,6 +277,15 @@ Player num: 2 Drew:
 Changing wind to: East
 Player num: 1 Drew: 
 6 man
+8 sou
+Player num: 2 Drew: 
+5 pin
+p0 called chi, hand: 
+free tiles: 
+[1 pin] [1 pin] [1 pin] [2 pin] [2 pin] [2 pin] [3 pin] [3 pin] [4 pin] [4 pin] [Red 5 pin] 
+melds:
+Chi: /[5 pin]/, [3 pin], [4 pin]
+
 p0 called chi, hand: 
 free tiles: 
 [3 man] [Red 5 man] [9 man] [4 pin] [1 sou] 
