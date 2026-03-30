@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Block.cpp" />
+    <ClCompile Include="Core\HandShape.cpp" />
     <ClCompile Include="Debug\Debug.cpp" />
     <ClCompile Include="Core\Discards.cpp" />
     <ClCompile Include="Core\Game.cpp" />
@@ -64,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Block.h" />
+    <ClInclude Include="Core\HandShape.h" />
     <ClInclude Include="Debug\Debug.h" />
     <ClInclude Include="Core\Discards.h" />
     <ClInclude Include="Core\Game.h" />
